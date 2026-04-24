@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EK DESIGN | Digital Excellence</title>
+    <title>EK DESIGN | Premium Digital Agency</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Libraries via CDN -->
+    <!-- Tailwind CSS (V3 CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Scripts -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 
     <script>
@@ -26,89 +27,100 @@
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         primary: { highlight: '#0071e3' },
-                        surface: { 900: '#ffffff', 800: '#f5f5f7', 700: '#e8e8ed' }
+                        surface: { 900: '#ffffff', 800: '#f5f5f7', 700: '#e8e8ed' },
                     },
                     boxShadow: {
                         soft: '0 4px 24px -2px rgba(0, 0, 0, 0.04)',
-                        elevated: '0 40px 100px -20px rgba(0, 0, 0, 0.1)'
-                    }
-                }
-            }
+                        elevated: '0 40px 100px -20px rgba(0, 0, 0, 0.1)',
+                    },
+                },
+            },
         }
     </script>
 
     <style>
-        html { scroll-behavior: smooth; font-size: 16px; }
+        html { scroll-behavior: smooth; }
         body { background-color: #ffffff; color: #0f172a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         ::selection { background-color: #dbeafe; color: #0071e3; }
-        .glass-panel {
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        .glass-panel { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(0, 0, 0, 0.04); }
+        .apple-button { background-color: #0f172a; color: #ffffff; padding: 1rem 2.5rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 600; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .apple-button:hover { background-color: #000000; transform: scale(1.02); }
+        .apple-link { color: #0071e3; font-weight: 500; font-size: 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+        .apple-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+        
+        /* Animated Background Gradients */
+        @keyframes gradient-move {
+            0% { transform: scale(1) translate(0%, 0%); }
+            50% { transform: scale(1.2) translate(10%, 5%); }
+            100% { transform: scale(1) translate(0%, 0%); }
         }
-        .apple-button {
-            background-color: #0f172a; color: #ffffff; padding: 1rem 2.5rem; border-radius: 9999px;
-            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            display: inline-flex; align-items: center; justify-content: center; border: none;
+        .anim-blob {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(100px); opacity: 0.15;
+            animation: gradient-move 20s infinite ease-in-out;
         }
-        .apple-button:hover { background-color: #1e293b; transform: scale(1.02); }
-        .apple-button:active { transform: scale(0.95); }
-        .apple-link {
-            color: #0071e3; font-weight: 500; font-size: 1.25rem; display: inline-flex;
-            align-items: center; gap: 0.5rem; transition: all 0.3s; text-decoration: none;
-        }
-        .apple-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, createContext, useContext } = React;
-        const { motion, AnimatePresence } = FramerMotion;
-        const { Menu, X, ArrowRight, Cpu, Box, Globe } = LucideReact;
+        const { useState, useEffect, createContext, useContext } = window.React;
+        const { motion, AnimatePresence } = window.FramerMotion;
+        const { Menu, X, ArrowRight, Shield, Cpu, Box, Globe } = window.LucideReact;
 
         const translations = {
             EN: {
-                nav_projects: 'WORK', nav_capabilities: 'SERVICES', nav_log: 'CONTACT',
-                hero_status: 'AGENCY_STATUS: ACTIVE', hero_title_1: 'CRAFTING', 
-                hero_title_2: 'DIGITAL PRODUCTS', hero_title_3: 'FOR THE ELITE.',
-                hero_desc: 'Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless experiences.',
-                hero_cta: 'VIEW_WORK', cap_title: 'OUR_EXPERT_SERVICES',
-                cap_quote: '"Good design is invisible. Great design is felt."',
-                cap_1_title: 'UI / UX DESIGN', cap_1_desc: 'Intuitive, user-centric interfaces focused on aesthetic excellence.',
-                cap_2_title: 'WEB DEVELOPMENT', cap_2_desc: 'Fast, secure web solutions built with modern tech stacks.',
-                cap_3_title: 'MOBILE APPS', cap_3_desc: 'Custom iOS and Android solutions designed for global scalability.',
-                proj_label: 'DIGITAL_WORK', proj_1_title: 'STRATEGIC_DESIGN',
-                proj_1_desc: 'A premium fashion marketplace featuring zero-latency navigation.',
-                proj_2_title: 'FINTECH_DASHBOARD', proj_2_desc: 'Comprehensive real-time analytics suite for institutional traders.',
-                cta_title: 'READY TO UPGRADE YOUR DIGITAL PRESENCE?',
-                cta_desc: 'Tell us about your project. Our team will respond with a technical brief within 24 hours.',
-                cta_input: 'YOUR_EMAIL', cta_submit: 'SEND_MESSAGE',
-                footer_desc: 'EK DESIGN AGENCY. GLOBAL DIGITAL STUDIO.'
+                nav_projects: 'Work', nav_capabilities: 'Services', nav_systems: 'Process', nav_log: 'Contact',
+                hero_status: 'Agency Status: Active', hero_title_1: 'Crafting', hero_title_2: 'Digital Products', hero_title_3: 'For the Elite.',
+                hero_desc: 'Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.',
+                hero_cta: 'View Work', cap_title: 'Our expert services', cap_quote: '"Good design is invisible. Great design is felt."',
+                cap_1_title: 'UI / UX Design', cap_1_desc: 'Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence.',
+                cap_2_title: 'Web Engineering', cap_2_desc: 'Fast, responsive, and secure web solutions built with modern tech stacks.',
+                cap_3_title: 'Mobile Apps', cap_3_desc: 'Custom iOS and Android solutions designed for global scalability.',
+                proj_label: 'Featured Projects', proj_1_title: 'Strategic Design', proj_1_desc: 'A premium fashion marketplace featuring zero-latency navigation.',
+                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Comprehensive real-time analytics suite for institutional traders.',
+                cta_title: 'Ready to upgrade your digital presence?',
+                cta_desc: 'Tell us about your project requirements. Our team will respond within 24 hours.',
+                cta_input: 'Email Address', cta_submit: 'Get Started',
+                footer_desc: 'EK Design Agency. Global Digital Studio.',
+                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
             },
             DE: {
-                nav_projects: 'PROJEKTE', nav_capabilities: 'LEISTUNGEN', nav_log: 'KONTAKT',
-                hero_status: 'AGENTUR_STATUS: AKTIV', hero_title_1: 'GESTALTUNG',
-                hero_title_2: 'DIGITALER PRODUKTE', hero_title_3: 'FÜR ELITE-BRANDS.',
-                hero_desc: 'Spezialisiert auf High-End Webdesign und App Entwicklung. Wir verwandeln komplexe Visionen in nahtlose Erlebnisse.',
-                hero_cta: 'ARBEITEN_SEHEN', cap_title: 'UNSERE_KOMPETENZEN',
-                cap_quote: '"Gutes Design ist unsichtbar. Großartiges Design ist spürbar."',
-                cap_1_title: 'UI / UX DESIGN', cap_1_desc: 'Intuitive Interfaces, die Bindung schaffen und durch Ästhetik überzeugen.',
-                cap_2_title: 'WEB ENTWICKLUNG', cap_2_desc: 'Schnelle und sichere Web-Lösungen mit modernsten Technologien.',
-                cap_3_title: 'MOBILE APPS', cap_3_desc: 'Maßgeschneiderte iOS- und Android-Lösungen für maximale Performance.',
-                proj_label: 'DIGITALE_ARBEIT', proj_1_title: 'STRATEGISCHES_DESIGN',
-                proj_1_desc: 'Premium Fashion-Marktplatz mit ultraschneller Navigation.',
-                proj_2_title: 'FINTECH_DASHBOARD', proj_2_desc: 'Echtzeit-Analytics Suite für institutionelle Trader.',
-                cta_title: 'BEREIT FÜR EIN UPGRADE IHRER PRÄSENZ?',
-                cta_desc: 'Beschreiben Sie uns Ihr Projekt. Wir antworten innerhalb von 24 Stunden.',
-                cta_input: 'IHRE_EMAIL', cta_submit: 'NACHRICHT_SENDEN',
-                footer_desc: 'EK DESIGN AGENTUR. GLOBAL DIGITAL STUDIO.'
+                nav_projects: 'Projekte', nav_capabilities: 'Leistungen', nav_systems: 'Prozess', nav_log: 'Kontakt',
+                hero_status: 'Agentur Status: Aktiv', hero_title_1: 'Gestaltung', hero_title_2: 'Digitaler Produkte', hero_title_3: 'Für Elite-Brands.',
+                hero_desc: 'Spezialisiert auf High-End Webdesign und Mobile App Entwicklung. Wir verwandeln komplexe Visionen in nahtlose Erlebnisse.',
+                hero_cta: 'Arbeit sehen', cap_title: 'Unsere Kompetenzen', cap_quote: '"Gutes Design ist unsichtbar. Großartiges Design ist spürbar."',
+                cap_1_title: 'UI / UX Design', cap_1_desc: 'Intuitive, nutzerzentrierte Interfaces, die Bindung schaffen. Wir setzen auf Exzellenz.',
+                cap_2_title: 'Web Entwicklung', cap_2_desc: 'Schnelle, responsive und sichere Web-Lösungen mit modernster Technologie.',
+                cap_3_title: 'Mobile Apps', cap_3_desc: 'Maßgeschneiderte iOS- und Android-Lösungen, optimiert für Performance.',
+                proj_label: 'Ausgewählte Projekte', proj_1_title: 'Strategisches Design', proj_1_desc: 'Premium Fashion-Marktplatz mit ultraschneller Navigation.',
+                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Echtzeit-Analytics Suite für institutionelle Trader.',
+                cta_title: 'Bereit für ein Upgrade Ihrer Präsenz?',
+                cta_desc: 'Beschreiben Sie uns Ihre Anforderungen. Wir antworten innerhalb von 24 Stunden.',
+                cta_input: 'Email Adresse', cta_submit: 'Anfragen',
+                footer_desc: 'EK Design Agentur. Global Digital Studio.',
+                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
+            },
+            BS: {
+                nav_projects: 'Radovi', nav_capabilities: 'Usluge', nav_systems: 'Proces', nav_log: 'Kontakt',
+                hero_status: 'Status: Aktivni', hero_title_1: 'Kreiranje', hero_title_2: 'Digitalnih Proizvoda', hero_title_3: 'Za Elitne Brendove.',
+                hero_desc: 'Specijalizovani za vrhunski Web Dizajn i razvoj mobilnih aplikacija. Pretvaramo vizije u digitalna iskustva.',
+                hero_cta: 'Pogledaj radove', cap_title: 'Naše kompetencije', cap_quote: '"Dobar dizajn je nevidljiv. Odličan dizajn se osjeća."',
+                cap_1_title: 'UI / UX Dizajn', cap_1_desc: 'Kreiranje intuitivnih interfejsa fokusiranih na korisnika i estetsku izvrsnost.',
+                cap_2_title: 'Web Razvoj', cap_2_desc: 'Brza, responzivna i sigurna web rješenja bazirana na modernom stacku.',
+                cap_3_title: 'Mobilne Aplikacije', cap_3_desc: 'Prilagođena iOS i Android rješenja za globalno skaliranje.',
+                proj_label: 'Digitalni Radovi', proj_1_title: 'Strateški Dizajn', proj_1_desc: 'Premium fashion marketplace sa fokusom na brzinu.',
+                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Sistem za analitiku sa naprednom vizuelizacijom podataka.',
+                cta_title: 'Spremni za nadogradnju prisutnosti?',
+                cta_desc: 'Pošaljite nam svoje zahtjeve. Odgovorićemo u roku od 24 sata.',
+                cta_input: 'Vaš Email', cta_submit: 'Počni odmah',
+                footer_desc: 'EK Design Agencija. Global Digital Studio.',
+                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
             }
         };
 
         const LanguageContext = createContext();
+
         const LanguageProvider = ({ children }) => {
             const [lang, setLangState] = useState(() => localStorage.getItem('app-lang') || 'EN');
             const setLang = (newLang) => { setLangState(newLang); localStorage.setItem('app-lang', newLang); };
@@ -116,138 +128,134 @@
             return <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>;
         };
 
+        const useTranslation = () => useContext(LanguageContext);
+
         const Navbar = () => {
             const [isScrolled, setIsScrolled] = useState(false);
-            const { lang, setLang, t } = useContext(LanguageContext);
+            const [isMobileOpen, setMobileOpen] = useState(false);
+            const { lang, setLang, t } = useTranslation();
+
             useEffect(() => {
-                const handle = () => setIsScrolled(window.scrollY > 20);
-                window.addEventListener('scroll', handle); return () => window.removeEventListener('scroll', handle);
+                const handleScroll = () => setIsScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
             }, []);
+
+            const navLinks = [
+                { name: t('nav_projects'), href: '#projects' },
+                { name: t('nav_capabilities'), href: '#capabilities' },
+                { name: t('nav_log'), href: '#contact' },
+            ];
+
             return (
                 <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-black/[0.04] py-4' : 'bg-transparent py-8'}`}>
                     <div className="max-w-6xl mx-auto px-6 flex justify-between items-center text-slate-900">
-                        <a href="#" className="text-xl font-bold tracking-tight no-underline text-slate-900">EK DESIGN</a>
+                        <a href="/" className="text-xl font-bold tracking-tight">EK DESIGN</a>
                         <div className="hidden md:flex items-center gap-10">
-                            {['WORK', 'SERVICES', 'CONTACT'].map((item) => (
-                                <a href="#" key={item} className="text-[13px] font-semibold text-slate-500 hover:text-slate-900 transition-colors tracking-tight uppercase no-underline">{item}</a>
+                            {navLinks.map((link) => (
+                                <a key={link.name} href={link.href} className="text-[13px] font-semibold text-slate-500 hover:text-slate-900 transition-colors uppercase">{link.name}</a>
                             ))}
-                            <div className="flex items-center gap-4 border-l border-slate-200 pl-8">
-                                {['EN', 'DE'].map((l) => (
-                                    <button key={l} onClick={() => setLang(l)} className={`text-[11px] font-bold px-2 py-1 rounded-full border-none cursor-pointer ${lang === l ? 'bg-slate-900 text-white' : 'bg-transparent text-slate-400'}`}>{l}</button>
+                            <div className="flex items-center gap-4 ml-6 border-l border-slate-200 pl-8">
+                                {['EN', 'DE', 'BS'].map((l) => (
+                                    <button key={l} onClick={() => setLang(l)} className={`text-[11px] font-bold transition-all px-2 py-1 rounded-full ${lang === l ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-900'}`}>{l}</button>
                                 ))}
                             </div>
                         </div>
+                        <button className="md:hidden" onClick={() => setMobileOpen(!isMobileOpen)}>{isMobileOpen ? <X size={24} /> : <Menu size={24} />}</button>
                     </div>
                 </nav>
             );
         };
 
         const Hero = () => {
-            const { t } = useContext(LanguageContext);
+            const { t } = useTranslation();
             return (
                 <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-12 overflow-hidden bg-white text-center">
+                    <div className="anim-blob bg-blue-400 top-[-100px] left-[-100px]"></div>
+                    <div className="anim-blob bg-indigo-400 bottom-[-100px] right-[-100px]"></div>
+                    
                     <div className="max-w-5xl mx-auto px-6 w-full relative z-10">
-                        <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
-                            <span className="text-sm font-semibold text-slate-500 mb-8 block tracking-tight uppercase">{t('hero_status')}</span>
-                            <h1 className="text-6xl md:text-9xl font-bold leading-[1.02] tracking-[-0.04em] mb-12 text-slate-900">
+                        <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
+                            <span className="text-sm font-semibold text-slate-500 mb-8 block uppercase tracking-tight">{t('hero_status')}</span>
+                            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[1.02] tracking-[-0.04em] mb-12 text-slate-900">
                                 <span className="inline-block bg-gradient-to-b from-slate-900 to-slate-500 bg-clip-text text-transparent">{t('hero_title_1')}</span> <br/>
-                                <span className="text-slate-400">{t('hero_title_2')}</span> <br/> {t('hero_title_3')}
+                                <span className="text-slate-400">{t('hero_title_2')}</span> <br/>
+                                {t('hero_title_3')}
                             </h1>
                             <p className="text-2xl md:text-3xl text-slate-500 max-w-3xl mb-16 leading-tight mx-auto font-medium">{t('hero_desc')}</p>
                             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                                <button className="apple-button">{t('hero_cta')}</button>
-                                <a href="#projects" className="apple-link">Learn more <ArrowRight size={20} /></a>
+                                <button className="apple-button h-14">{t('hero_cta')}</button>
+                                <a href="#projects" className="apple-link h-14 px-6">Learn more <ArrowRight size={18} /></a>
                             </div>
                         </motion.div>
                     </div>
+                    
+                    <motion.div initial={{ opacity: 0, y: 120, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-7xl mx-auto px-6 mt-24 lg:mt-32">
+                        <div className="aspect-[21/9] rounded-[48px] overflow-hidden bg-slate-50 shadow-elevated">
+                            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=2000" alt="Showcase" className="w-full h-full object-cover scale-105" />
+                        </div>
+                    </motion.div>
                 </section>
             );
         };
 
         const Services = () => {
-            const { t } = useContext(LanguageContext);
+            const { t } = useTranslation();
+            const items = [
+                { title: t('cap_1_title'), desc: t('cap_1_desc'), icon: <Cpu size={32} /> },
+                { title: t('cap_2_title'), desc: t('cap_2_desc'), icon: <Globe size={32} /> },
+                { title: t('cap_3_title'), desc: t('cap_3_desc'), icon: <Box size={32} /> }
+            ];
             return (
-                <section className="py-48 bg-surface-800">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-32">
-                            <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-8">{t('cap_title')}</h2>
-                            <p className="text-2xl text-slate-500 max-w-3xl mx-auto font-medium">{t('cap_quote')}</p>
-                        </motion.div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                            {[1, 2, 3].map((idx) => (
-                                <motion.div key={idx} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 40 }} viewport={{ once: true }} className="bg-white p-12 rounded-[40px] border border-black/[0.04] hover:shadow-elevated transition-all duration-700">
-                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-10"><Cpu size={32} /></div>
-                                    <h3 className="text-3xl font-bold mb-6 text-slate-900">{t(`cap_${idx}_title`)}</h3>
-                                    <p className="text-slate-500 leading-relaxed text-xl font-medium">{t(`cap_${idx}_desc`)}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Projects = () => {
-            const { t } = useContext(LanguageContext);
-            return (
-                <section id="projects" className="py-48 bg-white">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <h2 className="text-6xl md:text-8xl font-bold tracking-tight mb-32 text-slate-900">{t('proj_label')}</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-                            {[1, 2].map((idx) => (
-                                <motion.div key={idx} initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                                    <div className="aspect-[4/5] rounded-[48px] overflow-hidden bg-slate-50 mb-12 shadow-soft relative transition-all duration-1000">
-                                        <img src={idx === 1 ? 'https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1200' : 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200'} className="w-full h-full object-cover" />
-                                    </div>
-                                    <h3 className="text-4xl font-bold mb-4 text-slate-900">{t(`proj ${idx} title`)}</h3>
-                                    <p className="text-2xl text-slate-500 mb-8 font-medium">{t(`proj ${idx} desc`)}</p>
-                                    <a href="#" className="apple-link">View Project <ArrowRight size={20} /></a>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const CTA = () => {
-            const { t } = useContext(LanguageContext);
-            return (
-                <section className="py-48 bg-surface-800">
+                <section id="capabilities" className="py-48 bg-slate-50">
                     <div className="max-w-6xl mx-auto px-6 text-center">
-                        <motion.div initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white p-20 md:p-32 rounded-[64px] shadow-elevated border border-black/[0.04]">
-                            <h2 className="text-5xl md:text-8xl font-bold tracking-tight text-slate-900 mb-10 max-w-4xl mx-auto leading-tight">{t('cta_title')}</h2>
-                            <p className="text-2xl md:text-3xl text-slate-500 mb-16 max-w-2xl mx-auto leading-tight font-medium">{t('cta_desc')}</p>
-                            <div className="flex flex-col md:flex-row gap-6 max-w-2xl mx-auto">
-                                <input type="email" placeholder={t('cta_input')} className="flex-1 bg-slate-50 border border-slate-100 px-8 py-6 rounded-3xl text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-highlight/5 transition-all text-lg font-medium" />
-                                <button className="apple-button h-[72px] px-12 text-lg">{t('cta_submit')}</button>
-                            </div>
-                        </motion.div>
+                        <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-8">{t('cap_title')}</h2>
+                        <p className="text-2xl text-slate-500 max-w-3xl mx-auto font-medium mb-32">{t('cap_quote')}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                            {items.map((item, i) => (
+                                <motion.div key={i} viewport={{ once: true }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: i * 0.1 }} className="bg-white p-12 rounded-[40px] border border-black/[0.04] hover:shadow-elevated transition-all duration-700">
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-10 mx-auto">{item.icon}</div>
+                                    <h3 className="text-3xl font-bold mb-6 text-slate-900">{item.title}</h3>
+                                    <p className="text-slate-500 leading-relaxed text-xl font-medium">{item.desc}</p>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </section>
             );
+        };
+
+        const Footer = () => {
+             const { t } = useTranslation();
+             return (
+                 <footer className="py-20 bg-white border-t border-black/5">
+                     <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
+                         <div className="text-xl font-bold tracking-tight text-slate-900 uppercase">EK DESIGN</div>
+                         <div className="flex gap-10 text-sm font-medium text-slate-500">
+                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_1')}</a>
+                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_2')}</a>
+                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_3')}</a>
+                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_4')}</a>
+                         </div>
+                         <div className="text-xs text-slate-300 font-medium">© {new Date().getFullYear()} EK DESIGN. ALL RIGHTS RESERVED.</div>
+                     </div>
+                 </footer>
+             );
         };
 
         function App() {
             return (
                 <LanguageProvider>
-                    <div className="min-h-screen bg-white">
-                        <Navbar />
-                        <main> <Hero /> <Services /> <Projects /> <CTA /> </main>
-                        <footer className="py-20 bg-white border-t border-black/5">
-                            <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12 text-slate-500 text-sm">
-                                <div className="text-xl font-bold text-slate-900">EK DESIGN</div>
-                                <div className="flex gap-8"><span>PORTFOLIO</span><span>STUDIO</span><span>INSTAGRAM</span></div>
-                                <div>© 2024 EK DESIGN. ALL RIGHTS RESERVED.</div>
-                            </div>
-                        </footer>
-                    </div>
+                    <Navbar />
+                    <Hero />
+                    <Services />
+                    <Footer />
                 </LanguageProvider>
             );
         }
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(React.createElement(App));
     </script>
 </body>
 </html>
