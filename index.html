@@ -4,109 +4,98 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>NEURAL_SYSTEMS | Digital Sovereignty</title>
-    
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-                "primary-container": "#00f3ff",
-                "on-primary-fixed": "#002022",
-                "background": "#0a0a0a",
-                "on-background": "#e5e2e1",
-            },
-            fontFamily: { "h1": ["Space Grotesk"], "h2": ["Space Grotesk"], "body": ["Space Grotesk"] }
-          },
-        },
-      }
-    </script>
     <style>
+        body { background-color: #0a0a0a; color: #e5e2e1; }
+        .glass-panel { backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.1); }
         .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, transparent, rgba(0, 243, 255, 0.1), transparent); z-index: 100; pointer-events: none; animation: scan 8s linear infinite; }
         @keyframes scan { 0% { transform: translateY(-100vh); } 100% { transform: translateY(100vh); } }
-        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(0, 243, 255, 0.1); }
-        .text-glow { text-shadow: 0 0 8px rgba(0, 243, 255, 0.4); }
         .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
         html { scroll-behavior: smooth; }
     </style>
 </head>
 
-<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-fixed">
+<body class="font-['Space_Grotesk']">
     <div class="scanline"></div>
 
     <header x-data="{ open: false }" class="fixed top-0 w-full z-50 border-b border-[#00f3ff]/20 bg-[#0a0a0a]/80 backdrop-blur-md">
         <nav class="flex justify-between items-center max-w-[1440px] mx-auto px-6 md:px-16 h-20">
-            <a class="text-xl md:text-2xl font-black text-[#00f3ff] uppercase" href="/">NEURAL_SYSTEMS</a>
-            
-            <button @click="open = !open" class="md:hidden text-[#00f3ff] font-bold">MENU</button>
-
-            <div class="hidden md:flex gap-12 uppercase tracking-widest text-xs">
+            <a class="text-2xl font-black text-[#00f3ff] uppercase" href="/">NEURAL_SYSTEMS</a>
+            <button @click="open = !open" class="md:hidden text-[#00f3ff]">MENU</button>
+            <div class="hidden md:flex gap-12 uppercase tracking-widest text-xs font-semibold">
                 <a href="#projects" class="hover:text-[#00f3ff]">PROJECTS</a>
                 <a href="#capabilities" class="hover:text-[#00f3ff]">CAPABILITIES</a>
                 <a href="#log" class="hover:text-[#00f3ff]">LOG</a>
             </div>
         </nav>
-
-        <div x-show="open" @click.outside="open = false" class="md:hidden bg-[#0a0a0a] border-b border-[#00f3ff]/20 p-6 flex flex-col gap-6 uppercase text-sm">
+        <div x-show="open" @click.outside="open = false" class="md:hidden bg-[#0a0a0a] border-b border-[#00f3ff]/20 p-8 flex flex-col gap-6">
             <a href="#projects" @click="open = false">PROJECTS</a>
             <a href="#capabilities" @click="open = false">CAPABILITIES</a>
             <a href="#log" @click="open = false">LOG</a>
         </div>
     </header>
 
-    <main class="pt-20">
-        <section class="relative min-h-[80vh] flex items-center justify-center cyber-grid px-6 md:px-16">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-7xl font-bold text-white mb-8">ENGINEERING <span class="text-[#00f3ff] text-glow">NEXT_HORIZON</span></h1>
-                <p class="text-lg text-zinc-400 max-w-2xl mx-auto mb-12">Architecting the infrastructure of digital sovereignty.</p>
-                <a href="#projects" class="bg-primary-container text-on-primary-fixed px-10 py-4 font-bold inline-block hover:shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all">VIEW_ARCHIVES</a>
+    <main>
+        <section class="min-h-screen flex items-center justify-center cyber-grid px-6 pt-20">
+            <div class="max-w-4xl text-center">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">ENGINEERING <span class="text-[#00f3ff]">NEXT_HORIZON</span></h1>
+                <p class="text-xl text-zinc-400 mb-10">Architecting the infrastructure of digital sovereignty. High-fidelity artifacts for elite entities.</p>
+                <a href="#projects" class="border border-[#00f3ff] text-[#00f3ff] px-8 py-3 hover:bg-[#00f3ff]/10 transition-all">INITIATE_PROTOCOL</a>
             </div>
         </section>
 
-        <section id="capabilities" class="py-20 px-6 md:px-16">
-            <h2 class="text-4xl text-white mb-12">SYSTEM_COMPETENCIES</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-panel p-8">
-                    <h3 class="text-2xl text-white mb-4">NEURAL_NET_ARCHITECTURE</h3>
-                    <p class="text-zinc-400">Deploying autonomous systems that scale through decentralized protocols.</p>
+        <section id="capabilities" class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+            <h2 class="text-4xl text-white mb-12 uppercase tracking-tighter">System_Competencies</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 glass-panel p-10">
+                    <h3 class="text-2xl font-bold mb-4">NEURAL_NET_ARCHITECTURE</h3>
+                    <p class="text-zinc-400">Autonomous systems that scale through decentralized protocols. Prioritizing low-latency execution.</p>
                 </div>
-                <div class="glass-panel p-8">
-                    <h3 class="text-2xl text-white mb-4">SOVEREIGN_VAULTS</h3>
-                    <p class="text-zinc-400">High-security digital custody solutions.</p>
+                <div class="glass-panel p-10 border-r-4 border-r-[#00f3ff]">
+                    <h3 class="text-xl font-bold mb-4">SOVEREIGN_VAULTS</h3>
+                    <p class="text-zinc-400">High-security custody solutions.</p>
+                </div>
+                <div class="glass-panel p-10">
+                    <h3 class="text-xl font-bold mb-4">TOKEN_GEOMETRY</h3>
+                    <p class="text-zinc-400">Smart contract logic for assets.</p>
+                </div>
+                <div class="glass-panel p-10">
+                    <h3 class="text-xl font-bold mb-4">MESH_PROTOCOLS</h3>
+                    <p class="text-zinc-400">Peer-to-peer infrastructure.</p>
+                </div>
+                <div class="glass-panel p-10">
+                    <h3 class="text-xl font-bold mb-4">SIGNAL_METRICS</h3>
+                    <p class="text-zinc-400">Deep analytics from chaotic streams.</p>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="py-20 px-6 md:px-16 bg-[#0e0e0e]">
-            <h2 class="text-4xl text-white mb-12">DIGITAL_ARTIFACTS</h2>
+        <section id="projects" class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+            <h2 class="text-4xl text-white mb-16 uppercase tracking-tighter">Digital_Artifacts</h2>
             <div class="grid md:grid-cols-2 gap-12">
-                <div class="glass-panel p-6">
-                    <h3 class="text-xl text-white mb-2">PROJECT_XENO_LINK</h3>
-                    <p class="text-zinc-400">Cross-chain synchronization engine.</p>
+                <div class="glass-panel overflow-hidden group">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDskMaf42cdNepWJVVJiAYQ23pnYG8GjCE9CYLm6mdb8Rr1r_qVzjmKngEcZFd8qQVH083HyuD_n5ThgZbxu_oqwPwI-5AEPTHCf0_DW-89Gc-CIkKQo5f8rnZsi5Pf-pRy4pnnJnVuWcrL87QLd2WOb1JSdYaThctkQAdYNI_rQkW5krGnDIEC80p_RXLgSPTxlJuuhzvmCK0rPq2JWXCX90NV-u356DAxqXpRwkf3AsmJKNV19iVXLR5Dr8cgZcva2ugEUk1aesw" class="w-full h-64 object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-2">PROJECT_XENO_LINK</h3>
+                        <p class="text-zinc-400">Cross-chain synchronization engine.</p>
+                    </div>
                 </div>
-                <div class="glass-panel p-6">
-                    <h3 class="text-xl text-white mb-2">GHOST_SHELL_VAULT</h3>
-                    <p class="text-zinc-400">Self-destructing data packets.</p>
+                <div class="glass-panel overflow-hidden group">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYHLxKs1PWXl5tWAaWVvRxU_Y8OV-TmWQAi_NN5pht-CFbzrJwlIlU7E-b7TkLQwcxJSNmQ6NRneCywuqB3txi4jJpdmaZhH-IVtqynWO0PoaDzIq-635BFZ09azky6ps6AcExyqVJR49zI8Al3sRiFowKsNr-ZsNXq7ol37roadfiGwwN9Y3UmVlK7yMtWCe9UelSECRbfea8RX1RcwFZf_kuBSCxltE3-Jm9BcCRY2pcqrfUzWWDldnBMNJu5G96kPEGAmRYuBk" class="w-full h-64 object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-2">GHOST_SHELL_VAULT</h3>
+                        <p class="text-zinc-400">Self-destructing data packets.</p>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section id="log" class="py-20 px-6 md:px-16 text-center">
-            <h2 class="text-4xl text-white mb-8">SYSTEM_LOG</h2>
-            <p class="text-zinc-500">Awaiting input... Connection established.</p>
         </section>
     </main>
 
-    <footer class="py-12 border-t border-[#00f3ff]/10 text-center text-xs text-zinc-600">
-        © 2026 NEURAL_SYSTEMS. ALL RIGHTS RESERVED.
+    <footer class="py-12 text-center border-t border-white/5">
+        <p class="text-zinc-600 text-xs">© 2026 NEURAL_SYSTEMS. ALL RIGHTS RESERVED.</p>
     </footer>
 </body>
 </html>
