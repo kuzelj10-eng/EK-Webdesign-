@@ -1,261 +1,910 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EK DESIGN | Premium Digital Agency</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS (V3 CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Scripts -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EK DESIGN — Premium Digital Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        primary: { highlight: '#0071e3' },
-                        surface: { 900: '#ffffff', 800: '#f5f5f7', 700: '#e8e8ed' },
-                    },
-                    boxShadow: {
-                        soft: '0 4px 24px -2px rgba(0, 0, 0, 0.04)',
-                        elevated: '0 40px 100px -20px rgba(0, 0, 0, 0.1)',
-                    },
-                },
-            },
-        }
-    </script>
+  <style>
+    /* ─── RESET & ROOT ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background-color: #ffffff; color: #0f172a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        ::selection { background-color: #dbeafe; color: #0071e3; }
-        .glass-panel { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(0, 0, 0, 0.04); }
-        .apple-button { background-color: #0f172a; color: #ffffff; padding: 1rem 2.5rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 600; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
-        .apple-button:hover { background-color: #000000; transform: scale(1.02); }
-        .apple-link { color: #0071e3; font-weight: 500; font-size: 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
-        .apple-link:hover { text-decoration: underline; text-underline-offset: 4px; }
-        
-        /* Animated Background Gradients */
-        @keyframes gradient-move {
-            0% { transform: scale(1) translate(0%, 0%); }
-            50% { transform: scale(1.2) translate(10%, 5%); }
-            100% { transform: scale(1) translate(0%, 0%); }
-        }
-        .anim-blob {
-            position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(100px); opacity: 0.15;
-            animation: gradient-move 20s infinite ease-in-out;
-        }
-    </style>
+    :root {
+      --white:   #ffffff;
+      --off:     #f5f5f7;
+      --ink:     #0a0a0b;
+      --mid:     #6e6e73;
+      --subtle:  #d2d2d7;
+      --accent:  #0071e3;
+      --accent2: #00c7be;
+      --r-xl:    48px;
+      --r-lg:    32px;
+      --r-md:    20px;
+      --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: #cce4ff; color: var(--accent); }
+
+    /* ─── SCROLLBAR ────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--off); }
+    ::-webkit-scrollbar-thumb { background: var(--subtle); border-radius: 99px; }
+
+    /* ─── NAVIGATION ───────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      transition: all 0.5s var(--ease);
+      padding: 28px 0;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(32px) saturate(180%);
+      -webkit-backdrop-filter: blur(32px) saturate(180%);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 16px 0;
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; letter-spacing: -0.02em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-links { display: flex; align-items: center; gap: 40px; }
+    .nav-links a {
+      font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mid);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .lang-switcher { display: flex; align-items: center; gap: 4px; }
+    .lang-btn {
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.05em;
+      padding: 5px 10px; border-radius: 99px; border: none;
+      cursor: pointer; transition: all 0.25s;
+      background: transparent; color: var(--mid);
+    }
+    .lang-btn.active { background: var(--ink); color: var(--white); }
+    .lang-btn:hover:not(.active) { color: var(--ink); }
+
+    .nav-cta {
+      background: var(--ink); color: var(--white);
+      padding: 10px 22px; border-radius: 99px;
+      font-size: 0.8125rem; font-weight: 600;
+      text-decoration: none; transition: all 0.35s var(--ease);
+    }
+    .nav-cta:hover { background: #000; transform: scale(1.03); }
+
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.35s var(--ease); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 998;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(40px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 2.5rem; font-weight: 700; color: var(--ink);
+      text-decoration: none; letter-spacing: -0.03em;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-lang { display: flex; gap: 12px; margin-top: 16px; }
+
+    /* ─── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      padding: 120px 40px 80px;
+    }
+
+    /* noise overlay */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.4; pointer-events: none;
+    }
+
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(100px);
+      pointer-events: none; will-change: transform;
+    }
+    .blob-1 { width: 700px; height: 700px; background: #a8d5ff; opacity: 0.25; top: -200px; left: -200px; animation: drift1 25s ease-in-out infinite; }
+    .blob-2 { width: 600px; height: 600px; background: #b5f0ec; opacity: 0.2; bottom: -100px; right: -100px; animation: drift2 30s ease-in-out infinite; }
+    .blob-3 { width: 400px; height: 400px; background: #e2c4ff; opacity: 0.15; top: 30%; left: 50%; transform: translate(-50%,-50%); animation: drift3 20s ease-in-out infinite; }
+
+    @keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(60px,40px) scale(1.1)} 66%{transform:translate(-40px,60px) scale(0.95)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-50px,-30px) scale(1.05)} 66%{transform:translate(30px,-50px) scale(1.1)} }
+    @keyframes drift3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-40%,-60%) scale(1.2)} }
+
+    .hero-content { position: relative; z-index: 1; max-width: 1000px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 99px; padding: 8px 18px; margin-bottom: 40px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mid);
+      opacity: 0; animation: fadeUp 1s 0.2s var(--ease) forwards;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #30d158; display: block;
+      box-shadow: 0 0 0 3px rgba(48,209,88,0.2);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 3px rgba(48,209,88,0.2)} 50%{box-shadow:0 0 0 6px rgba(48,209,88,0.1)} }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.5rem, 9vw, 9rem);
+      line-height: 0.95; letter-spacing: -0.04em;
+      margin-bottom: 36px;
+      opacity: 0; animation: fadeUp 1.2s 0.4s var(--ease) forwards;
+    }
+    .hero-title .line-1 { display: block; color: var(--ink); }
+    .hero-title .line-2 {
+      display: block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-style: italic;
+    }
+    .hero-title .line-3 { display: block; color: var(--subtle); }
+
+    .hero-desc {
+      font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--mid);
+      max-width: 640px; margin: 0 auto 52px; line-height: 1.55;
+      font-weight: 400;
+      opacity: 0; animation: fadeUp 1.2s 0.6s var(--ease) forwards;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 1.2s 0.8s var(--ease) forwards;
+    }
+    .btn-primary {
+      background: var(--ink); color: var(--white);
+      padding: 16px 36px; border-radius: 99px;
+      font-size: 0.9375rem; font-weight: 600;
+      text-decoration: none; transition: all 0.4s var(--ease);
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-primary:hover { background: #000; transform: scale(1.03) translateY(-2px); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.25); }
+    .btn-primary svg { transition: transform 0.3s var(--ease); }
+    .btn-primary:hover svg { transform: translateX(4px); }
+
+    .btn-ghost {
+      color: var(--accent); font-size: 1rem; font-weight: 600;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      padding: 16px 24px; transition: gap 0.3s;
+    }
+    .btn-ghost:hover { gap: 14px; }
+
+    /* hero mockup */
+    .hero-mockup {
+      position: relative; z-index: 1; width: 100%; max-width: 1200px;
+      margin: 80px auto 0; padding: 0 20px;
+      opacity: 0; animation: fadeUp 1.5s 1s var(--ease) forwards;
+    }
+    .mockup-frame {
+      border-radius: var(--r-xl); overflow: hidden;
+      box-shadow: 0 60px 120px -20px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04);
+      aspect-ratio: 21/9; background: var(--off);
+      position: relative;
+    }
+    .mockup-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mockup-frame::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.4));
+    }
+
+    /* floating stats */
+    .stat-card {
+      position: absolute; background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9);
+      border-radius: var(--r-md); padding: 16px 22px;
+      box-shadow: 0 20px 60px -10px rgba(0,0,0,0.12);
+    }
+    .stat-card .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--ink); line-height: 1; }
+    .stat-card .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-top: 4px; }
+    .stat-1 { bottom: -20px; left: 5%; animation: float1 6s ease-in-out infinite; }
+    .stat-2 { bottom: -30px; right: 8%; animation: float2 8s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MARQUEE ──────────────────────────────────────────────── */
+    .marquee-section {
+      padding: 60px 0; overflow: hidden;
+      border-top: 1px solid var(--subtle); border-bottom: 1px solid var(--subtle);
+      background: var(--white);
+    }
+    .marquee-track {
+      display: flex; gap: 80px; width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem; color: var(--subtle);
+      white-space: nowrap; letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 24px;
+    }
+    .marquee-item::after { content: '✦'; color: var(--accent); font-size: 0.75rem; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ─── SECTION SHARED ───────────────────────────────────────── */
+    .section-tag {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+      display: block;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      letter-spacing: -0.04em; line-height: 1.0;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .section-sub {
+      font-size: 1.125rem; color: var(--mid); max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ─── SERVICES ─────────────────────────────────────────────── */
+    .services { padding: 160px 40px; background: var(--off); }
+    .services-inner { max-width: 1280px; margin: 0 auto; }
+    .services-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; margin-bottom: 80px; flex-wrap: wrap; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .service-card {
+      background: var(--white); border-radius: var(--r-xl);
+      padding: 52px 44px; border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.7s var(--ease); cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--r-xl);
+      background: linear-gradient(135deg, rgba(0,113,227,0.06), rgba(0,199,190,0.04));
+      opacity: 0; transition: opacity 0.5s;
+    }
+    .service-card:hover::before { opacity: 1; }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.12); }
+
+    .service-icon {
+      width: 64px; height: 64px; border-radius: var(--r-md);
+      background: var(--off); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 36px; font-size: 1.75rem;
+      transition: transform 0.4s var(--ease);
+    }
+    .service-card:hover .service-icon { transform: scale(1.1) rotate(-4deg); }
+    .service-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.75rem; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .service-card p { font-size: 1rem; color: var(--mid); line-height: 1.65; }
+    .service-num {
+      position: absolute; top: 44px; right: 44px;
+      font-size: 0.75rem; font-weight: 700; color: var(--subtle);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── PROJECTS ─────────────────────────────────────────────── */
+    .projects { padding: 160px 40px; background: var(--white); }
+    .projects-inner { max-width: 1280px; margin: 0 auto; }
+    .projects-header { text-align: center; margin-bottom: 80px; }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .project-card {
+      border-radius: var(--r-xl); overflow: hidden; position: relative;
+      cursor: pointer; group: true;
+    }
+    .project-card:first-child { grid-row: span 1; aspect-ratio: 4/3; }
+    .project-card:last-child { aspect-ratio: 4/3; }
+
+    .project-img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.9s var(--ease);
+      display: block;
+    }
+    .project-card:hover .project-img { transform: scale(1.07); }
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 44px; transition: background 0.5s;
+    }
+    .project-card:hover .project-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%); }
+    .project-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+    .project-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--white); letter-spacing: -0.03em; margin-bottom: 8px; }
+    .project-desc { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 380px; }
+    .project-arrow {
+      position: absolute; top: 32px; right: 32px;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      color: white; transition: all 0.4s var(--ease);
+      transform: translate(0, 0) rotate(-45deg); opacity: 0;
+    }
+    .project-card:hover .project-arrow { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+
+    /* ─── PROCESS ──────────────────────────────────────────────── */
+    .process { padding: 160px 40px; background: var(--ink); }
+    .process-inner { max-width: 1280px; margin: 0 auto; }
+    .process-header { text-align: center; margin-bottom: 100px; }
+    .process-header .section-tag { color: var(--accent2); }
+    .process-header .section-title { color: var(--white); }
+    .process-header .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto; text-align: center; }
+
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .step {
+      background: rgba(255,255,255,0.04); padding: 52px 36px;
+      border-radius: 0; position: relative;
+      transition: background 0.4s;
+    }
+    .step:first-child { border-radius: var(--r-xl) 0 0 var(--r-xl); }
+    .step:last-child  { border-radius: 0 var(--r-xl) var(--r-xl) 0; }
+    .step:hover { background: rgba(255,255,255,0.07); }
+    .step-num { font-family: 'DM Serif Display', serif; font-size: 4rem; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 32px; }
+    .step-icon { font-size: 2rem; margin-bottom: 20px; }
+    .step h3 { font-size: 1.125rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .step p { font-size: 0.9rem; color: rgba(255,255,255,0.45); line-height: 1.65; }
+
+    /* ─── TESTIMONIAL ──────────────────────────────────────────── */
+    .testimonial { padding: 160px 40px; background: var(--off); }
+    .testimonial-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .quote-mark {
+      font-family: 'DM Serif Display', serif; font-size: 8rem;
+      color: var(--subtle); line-height: 0.5; margin-bottom: 32px;
+      display: block;
+    }
+    .quote-text {
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: clamp(1.75rem, 4vw, 3rem); letter-spacing: -0.03em;
+      color: var(--ink); line-height: 1.3; margin-bottom: 44px;
+    }
+    .quote-author { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid); }
+
+    /* ─── CTA ──────────────────────────────────────────────────── */
+    .cta-section { padding: 160px 40px; background: var(--white); }
+    .cta-inner {
+      max-width: 1280px; margin: 0 auto;
+      background: var(--ink); border-radius: var(--r-xl);
+      padding: 100px 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-inner::before {
+      content: ''; position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,113,227,0.3), transparent 70%);
+      border-radius: 50%; top: -200px; left: -100px; pointer-events: none;
+    }
+    .cta-inner::after {
+      content: ''; position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,199,190,0.2), transparent 70%);
+      border-radius: 50%; bottom: -150px; right: -100px; pointer-events: none;
+    }
+    .cta-inner .section-title { color: var(--white); position: relative; z-index: 1; }
+    .cta-inner .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto 56px; text-align: center; max-width: 460px; position: relative; z-index: 1; }
+
+    .cta-form { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-form input {
+      flex: 1; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 99px; padding: 16px 24px;
+      color: var(--white); font-size: 0.9375rem; font-family: inherit;
+      outline: none; transition: border-color 0.3s;
+    }
+    .cta-form input::placeholder { color: rgba(255,255,255,0.35); }
+    .cta-form input:focus { border-color: rgba(255,255,255,0.4); }
+    .cta-form button {
+      background: var(--white); color: var(--ink);
+      padding: 16px 28px; border-radius: 99px;
+      font-size: 0.9375rem; font-weight: 700;
+      border: none; cursor: pointer; white-space: nowrap;
+      transition: all 0.35s var(--ease); font-family: inherit;
+    }
+    .cta-form button:hover { transform: scale(1.04); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+    /* ─── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.4);
+      padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--white); }
+    .footer-links { display: flex; gap: 36px; }
+    .footer-links a {
+      font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      text-decoration: none; transition: color 0.25s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 0.75rem; letter-spacing: 0.04em; }
+
+    /* ─── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(50px);
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:first-child { aspect-ratio: 16/9; }
+      .project-card:last-child  { aspect-ratio: 16/9; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 2px; }
+      .step:first-child { border-radius: var(--r-xl) 0 0 0; }
+      .step:nth-child(2) { border-radius: 0 var(--r-xl) 0 0; }
+      .step:nth-child(3) { border-radius: 0 0 0 var(--r-xl); }
+      .step:last-child  { border-radius: 0 0 var(--r-xl) 0; }
+      .cta-inner { padding: 72px 44px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta, .lang-switcher { display: none; }
+      .hamburger { display: flex; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .stat-1, .stat-2 { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .services, .projects, .process, .testimonial, .cta-section { padding: 100px 24px; }
+      .cta-form { flex-direction: column; }
+      .footer-links { gap: 20px; flex-wrap: wrap; }
+      .cta-inner { padding: 52px 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .process-steps { grid-template-columns: 1fr; }
+      .step:first-child { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+      .step:nth-child(2), .step:nth-child(3) { border-radius: 0; }
+      .step:last-child { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, createContext, useContext } = window.React;
-        const { motion, AnimatePresence } = window.FramerMotion;
-        const { Menu, X, ArrowRight, Shield, Cpu, Box, Globe } = window.LucideReact;
+  <!-- ─── NAVIGATION ─────────────────────────────────────────── -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">EK Design</a>
+      <div class="nav-links">
+        <a href="#projects"      data-key="nav_projects">Work</a>
+        <a href="#capabilities"  data-key="nav_capabilities">Services</a>
+        <a href="#process"       data-key="nav_systems">Process</a>
+        <a href="#contact"       data-key="nav_log">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="EN">EN</button>
+          <button class="lang-btn"        data-lang="DE">DE</button>
+          <button class="lang-btn"        data-lang="BS">BS</button>
+        </div>
+        <a href="#contact" class="nav-cta" data-key="nav_log">Contact</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-        const translations = {
-            EN: {
-                nav_projects: 'Work', nav_capabilities: 'Services', nav_systems: 'Process', nav_log: 'Contact',
-                hero_status: 'Agency Status: Active', hero_title_1: 'Crafting', hero_title_2: 'Digital Products', hero_title_3: 'For the Elite.',
-                hero_desc: 'Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.',
-                hero_cta: 'View Work', cap_title: 'Our expert services', cap_quote: '"Good design is invisible. Great design is felt."',
-                cap_1_title: 'UI / UX Design', cap_1_desc: 'Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence.',
-                cap_2_title: 'Web Engineering', cap_2_desc: 'Fast, responsive, and secure web solutions built with modern tech stacks.',
-                cap_3_title: 'Mobile Apps', cap_3_desc: 'Custom iOS and Android solutions designed for global scalability.',
-                proj_label: 'Featured Projects', proj_1_title: 'Strategic Design', proj_1_desc: 'A premium fashion marketplace featuring zero-latency navigation.',
-                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Comprehensive real-time analytics suite for institutional traders.',
-                cta_title: 'Ready to upgrade your digital presence?',
-                cta_desc: 'Tell us about your project requirements. Our team will respond within 24 hours.',
-                cta_input: 'Email Address', cta_submit: 'Get Started',
-                footer_desc: 'EK Design Agency. Global Digital Studio.',
-                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
-            },
-            DE: {
-                nav_projects: 'Projekte', nav_capabilities: 'Leistungen', nav_systems: 'Prozess', nav_log: 'Kontakt',
-                hero_status: 'Agentur Status: Aktiv', hero_title_1: 'Gestaltung', hero_title_2: 'Digitaler Produkte', hero_title_3: 'Für Elite-Brands.',
-                hero_desc: 'Spezialisiert auf High-End Webdesign und Mobile App Entwicklung. Wir verwandeln komplexe Visionen in nahtlose Erlebnisse.',
-                hero_cta: 'Arbeit sehen', cap_title: 'Unsere Kompetenzen', cap_quote: '"Gutes Design ist unsichtbar. Großartiges Design ist spürbar."',
-                cap_1_title: 'UI / UX Design', cap_1_desc: 'Intuitive, nutzerzentrierte Interfaces, die Bindung schaffen. Wir setzen auf Exzellenz.',
-                cap_2_title: 'Web Entwicklung', cap_2_desc: 'Schnelle, responsive und sichere Web-Lösungen mit modernster Technologie.',
-                cap_3_title: 'Mobile Apps', cap_3_desc: 'Maßgeschneiderte iOS- und Android-Lösungen, optimiert für Performance.',
-                proj_label: 'Ausgewählte Projekte', proj_1_title: 'Strategisches Design', proj_1_desc: 'Premium Fashion-Marktplatz mit ultraschneller Navigation.',
-                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Echtzeit-Analytics Suite für institutionelle Trader.',
-                cta_title: 'Bereit für ein Upgrade Ihrer Präsenz?',
-                cta_desc: 'Beschreiben Sie uns Ihre Anforderungen. Wir antworten innerhalb von 24 Stunden.',
-                cta_input: 'Email Adresse', cta_submit: 'Anfragen',
-                footer_desc: 'EK Design Agentur. Global Digital Studio.',
-                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
-            },
-            BS: {
-                nav_projects: 'Radovi', nav_capabilities: 'Usluge', nav_systems: 'Proces', nav_log: 'Kontakt',
-                hero_status: 'Status: Aktivni', hero_title_1: 'Kreiranje', hero_title_2: 'Digitalnih Proizvoda', hero_title_3: 'Za Elitne Brendove.',
-                hero_desc: 'Specijalizovani za vrhunski Web Dizajn i razvoj mobilnih aplikacija. Pretvaramo vizije u digitalna iskustva.',
-                hero_cta: 'Pogledaj radove', cap_title: 'Naše kompetencije', cap_quote: '"Dobar dizajn je nevidljiv. Odličan dizajn se osjeća."',
-                cap_1_title: 'UI / UX Dizajn', cap_1_desc: 'Kreiranje intuitivnih interfejsa fokusiranih na korisnika i estetsku izvrsnost.',
-                cap_2_title: 'Web Razvoj', cap_2_desc: 'Brza, responzivna i sigurna web rješenja bazirana na modernom stacku.',
-                cap_3_title: 'Mobilne Aplikacije', cap_3_desc: 'Prilagođena iOS i Android rješenja za globalno skaliranje.',
-                proj_label: 'Digitalni Radovi', proj_1_title: 'Strateški Dizajn', proj_1_desc: 'Premium fashion marketplace sa fokusom na brzinu.',
-                proj_2_title: 'Fintech Dashboard', proj_2_desc: 'Sistem za analitiku sa naprednom vizuelizacijom podataka.',
-                cta_title: 'Spremni za nadogradnju prisutnosti?',
-                cta_desc: 'Pošaljite nam svoje zahtjeve. Odgovorićemo u roku od 24 sata.',
-                cta_input: 'Vaš Email', cta_submit: 'Počni odmah',
-                footer_desc: 'EK Design Agencija. Global Digital Studio.',
-                footer_nav_1: 'Studio', footer_nav_2: 'Portfolio', footer_nav_3: 'Instagram', footer_nav_4: 'LinkedIn',
-            }
-        };
+  <!-- ─── MOBILE MENU ────────────────────────────────────────── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#projects"     data-key="nav_projects"     onclick="closeMobile()">Work</a>
+    <a href="#capabilities" data-key="nav_capabilities" onclick="closeMobile()">Services</a>
+    <a href="#process"      data-key="nav_systems"      onclick="closeMobile()">Process</a>
+    <a href="#contact"      data-key="nav_log"          onclick="closeMobile()">Contact</a>
+    <div class="mobile-lang">
+      <button class="lang-btn active" data-lang="EN">EN</button>
+      <button class="lang-btn"        data-lang="DE">DE</button>
+      <button class="lang-btn"        data-lang="BS">BS</button>
+    </div>
+  </div>
 
-        const LanguageContext = createContext();
+  <!-- ─── HERO ──────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
 
-        const LanguageProvider = ({ children }) => {
-            const [lang, setLangState] = useState(() => localStorage.getItem('app-lang') || 'EN');
-            const setLang = (newLang) => { setLangState(newLang); localStorage.setItem('app-lang', newLang); };
-            const t = (key) => translations[lang][key] || translations.EN[key];
-            return <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>;
-        };
+    <div class="hero-content">
+      <span class="hero-badge" data-key="hero_status">Agency Status: Active</span>
+      <h1 class="hero-title">
+        <span class="line-1" data-key="hero_title_1">Crafting</span>
+        <span class="line-2" data-key="hero_title_2">Digital Products</span>
+        <span class="line-3" data-key="hero_title_3">For the Elite.</span>
+      </h1>
+      <p class="hero-desc" data-key="hero_desc">Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary" data-key="hero_cta">
+          View Work
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#capabilities" class="btn-ghost">
+          Our Services
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
 
-        const useTranslation = () => useContext(LanguageContext);
+    <div class="hero-mockup">
+      <div class="mockup-frame">
+        <img
+          src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=2000"
+          alt="EK Design — Premium Projects"
+          loading="eager"
+        />
+        <div class="stat-card stat-1">
+          <div class="stat-num">98+</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat-card stat-2">
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Client Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        const Navbar = () => {
-            const [isScrolled, setIsScrolled] = useState(false);
-            const [isMobileOpen, setMobileOpen] = useState(false);
-            const { lang, setLang, t } = useTranslation();
+  <!-- ─── MARQUEE ───────────────────────────────────────────── -->
+  <div class="marquee-section" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">UI / UX Design</span>
+      <span class="marquee-item">Web Engineering</span>
+      <span class="marquee-item">Mobile Applications</span>
+      <span class="marquee-item">Brand Identity</span>
+      <span class="marquee-item">E-Commerce</span>
+      <span class="marquee-item">Motion Design</span>
+      <span class="marquee-item">UI / UX Design</span>
+      <span class="marquee-item">Web Engineering</span>
+      <span class="marquee-item">Mobile Applications</span>
+      <span class="marquee-item">Brand Identity</span>
+      <span class="marquee-item">E-Commerce</span>
+      <span class="marquee-item">Motion Design</span>
+    </div>
+  </div>
 
-            useEffect(() => {
-                const handleScroll = () => setIsScrolled(window.scrollY > 20);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
+  <!-- ─── SERVICES ──────────────────────────────────────────── -->
+  <section id="capabilities" class="services">
+    <div class="services-inner">
+      <div class="services-header">
+        <div>
+          <span class="section-tag" data-key="cap_tag">Our Capabilities</span>
+          <h2 class="section-title" data-key="cap_title">Our expert<br/><em style="font-style:italic; color:var(--mid)">services</em></h2>
+        </div>
+        <p class="section-sub" data-key="cap_quote">"Good design is invisible. Great design is felt."</p>
+      </div>
 
-            const navLinks = [
-                { name: t('nav_projects'), href: '#projects' },
-                { name: t('nav_capabilities'), href: '#capabilities' },
-                { name: t('nav_log'), href: '#contact' },
-            ];
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <span class="service-num">01</span>
+          <div class="service-icon">🎨</div>
+          <h3 data-key="cap_1_title">UI / UX Design</h3>
+          <p data-key="cap_1_desc">Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence and invisible interactions.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <span class="service-num">02</span>
+          <div class="service-icon">⚡</div>
+          <h3 data-key="cap_2_title">Web Engineering</h3>
+          <p data-key="cap_2_desc">Fast, responsive, and secure web solutions built with modern tech stacks for performance that matters.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <span class="service-num">03</span>
+          <div class="service-icon">📱</div>
+          <h3 data-key="cap_3_title">Mobile Apps</h3>
+          <p data-key="cap_3_desc">Custom iOS and Android solutions designed for global scalability and delightful native experiences.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            return (
-                <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-black/[0.04] py-4' : 'bg-transparent py-8'}`}>
-                    <div className="max-w-6xl mx-auto px-6 flex justify-between items-center text-slate-900">
-                        <a href="/" className="text-xl font-bold tracking-tight">EK DESIGN</a>
-                        <div className="hidden md:flex items-center gap-10">
-                            {navLinks.map((link) => (
-                                <a key={link.name} href={link.href} className="text-[13px] font-semibold text-slate-500 hover:text-slate-900 transition-colors uppercase">{link.name}</a>
-                            ))}
-                            <div className="flex items-center gap-4 ml-6 border-l border-slate-200 pl-8">
-                                {['EN', 'DE', 'BS'].map((l) => (
-                                    <button key={l} onClick={() => setLang(l)} className={`text-[11px] font-bold transition-all px-2 py-1 rounded-full ${lang === l ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-900'}`}>{l}</button>
-                                ))}
-                            </div>
-                        </div>
-                        <button className="md:hidden" onClick={() => setMobileOpen(!isMobileOpen)}>{isMobileOpen ? <X size={24} /> : <Menu size={24} />}</button>
-                    </div>
-                </nav>
-            );
-        };
+  <!-- ─── PROJECTS ──────────────────────────────────────────── -->
+  <section id="projects" class="projects">
+    <div class="projects-inner">
+      <div class="projects-header">
+        <span class="section-tag" data-key="proj_tag">Selected Work</span>
+        <h2 class="section-title" data-key="proj_label">Featured Projects</h2>
+      </div>
 
-        const Hero = () => {
-            const { t } = useTranslation();
-            return (
-                <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-12 overflow-hidden bg-white text-center">
-                    <div className="anim-blob bg-blue-400 top-[-100px] left-[-100px]"></div>
-                    <div className="anim-blob bg-indigo-400 bottom-[-100px] right-[-100px]"></div>
-                    
-                    <div className="max-w-5xl mx-auto px-6 w-full relative z-10">
-                        <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-                            <span className="text-sm font-semibold text-slate-500 mb-8 block uppercase tracking-tight">{t('hero_status')}</span>
-                            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[1.02] tracking-[-0.04em] mb-12 text-slate-900">
-                                <span className="inline-block bg-gradient-to-b from-slate-900 to-slate-500 bg-clip-text text-transparent">{t('hero_title_1')}</span> <br/>
-                                <span className="text-slate-400">{t('hero_title_2')}</span> <br/>
-                                {t('hero_title_3')}
-                            </h1>
-                            <p className="text-2xl md:text-3xl text-slate-500 max-w-3xl mb-16 leading-tight mx-auto font-medium">{t('hero_desc')}</p>
-                            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                                <button className="apple-button h-14">{t('hero_cta')}</button>
-                                <a href="#projects" className="apple-link h-14 px-6">Learn more <ArrowRight size={18} /></a>
-                            </div>
-                        </motion.div>
-                    </div>
-                    
-                    <motion.div initial={{ opacity: 0, y: 120, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-7xl mx-auto px-6 mt-24 lg:mt-32">
-                        <div className="aspect-[21/9] rounded-[48px] overflow-hidden bg-slate-50 shadow-elevated">
-                            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=2000" alt="Showcase" className="w-full h-full object-cover scale-105" />
-                        </div>
-                    </motion.div>
-                </section>
-            );
-        };
+      <div class="projects-grid reveal">
+        <div class="project-card">
+          <img class="project-img"
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1400"
+            alt="Strategic Design Project"
+          />
+          <div class="project-overlay">
+            <span class="project-tag">Branding · E-Commerce</span>
+            <h3 class="project-title" data-key="proj_1_title">Strategic Design</h3>
+            <p class="project-desc" data-key="proj_1_desc">A premium fashion marketplace featuring zero-latency navigation.</p>
+          </div>
+          <div class="project-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+        </div>
 
-        const Services = () => {
-            const { t } = useTranslation();
-            const items = [
-                { title: t('cap_1_title'), desc: t('cap_1_desc'), icon: <Cpu size={32} /> },
-                { title: t('cap_2_title'), desc: t('cap_2_desc'), icon: <Globe size={32} /> },
-                { title: t('cap_3_title'), desc: t('cap_3_desc'), icon: <Box size={32} /> }
-            ];
-            return (
-                <section id="capabilities" className="py-48 bg-slate-50">
-                    <div className="max-w-6xl mx-auto px-6 text-center">
-                        <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-8">{t('cap_title')}</h2>
-                        <p className="text-2xl text-slate-500 max-w-3xl mx-auto font-medium mb-32">{t('cap_quote')}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                            {items.map((item, i) => (
-                                <motion.div key={i} viewport={{ once: true }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: i * 0.1 }} className="bg-white p-12 rounded-[40px] border border-black/[0.04] hover:shadow-elevated transition-all duration-700">
-                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-10 mx-auto">{item.icon}</div>
-                                    <h3 className="text-3xl font-bold mb-6 text-slate-900">{item.title}</h3>
-                                    <p className="text-slate-500 leading-relaxed text-xl font-medium">{item.desc}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
+        <div class="project-card">
+          <img class="project-img"
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1400"
+            alt="Fintech Dashboard"
+          />
+          <div class="project-overlay">
+            <span class="project-tag">Fintech · Dashboard</span>
+            <h3 class="project-title" data-key="proj_2_title">Fintech Dashboard</h3>
+            <p class="project-desc" data-key="proj_2_desc">Comprehensive real-time analytics suite for institutional traders.</p>
+          </div>
+          <div class="project-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        const Footer = () => {
-             const { t } = useTranslation();
-             return (
-                 <footer className="py-20 bg-white border-t border-black/5">
-                     <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
-                         <div className="text-xl font-bold tracking-tight text-slate-900 uppercase">EK DESIGN</div>
-                         <div className="flex gap-10 text-sm font-medium text-slate-500">
-                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_1')}</a>
-                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_2')}</a>
-                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_3')}</a>
-                             <a href="#" className="hover:text-slate-900 transition-colors uppercase">{t('footer_nav_4')}</a>
-                         </div>
-                         <div className="text-xs text-slate-300 font-medium">© {new Date().getFullYear()} EK DESIGN. ALL RIGHTS RESERVED.</div>
-                     </div>
-                 </footer>
-             );
-        };
+  <!-- ─── PROCESS ───────────────────────────────────────────── -->
+  <section id="process" class="process">
+    <div class="process-inner">
+      <div class="process-header reveal">
+        <span class="section-tag" data-key="process_tag">How We Work</span>
+        <h2 class="section-title" data-key="process_title">Our Process</h2>
+        <p class="section-sub" data-key="process_sub">From the first conversation to a live product — structured, transparent, and obsessively crafted.</p>
+      </div>
 
-        function App() {
-            return (
-                <LanguageProvider>
-                    <Navbar />
-                    <Hero />
-                    <Services />
-                    <Footer />
-                </LanguageProvider>
-            );
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <div class="step-icon">🔍</div>
+          <h3 data-key="step_1_title">Discovery</h3>
+          <p data-key="step_1_desc">We listen deeply to understand your vision, goals, and audience. Strategy before pixels.</p>
+        </div>
+        <div class="step reveal reveal-delay-1">
+          <div class="step-num">02</div>
+          <div class="step-icon">✏️</div>
+          <h3 data-key="step_2_title">Design</h3>
+          <p data-key="step_2_desc">Wireframes, visual concepts, and interactive prototypes with your continuous feedback.</p>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-num">03</div>
+          <div class="step-icon">⚙️</div>
+          <h3 data-key="step_3_title">Development</h3>
+          <p data-key="step_3_desc">Clean, maintainable code built for performance, security and seamless scalability.</p>
+        </div>
+        <div class="step reveal reveal-delay-3">
+          <div class="step-num">04</div>
+          <div class="step-icon">🚀</div>
+          <h3 data-key="step_4_title">Launch</h3>
+          <p data-key="step_4_desc">We deploy, test, and monitor — then stay on call for your first weeks live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIAL ────────────────────────────────────────── -->
+  <section class="testimonial">
+    <div class="testimonial-inner reveal">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">EK Design didn't just build our product — they elevated our entire brand. The attention to detail is something you rarely find.</p>
+      <span class="quote-author">— Luca Meier, CEO of Aurum Digital</span>
+    </div>
+  </section>
+
+  <!-- ─── CTA ───────────────────────────────────────────────── -->
+  <section id="contact" class="cta-section">
+    <div class="cta-inner reveal">
+      <h2 class="section-title" data-key="cta_title">Ready to upgrade your<br/><em>digital presence?</em></h2>
+      <p class="section-sub" data-key="cta_desc">Tell us about your project. Our team will respond within 24 hours.</p>
+      <div class="cta-form">
+        <input type="email" placeholder="Email Address" data-placeholder-key="cta_input" />
+        <button type="button" data-key="cta_submit">Get Started</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">EK Design</span>
+      <div class="footer-links">
+        <a href="#" data-key="footer_nav_1">Studio</a>
+        <a href="#" data-key="footer_nav_2">Portfolio</a>
+        <a href="#" data-key="footer_nav_3">Instagram</a>
+        <a href="#" data-key="footer_nav_4">LinkedIn</a>
+      </div>
+      <span class="footer-copy">© <span id="year"></span> EK DESIGN. ALL RIGHTS RESERVED.</span>
+    </div>
+  </footer>
+
+  <!-- ─── SCRIPTS ───────────────────────────────────────────── -->
+  <script>
+    // ── Year ──────────────────────────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Translations ──────────────────────────────────────────
+    const translations = {
+      EN: {
+        nav_projects:'Work', nav_capabilities:'Services', nav_systems:'Process', nav_log:'Contact',
+        hero_status:'Agency Status: Active',
+        hero_title_1:'Crafting', hero_title_2:'Digital Products', hero_title_3:'For the Elite.',
+        hero_desc:'Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.',
+        hero_cta:'View Work',
+        cap_tag:'Our Capabilities', cap_title:'Our expert services',
+        cap_quote:'"Good design is invisible. Great design is felt."',
+        cap_1_title:'UI / UX Design', cap_1_desc:'Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence and invisible interactions.',
+        cap_2_title:'Web Engineering', cap_2_desc:'Fast, responsive, and secure web solutions built with modern tech stacks for performance that matters.',
+        cap_3_title:'Mobile Apps', cap_3_desc:'Custom iOS and Android solutions designed for global scalability and delightful native experiences.',
+        proj_tag:'Selected Work', proj_label:'Featured Projects',
+        proj_1_title:'Strategic Design', proj_1_desc:'A premium fashion marketplace featuring zero-latency navigation.',
+        proj_2_title:'Fintech Dashboard', proj_2_desc:'Comprehensive real-time analytics suite for institutional traders.',
+        process_tag:'How We Work', process_title:'Our Process', process_sub:'From the first conversation to a live product — structured, transparent, and obsessively crafted.',
+        step_1_title:'Discovery', step_1_desc:'We listen deeply to understand your vision, goals, and audience. Strategy before pixels.',
+        step_2_title:'Design', step_2_desc:'Wireframes, visual concepts, and interactive prototypes with your continuous feedback.',
+        step_3_title:'Development', step_3_desc:'Clean, maintainable code built for performance, security and seamless scalability.',
+        step_4_title:'Launch', step_4_desc:'We deploy, test, and monitor — then stay on call for your first weeks live.',
+        cta_title:'Ready to upgrade your digital presence?',
+        cta_desc:'Tell us about your project. Our team will respond within 24 hours.',
+        cta_input:'Email Address', cta_submit:'Get Started',
+        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
+      },
+      DE: {
+        nav_projects:'Projekte', nav_capabilities:'Leistungen', nav_systems:'Prozess', nav_log:'Kontakt',
+        hero_status:'Agentur Status: Aktiv',
+        hero_title_1:'Gestaltung', hero_title_2:'Digitaler Produkte', hero_title_3:'Für Elite-Brands.',
+        hero_desc:'Spezialisiert auf High-End Webdesign und Mobile App Entwicklung. Wir verwandeln komplexe Visionen in nahtlose, hochperformante Erlebnisse.',
+        hero_cta:'Arbeit sehen',
+        cap_tag:'Kompetenzen', cap_title:'Unsere Kompetenzen',
+        cap_quote:'"Gutes Design ist unsichtbar. Großartiges Design ist spürbar."',
+        cap_1_title:'UI / UX Design', cap_1_desc:'Intuitive, nutzerzentrierte Interfaces, die Bindung schaffen und ästhetische Exzellenz verkörpern.',
+        cap_2_title:'Web Entwicklung', cap_2_desc:'Schnelle, responsive und sichere Web-Lösungen mit modernster Technologie.',
+        cap_3_title:'Mobile Apps', cap_3_desc:'Maßgeschneiderte iOS- und Android-Lösungen, optimiert für weltweite Skalierbarkeit.',
+        proj_tag:'Ausgewählte Projekte', proj_label:'Featured Projekte',
+        proj_1_title:'Strategisches Design', proj_1_desc:'Premium Fashion-Marktplatz mit ultraschneller Navigation.',
+        proj_2_title:'Fintech Dashboard', proj_2_desc:'Echtzeit-Analytics Suite für institutionelle Trader.',
+        process_tag:'Wie wir arbeiten', process_title:'Unser Prozess', process_sub:'Vom ersten Gespräch bis zum Launch — strukturiert, transparent und obsessiv verfeinert.',
+        step_1_title:'Discovery', step_1_desc:'Wir hören zu, um Ihre Vision, Ziele und Zielgruppe zu verstehen.',
+        step_2_title:'Design', step_2_desc:'Wireframes, visuelle Konzepte und interaktive Prototypen.',
+        step_3_title:'Entwicklung', step_3_desc:'Sauberer, wartbarer Code für Performance, Sicherheit und Skalierung.',
+        step_4_title:'Launch', step_4_desc:'Wir deployen, testen und bleiben in den ersten Wochen an Ihrer Seite.',
+        cta_title:'Bereit für ein Upgrade Ihrer Präsenz?',
+        cta_desc:'Beschreiben Sie uns Ihre Anforderungen. Wir antworten innerhalb von 24 Stunden.',
+        cta_input:'Email Adresse', cta_submit:'Anfragen',
+        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
+      },
+      BS: {
+        nav_projects:'Radovi', nav_capabilities:'Usluge', nav_systems:'Proces', nav_log:'Kontakt',
+        hero_status:'Status: Aktivni',
+        hero_title_1:'Kreiranje', hero_title_2:'Digitalnih Proizvoda', hero_title_3:'Za Elitne Brendove.',
+        hero_desc:'Specijalizovani za vrhunski Web Dizajn i razvoj mobilnih aplikacija. Pretvaramo vizije u besprijekorna digitalna iskustva.',
+        hero_cta:'Pogledaj radove',
+        cap_tag:'Naše kompetencije', cap_title:'Naše kompetencije',
+        cap_quote:'"Dobar dizajn je nevidljiv. Odličan dizajn se osjeća."',
+        cap_1_title:'UI / UX Dizajn', cap_1_desc:'Kreiranje intuitivnih interfejsa fokusiranih na korisnika i estetsku izvrsnost.',
+        cap_2_title:'Web Razvoj', cap_2_desc:'Brza, responzivna i sigurna web rješenja bazirana na modernom stacku.',
+        cap_3_title:'Mobilne Aplikacije', cap_3_desc:'Prilagođena iOS i Android rješenja za globalno skaliranje i vrhunska iskustva.',
+        proj_tag:'Odabrani Radovi', proj_label:'Digitalni Radovi',
+        proj_1_title:'Strateški Dizajn', proj_1_desc:'Premium fashion marketplace sa fokusom na brzinu i stil.',
+        proj_2_title:'Fintech Dashboard', proj_2_desc:'Sistem za analitiku sa naprednom vizuelizacijom podataka.',
+        process_tag:'Kako radimo', process_title:'Naš Proces', process_sub:'Od prvog razgovora do živog proizvoda — strukturirano, transparentno i pedantno.',
+        step_1_title:'Istraživanje', step_1_desc:'Slušamo i razumijemo vašu viziju, ciljeve i publiku.',
+        step_2_title:'Dizajn', step_2_desc:'Žičani okviri, vizualni koncepti i interaktivni prototipi.',
+        step_3_title:'Razvoj', step_3_desc:'Čist kod za performanse, sigurnost i skalabilnost.',
+        step_4_title:'Lansiranje', step_4_desc:'Deployjamo, testiramo i ostajemo na raspolaganju tokom prvih sedmica.',
+        cta_title:'Spremni za nadogradnju prisutnosti?',
+        cta_desc:'Pošaljite nam zahtjeve. Odgovorićemo u roku od 24 sata.',
+        cta_input:'Vaš Email', cta_submit:'Počni odmah',
+        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
+      }
+    };
+
+    let currentLang = localStorage.getItem('ek-lang') || 'EN';
+
+    function applyTranslations(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (t[key]) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-placeholder-key]').forEach(el => {
+        const key = el.getAttribute('data-placeholder-key');
+        if (t[key]) el.placeholder = t[key];
+      });
+      // Update all lang buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      localStorage.setItem('ek-lang', lang);
+      currentLang = lang;
+    }
+
+    // Lang button clicks (nav + mobile)
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyTranslations(btn.getAttribute('data-lang')));
+    });
+
+    applyTranslations(currentLang);
+
+    // ── Navbar scroll ─────────────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive: true });
+
+    // ── Hamburger / Mobile Menu ───────────────────────────────
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    function closeMobile() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── Scroll Reveal ─────────────────────────────────────────
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.12 });
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App));
-    </script>
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── Smooth CTA form ───────────────────────────────────────
+    document.querySelector('.cta-form button').addEventListener('click', function() {
+      const input = document.querySelector('.cta-form input');
+      const email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        input.style.borderColor = 'rgba(255,80,80,0.6)';
+        input.focus();
+        setTimeout(() => input.style.borderColor = '', 2000);
+        return;
+      }
+      this.textContent = '✓ Sent!';
+      this.style.background = '#30d158';
+      this.style.color = '#fff';
+      input.value = '';
+      setTimeout(() => {
+        this.textContent = translations[currentLang]['cta_submit'] || 'Get Started';
+        this.style.background = '';
+        this.style.color = '';
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
