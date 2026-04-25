@@ -94,9 +94,10 @@
     .nav-logo { display:flex;align-items:center;text-decoration:none; }
     .nav-logo-img {
       height:26px;width:auto;object-fit:contain;
-      filter:none ! brightness(0);
+      filter:brightness(0);
       transition:filter .3s;
     }
+    nav.dark .nav-logo-img { filter:brightness(0) invert(1); }
 
     .nav-links { display:flex;gap:32px;list-style:none; }
     .nav-links a {
@@ -477,8 +478,8 @@
     /* === FOOTER === */
     footer { background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06);padding:76px 52px 44px; }
     .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;max-width:1180px;margin:0 auto 52px; }
-    footer-logo.img {height: 22px;width: auto;
     .footer-brand p { font-size:13px;color:rgba(255,255,255,.28);line-height:1.7;font-weight:300;margin-top:13px;max-width:255px; }
+    .footer-logo-img { height:22px;filter:brightness(0) invert(1) opacity(.6); }
     .footer-col h5 { font-size:13px;font-weight:500;color:rgba(255,255,255,.65);margin-bottom:16px;letter-spacing:.02em; }
     .footer-col ul { list-style:none;display:flex;flex-direction:column;gap:10px; }
     .footer-col a { font-size:13px;color:rgba(255,255,255,.28);text-decoration:none;font-weight:300;transition:color .2s; }
@@ -525,7 +526,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <img src="ekdesign.jpg" alt="EK Design" class="nav-logo-img"/>
+    <img src="IMG_4226.jpeg" alt="EK Design" class="nav-logo-img"/>
   </a>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
@@ -540,7 +541,7 @@
 <section class="hero metal-bg" id="home">
   <div class="hero-content">
     <div class="hero-logo">
-      <img src="ekdesign.jpg" alt="EK Design"/>
+      <img src="IMG_4226.jpeg" alt="EK Design"/>
     </div>
     <p class="hero-eyebrow">Premium Web &amp; App Design Studio</p>
     <h1 class="hero-headline">Digitale Produkte,<br/><em>die überzeugen.</em></h1>
@@ -745,7 +746,7 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <img src="ekdesign.jpg" alt="EK Design" class="footer-logo-img"/>
+      <img src="IMG_4226.jpeg" alt="EK Design" class="footer-logo-img"/>
       <p>Premium Web &amp; App Design Studio aus Deutschland. Wir bauen digitale Produkte, die Unternehmen transformieren.</p>
     </div>
     <div class="footer-col"><h5>Services</h5><ul><li><a href="#">Web Design</a></li><li><a href="#">App Design</a></li><li><a href="#">E-Commerce</a></li><li><a href="#">Brand Identity</a></li><li><a href="#">Development</a></li></ul></div>
