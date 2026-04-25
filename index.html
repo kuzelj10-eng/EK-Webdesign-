@@ -1,910 +1,806 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EK DESIGN — Premium Digital Agency</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EK Design — Premium Web & App Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ─── RESET & ROOT ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --white:   #ffffff;
-      --off:     #f5f5f7;
-      --ink:     #0a0a0b;
-      --mid:     #6e6e73;
-      --subtle:  #d2d2d7;
-      --accent:  #0071e3;
-      --accent2: #00c7be;
-      --r-xl:    48px;
-      --r-lg:    32px;
-      --r-md:    20px;
-      --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+      --silver-light:  #f4f4f4;
+      --silver-mid:    #e0e0e0;
+      --silver-warm:   #c8c8c8;
+      --charcoal-soft: #3a3a3c;
+      --charcoal-mid:  #2a2a2c;
+      --charcoal-dark: #1c1c1e;
+      --charcoal-deep: #111112;
+      --white:         #ffffff;
+      --text-primary:  #1d1d1f;
+      --text-secondary:#6e6e73;
+      --text-tertiary: #aeaeb2;
+      --radius:        20px;
+      --radius-lg:     28px;
+      --radius-xl:     36px;
+      --font-display:  'Playfair Display', Georgia, serif;
+      --font-ui:       'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:          cubic-bezier(0.25, 0.1, 0.25, 1);
+      --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     html { scroll-behavior: smooth; }
-
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--white);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
+      font-family: var(--font-ui);
+      background: var(--silver-light);
+      color: var(--text-primary);
       overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--charcoal-dark); color: var(--white); }
+
+    /* === CURSOR === */
+    #cur-dot {
+      position:fixed;z-index:9999;top:0;left:0;width:7px;height:7px;
+      border-radius:50%;background:var(--charcoal-dark);
+      pointer-events:none;transform:translate(-50%,-50%);
+      transition:width .25s var(--ease-spring),height .25s var(--ease-spring),background .2s;
+    }
+    #cur-ring {
+      position:fixed;z-index:9998;top:0;left:0;width:34px;height:34px;
+      border-radius:50%;border:1px solid rgba(0,0,0,0.22);
+      pointer-events:none;transform:translate(-50%,-50%);
+      transition:width .35s var(--ease-spring),height .35s var(--ease-spring),border-color .2s,opacity .2s;
+    }
+    body.on-dark #cur-dot  { background:rgba(255,255,255,.9); }
+    body.on-dark #cur-ring { border-color:rgba(255,255,255,.28); }
+    body.hovering #cur-dot  { width:12px;height:12px; }
+    body.hovering #cur-ring { width:50px;height:50px; }
+
+    /* === BRUSHED METAL BG === */
+    .metal-bg {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent, transparent 2px,
+          rgba(255,255,255,0.022) 2px, rgba(255,255,255,0.022) 4px
+        ),
+        linear-gradient(158deg,
+          #f7f7f7 0%, #efefef 15%, #e6e6e6 30%,
+          #d8d8d8 48%, #cccccc 62%,
+          #bebebe 76%, #b2b2b2 90%, #a8a8a8 100%
+        );
     }
 
-    ::selection { background: #cce4ff; color: var(--accent); }
-
-    /* ─── SCROLLBAR ────────────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--off); }
-    ::-webkit-scrollbar-thumb { background: var(--subtle); border-radius: 99px; }
-
-    /* ─── NAVIGATION ───────────────────────────────────────────── */
+    /* === NAVBAR === */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-      transition: all 0.5s var(--ease);
-      padding: 28px 0;
+      position:fixed;top:0;left:0;right:0;z-index:1000;
+      height:52px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 52px;
+      background:rgba(244,244,244,.82);
+      backdrop-filter:saturate(200%) blur(20px);
+      -webkit-backdrop-filter:saturate(200%) blur(20px);
+      border-bottom:1px solid rgba(0,0,0,.06);
+      transition:background .4s,border-color .4s;
     }
-    nav.scrolled {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(32px) saturate(180%);
-      -webkit-backdrop-filter: blur(32px) saturate(180%);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      padding: 16px 0;
+    nav.dark {
+      background:rgba(28,28,30,.88);
+      border-bottom-color:rgba(255,255,255,.06);
     }
-    .nav-inner {
-      max-width: 1280px; margin: 0 auto; padding: 0 40px;
-      display: flex; align-items: center; justify-content: space-between;
+    .nav-logo { display:flex;align-items:center;text-decoration:none; }
+    .nav-logo-img {
+      height:26px;width:auto;object-fit:contain;
+      filter:brightness(0);
+      transition:filter .3s;
     }
-    .nav-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem; letter-spacing: -0.02em;
-      color: var(--ink); text-decoration: none;
-    }
-    .nav-links { display: flex; align-items: center; gap: 40px; }
+    nav.dark .nav-logo-img { filter:brightness(0) invert(1); }
+
+    .nav-links { display:flex;gap:32px;list-style:none; }
     .nav-links a {
-      font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--mid);
-      text-decoration: none; transition: color 0.3s;
+      font-size:13px;font-weight:400;color:var(--text-secondary);
+      text-decoration:none;letter-spacing:.01em;transition:color .2s;
     }
-    .nav-links a:hover { color: var(--ink); }
-    .nav-right { display: flex; align-items: center; gap: 24px; }
-    .lang-switcher { display: flex; align-items: center; gap: 4px; }
-    .lang-btn {
-      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.05em;
-      padding: 5px 10px; border-radius: 99px; border: none;
-      cursor: pointer; transition: all 0.25s;
-      background: transparent; color: var(--mid);
-    }
-    .lang-btn.active { background: var(--ink); color: var(--white); }
-    .lang-btn:hover:not(.active) { color: var(--ink); }
-
+    .nav-links a:hover { color:var(--text-primary); }
+    nav.dark .nav-links a { color:rgba(255,255,255,.5); }
+    nav.dark .nav-links a:hover { color:rgba(255,255,255,.9); }
     .nav-cta {
-      background: var(--ink); color: var(--white);
-      padding: 10px 22px; border-radius: 99px;
-      font-size: 0.8125rem; font-weight: 600;
-      text-decoration: none; transition: all 0.35s var(--ease);
+      background:var(--charcoal-dark)!important;color:var(--white)!important;
+      padding:7px 17px;border-radius:980px;font-size:13px!important;font-weight:500!important;
+      transition:transform .3s var(--ease-spring)!important;
     }
-    .nav-cta:hover { background: #000; transform: scale(1.03); }
+    .nav-cta:hover { transform:scale(1.05)!important; }
+    nav.dark .nav-cta { background:rgba(255,255,255,.1)!important; }
 
-    /* hamburger */
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.35s var(--ease); }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-menu {
-      display: none; position: fixed; inset: 0; z-index: 998;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(40px);
-      flex-direction: column; align-items: center; justify-content: center; gap: 36px;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-size: 2.5rem; font-weight: 700; color: var(--ink);
-      text-decoration: none; letter-spacing: -0.03em;
-      transition: color 0.2s;
-    }
-    .mobile-menu a:hover { color: var(--accent); }
-    .mobile-lang { display: flex; gap: 12px; margin-top: 16px; }
-
-    /* ─── HERO ─────────────────────────────────────────────────── */
+    /* === HERO === */
     .hero {
-      min-height: 100vh; position: relative; overflow: hidden;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center;
-      padding: 120px 40px 80px;
+      min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;
+      padding:130px 32px 100px;position:relative;overflow:hidden;
+    }
+    .hero::after {
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 75% 55% at 50% 38%, rgba(255,255,255,.6) 0%, transparent 72%);
+      pointer-events:none;
+    }
+    .hero-content { position:relative;z-index:2; }
+
+    .hero-logo {
+      margin-bottom:40px;
+      opacity:0;transform:translateY(22px) scale(.97);
+      animation:fadeUpScale .95s .2s var(--ease-spring) forwards;
+    }
+    .hero-logo img {
+      width:min(360px,55vw);
+      filter:drop-shadow(0 6px 28px rgba(0,0,0,.16)) drop-shadow(0 1px 4px rgba(0,0,0,.10));
+      transition:transform .6s var(--ease);
     }
 
-    /* noise overlay */
-    .hero::before {
-      content: ''; position: absolute; inset: 0; z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      opacity: 0.4; pointer-events: none;
+    .hero-eyebrow {
+      font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--text-secondary);margin-bottom:20px;
+      opacity:0;transform:translateY(14px);
+      animation:fadeUp .8s .55s var(--ease) forwards;
     }
+    .hero-headline {
+      font-family:var(--font-display);
+      font-size:clamp(50px,8.5vw,116px);font-weight:500;
+      line-height:1.02;letter-spacing:-.025em;
+      color:var(--charcoal-dark);margin-bottom:26px;
+      opacity:0;transform:translateY(30px);
+      animation:fadeUp 1s .7s var(--ease) forwards;
+    }
+    .hero-headline em { font-style:italic;color:var(--text-secondary);font-weight:400; }
 
-    .blob {
-      position: absolute; border-radius: 50%; filter: blur(100px);
-      pointer-events: none; will-change: transform;
+    .hero-sub {
+      font-size:clamp(15px,2vw,20px);font-weight:300;color:var(--text-secondary);
+      max-width:500px;margin:0 auto 44px;line-height:1.65;
+      opacity:0;transform:translateY(20px);
+      animation:fadeUp .9s .9s var(--ease) forwards;
     }
-    .blob-1 { width: 700px; height: 700px; background: #a8d5ff; opacity: 0.25; top: -200px; left: -200px; animation: drift1 25s ease-in-out infinite; }
-    .blob-2 { width: 600px; height: 600px; background: #b5f0ec; opacity: 0.2; bottom: -100px; right: -100px; animation: drift2 30s ease-in-out infinite; }
-    .blob-3 { width: 400px; height: 400px; background: #e2c4ff; opacity: 0.15; top: 30%; left: 50%; transform: translate(-50%,-50%); animation: drift3 20s ease-in-out infinite; }
-
-    @keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(60px,40px) scale(1.1)} 66%{transform:translate(-40px,60px) scale(0.95)} }
-    @keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-50px,-30px) scale(1.05)} 66%{transform:translate(30px,-50px) scale(1.1)} }
-    @keyframes drift3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-40%,-60%) scale(1.2)} }
-
-    .hero-content { position: relative; z-index: 1; max-width: 1000px; }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.07);
-      border-radius: 99px; padding: 8px 18px; margin-bottom: 40px;
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--mid);
-      opacity: 0; animation: fadeUp 1s 0.2s var(--ease) forwards;
-    }
-    .hero-badge::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: #30d158; display: block;
-      box-shadow: 0 0 0 3px rgba(48,209,88,0.2);
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 3px rgba(48,209,88,0.2)} 50%{box-shadow:0 0 0 6px rgba(48,209,88,0.1)} }
-
-    .hero-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(3.5rem, 9vw, 9rem);
-      line-height: 0.95; letter-spacing: -0.04em;
-      margin-bottom: 36px;
-      opacity: 0; animation: fadeUp 1.2s 0.4s var(--ease) forwards;
-    }
-    .hero-title .line-1 { display: block; color: var(--ink); }
-    .hero-title .line-2 {
-      display: block;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-style: italic;
-    }
-    .hero-title .line-3 { display: block; color: var(--subtle); }
-
-    .hero-desc {
-      font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--mid);
-      max-width: 640px; margin: 0 auto 52px; line-height: 1.55;
-      font-weight: 400;
-      opacity: 0; animation: fadeUp 1.2s 0.6s var(--ease) forwards;
-    }
-
     .hero-actions {
-      display: flex; align-items: center; justify-content: center;
-      gap: 20px; flex-wrap: wrap;
-      opacity: 0; animation: fadeUp 1.2s 0.8s var(--ease) forwards;
+      display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+      opacity:0;transform:translateY(16px);
+      animation:fadeUp .8s 1.1s var(--ease) forwards;
     }
-    .btn-primary {
-      background: var(--ink); color: var(--white);
-      padding: 16px 36px; border-radius: 99px;
-      font-size: 0.9375rem; font-weight: 600;
-      text-decoration: none; transition: all 0.4s var(--ease);
-      display: inline-flex; align-items: center; gap: 10px;
+
+    .btn-dark {
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--charcoal-dark);color:var(--white);
+      padding:14px 28px;border-radius:980px;
+      font-size:16px;font-weight:500;text-decoration:none;
+      box-shadow:0 4px 20px rgba(0,0,0,.14);
+      transition:background .2s,transform .3s var(--ease-spring),box-shadow .3s;
     }
-    .btn-primary:hover { background: #000; transform: scale(1.03) translateY(-2px); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.25); }
-    .btn-primary svg { transition: transform 0.3s var(--ease); }
-    .btn-primary:hover svg { transform: translateX(4px); }
+    .btn-dark:hover { background:#000;transform:scale(1.04) translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2); }
 
     .btn-ghost {
-      color: var(--accent); font-size: 1rem; font-weight: 600;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      padding: 16px 24px; transition: gap 0.3s;
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(0,0,0,.05);color:var(--charcoal-dark);
+      padding:14px 28px;border-radius:980px;font-size:16px;font-weight:400;
+      text-decoration:none;border:1px solid rgba(0,0,0,.1);
+      transition:background .2s,transform .3s var(--ease-spring);
     }
-    .btn-ghost:hover { gap: 14px; }
+    .btn-ghost:hover { background:rgba(0,0,0,.08);transform:scale(1.03) translateY(-2px); }
 
-    /* hero mockup */
-    .hero-mockup {
-      position: relative; z-index: 1; width: 100%; max-width: 1200px;
-      margin: 80px auto 0; padding: 0 20px;
-      opacity: 0; animation: fadeUp 1.5s 1s var(--ease) forwards;
+    .scroll-cue {
+      position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      opacity:0;animation:fadeUp .7s 1.8s var(--ease) forwards;
     }
-    .mockup-frame {
-      border-radius: var(--r-xl); overflow: hidden;
-      box-shadow: 0 60px 120px -20px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04);
-      aspect-ratio: 21/9; background: var(--off);
-      position: relative;
+    .scroll-cue span { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-tertiary); }
+    .scroll-pill {
+      width:22px;height:36px;border-radius:11px;
+      border:1.5px solid rgba(0,0,0,.16);position:relative;
     }
-    .mockup-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .mockup-frame::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.4));
+    .scroll-pill::after {
+      content:'';position:absolute;width:4px;height:8px;
+      border-radius:2px;background:var(--text-tertiary);
+      left:50%;top:7px;transform:translateX(-50%);
+      animation:pillDot 2s ease-in-out infinite;
     }
+    @keyframes pillDot { 0%,100%{top:7px;opacity:1} 60%{top:18px;opacity:.15} }
 
-    /* floating stats */
-    .stat-card {
-      position: absolute; background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9);
-      border-radius: var(--r-md); padding: 16px 22px;
-      box-shadow: 0 20px 60px -10px rgba(0,0,0,0.12);
-    }
-    .stat-card .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--ink); line-height: 1; }
-    .stat-card .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-top: 4px; }
-    .stat-1 { bottom: -20px; left: 5%; animation: float1 6s ease-in-out infinite; }
-    .stat-2 { bottom: -30px; right: 8%; animation: float2 8s ease-in-out infinite; }
-    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* === GRADIENT BRIDGE === */
+    .bridge {
+      height:160px;
+      background:linear-gradient(to bottom, #b4b4b4, var(--charcoal-deep));
     }
 
-    /* ─── MARQUEE ──────────────────────────────────────────────── */
-    .marquee-section {
-      padding: 60px 0; overflow: hidden;
-      border-top: 1px solid var(--subtle); border-bottom: 1px solid var(--subtle);
-      background: var(--white);
-    }
-    .marquee-track {
-      display: flex; gap: 80px; width: max-content;
-      animation: marquee 20s linear infinite;
-    }
-    .marquee-item {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.25rem; color: var(--subtle);
-      white-space: nowrap; letter-spacing: -0.02em;
-      display: flex; align-items: center; gap: 24px;
-    }
-    .marquee-item::after { content: '✦'; color: var(--accent); font-size: 0.75rem; }
-    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    /* === DARK SECTIONS === */
+    .dark { background:var(--charcoal-deep);color:var(--white); }
+    .dark .section-eyebrow { color:rgba(255,255,255,.35); }
+    .dark .section-title   { color:var(--white); }
+    .dark .section-sub     { color:rgba(255,255,255,.45); }
 
-    /* ─── SECTION SHARED ───────────────────────────────────────── */
-    .section-tag {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
-      display: block;
+    /* === STATS === */
+    .stats { padding:0 52px 110px;background:var(--charcoal-deep); }
+    .stats-grid {
+      max-width:1100px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(4,1fr);
+      border:1px solid rgba(255,255,255,.06);border-radius:var(--radius-xl);overflow:hidden;
+    }
+    .stat-item {
+      padding:44px 28px;border-right:1px solid rgba(255,255,255,.06);
+      text-align:center;opacity:0;transform:translateY(26px);
+      transition:opacity .8s var(--ease),transform .8s var(--ease);
+    }
+    .stat-item:last-child { border-right:none; }
+    .stat-item.vis { opacity:1;transform:translateY(0); }
+    .stat-num {
+      font-family:var(--font-display);
+      font-size:clamp(44px,5vw,70px);font-weight:500;line-height:1;
+      color:var(--white);letter-spacing:-.03em;
+    }
+    .stat-num sup { font-size:.42em;vertical-align:super;color:rgba(255,255,255,.4); }
+    .stat-label { font-size:12px;color:rgba(255,255,255,.3);margin-top:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:300; }
+
+    /* === SECTION COMMONS === */
+    .section-eyebrow {
+      font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--text-secondary);margin-bottom:16px;
     }
     .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.5rem, 5vw, 5rem);
-      letter-spacing: -0.04em; line-height: 1.0;
-      color: var(--ink); margin-bottom: 24px;
+      font-family:var(--font-display);
+      font-size:clamp(38px,5.5vw,78px);font-weight:500;line-height:1.03;
+      letter-spacing:-.025em;color:var(--charcoal-dark);margin-bottom:20px;
     }
     .section-sub {
-      font-size: 1.125rem; color: var(--mid); max-width: 520px;
-      line-height: 1.6;
+      font-size:clamp(15px,1.8vw,19px);font-weight:300;
+      color:var(--text-secondary);line-height:1.7;max-width:520px;
     }
 
-    /* ─── SERVICES ─────────────────────────────────────────────── */
-    .services { padding: 160px 40px; background: var(--off); }
-    .services-inner { max-width: 1280px; margin: 0 auto; }
-    .services-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; margin-bottom: 80px; flex-wrap: wrap; }
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-
-    .service-card {
-      background: var(--white); border-radius: var(--r-xl);
-      padding: 52px 44px; border: 1px solid rgba(0,0,0,0.04);
-      transition: all 0.7s var(--ease); cursor: default;
-      position: relative; overflow: hidden;
-    }
-    .service-card::before {
-      content: ''; position: absolute; inset: 0; border-radius: var(--r-xl);
-      background: linear-gradient(135deg, rgba(0,113,227,0.06), rgba(0,199,190,0.04));
-      opacity: 0; transition: opacity 0.5s;
-    }
-    .service-card:hover::before { opacity: 1; }
-    .service-card:hover { transform: translateY(-8px); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.12); }
-
-    .service-icon {
-      width: 64px; height: 64px; border-radius: var(--r-md);
-      background: var(--off); display: flex; align-items: center; justify-content: center;
-      margin-bottom: 36px; font-size: 1.75rem;
-      transition: transform 0.4s var(--ease);
-    }
-    .service-card:hover .service-icon { transform: scale(1.1) rotate(-4deg); }
-    .service-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.75rem; letter-spacing: -0.03em; margin-bottom: 16px; }
-    .service-card p { font-size: 1rem; color: var(--mid); line-height: 1.65; }
-    .service-num {
-      position: absolute; top: 44px; right: 44px;
-      font-size: 0.75rem; font-weight: 700; color: var(--subtle);
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── PROJECTS ─────────────────────────────────────────────── */
-    .projects { padding: 160px 40px; background: var(--white); }
-    .projects-inner { max-width: 1280px; margin: 0 auto; }
-    .projects-header { text-align: center; margin-bottom: 80px; }
-    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-    .project-card {
-      border-radius: var(--r-xl); overflow: hidden; position: relative;
-      cursor: pointer; group: true;
-    }
-    .project-card:first-child { grid-row: span 1; aspect-ratio: 4/3; }
-    .project-card:last-child { aspect-ratio: 4/3; }
-
-    .project-img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.9s var(--ease);
-      display: block;
-    }
-    .project-card:hover .project-img { transform: scale(1.07); }
-    .project-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 44px; transition: background 0.5s;
-    }
-    .project-card:hover .project-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%); }
-    .project-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
-    .project-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--white); letter-spacing: -0.03em; margin-bottom: 8px; }
-    .project-desc { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 380px; }
-    .project-arrow {
-      position: absolute; top: 32px; right: 32px;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center;
-      color: white; transition: all 0.4s var(--ease);
-      transform: translate(0, 0) rotate(-45deg); opacity: 0;
-    }
-    .project-card:hover .project-arrow { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-
-    /* ─── PROCESS ──────────────────────────────────────────────── */
-    .process { padding: 160px 40px; background: var(--ink); }
-    .process-inner { max-width: 1280px; margin: 0 auto; }
-    .process-header { text-align: center; margin-bottom: 100px; }
-    .process-header .section-tag { color: var(--accent2); }
-    .process-header .section-title { color: var(--white); }
-    .process-header .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto; text-align: center; }
-
-    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-    .step {
-      background: rgba(255,255,255,0.04); padding: 52px 36px;
-      border-radius: 0; position: relative;
-      transition: background 0.4s;
-    }
-    .step:first-child { border-radius: var(--r-xl) 0 0 var(--r-xl); }
-    .step:last-child  { border-radius: 0 var(--r-xl) var(--r-xl) 0; }
-    .step:hover { background: rgba(255,255,255,0.07); }
-    .step-num { font-family: 'DM Serif Display', serif; font-size: 4rem; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 32px; }
-    .step-icon { font-size: 2rem; margin-bottom: 20px; }
-    .step h3 { font-size: 1.125rem; font-weight: 600; color: var(--white); margin-bottom: 12px; }
-    .step p { font-size: 0.9rem; color: rgba(255,255,255,0.45); line-height: 1.65; }
-
-    /* ─── TESTIMONIAL ──────────────────────────────────────────── */
-    .testimonial { padding: 160px 40px; background: var(--off); }
-    .testimonial-inner { max-width: 900px; margin: 0 auto; text-align: center; }
-    .quote-mark {
-      font-family: 'DM Serif Display', serif; font-size: 8rem;
-      color: var(--subtle); line-height: 0.5; margin-bottom: 32px;
-      display: block;
-    }
-    .quote-text {
-      font-family: 'DM Serif Display', serif; font-style: italic;
-      font-size: clamp(1.75rem, 4vw, 3rem); letter-spacing: -0.03em;
-      color: var(--ink); line-height: 1.3; margin-bottom: 44px;
-    }
-    .quote-author { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid); }
-
-    /* ─── CTA ──────────────────────────────────────────────────── */
-    .cta-section { padding: 160px 40px; background: var(--white); }
-    .cta-inner {
-      max-width: 1280px; margin: 0 auto;
-      background: var(--ink); border-radius: var(--r-xl);
-      padding: 100px 80px; text-align: center; position: relative; overflow: hidden;
-    }
-    .cta-inner::before {
-      content: ''; position: absolute; width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,113,227,0.3), transparent 70%);
-      border-radius: 50%; top: -200px; left: -100px; pointer-events: none;
-    }
-    .cta-inner::after {
-      content: ''; position: absolute; width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(0,199,190,0.2), transparent 70%);
-      border-radius: 50%; bottom: -150px; right: -100px; pointer-events: none;
-    }
-    .cta-inner .section-title { color: var(--white); position: relative; z-index: 1; }
-    .cta-inner .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto 56px; text-align: center; max-width: 460px; position: relative; z-index: 1; }
-
-    .cta-form { display: flex; gap: 12px; max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
-    .cta-form input {
-      flex: 1; background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 99px; padding: 16px 24px;
-      color: var(--white); font-size: 0.9375rem; font-family: inherit;
-      outline: none; transition: border-color 0.3s;
-    }
-    .cta-form input::placeholder { color: rgba(255,255,255,0.35); }
-    .cta-form input:focus { border-color: rgba(255,255,255,0.4); }
-    .cta-form button {
-      background: var(--white); color: var(--ink);
-      padding: 16px 28px; border-radius: 99px;
-      font-size: 0.9375rem; font-weight: 700;
-      border: none; cursor: pointer; white-space: nowrap;
-      transition: all 0.35s var(--ease); font-family: inherit;
-    }
-    .cta-form button:hover { transform: scale(1.04); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-
-    /* ─── FOOTER ───────────────────────────────────────────────── */
-    footer {
-      background: var(--ink); color: rgba(255,255,255,0.4);
-      padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .footer-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 32px;
-    }
-    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--white); }
-    .footer-links { display: flex; gap: 36px; }
-    .footer-links a {
-      font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: rgba(255,255,255,0.4);
-      text-decoration: none; transition: color 0.25s;
-    }
-    .footer-links a:hover { color: var(--white); }
-    .footer-copy { font-size: 0.75rem; letter-spacing: 0.04em; }
-
-    /* ─── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
-      opacity: 0; transform: translateY(50px);
-      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+      opacity:0;transform:translateY(42px);
+      transition:opacity .85s var(--ease),transform .85s var(--ease);
     }
-    .reveal.revealed { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal.vis { opacity:1;transform:translateY(0); }
+    .reveal.d1{transition-delay:.1s} .reveal.d2{transition-delay:.2s}
+    .reveal.d3{transition-delay:.3s} .reveal.d4{transition-delay:.4s}
+    .rs {
+      opacity:0;transform:scale(.93) translateY(26px);
+      transition:opacity .9s var(--ease-spring),transform .9s var(--ease-spring);
+    }
+    .rs.vis { opacity:1;transform:scale(1) translateY(0); }
 
-    /* ─── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 1024px) {
-      .services-grid { grid-template-columns: 1fr 1fr; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card:first-child { aspect-ratio: 16/9; }
-      .project-card:last-child  { aspect-ratio: 16/9; }
-      .process-steps { grid-template-columns: 1fr 1fr; gap: 2px; }
-      .step:first-child { border-radius: var(--r-xl) 0 0 0; }
-      .step:nth-child(2) { border-radius: 0 var(--r-xl) 0 0; }
-      .step:nth-child(3) { border-radius: 0 0 0 var(--r-xl); }
-      .step:last-child  { border-radius: 0 0 var(--r-xl) 0; }
-      .cta-inner { padding: 72px 44px; }
+    /* === SERVICES === */
+    .services { padding:130px 52px;position:relative; }
+    .services-inner { max-width:1180px;margin:0 auto; }
+    .services-head {
+      display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:72px;
+    }
+    .services-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+
+    .svc-card {
+      background:rgba(255,255,255,.68);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.92);border-radius:var(--radius-lg);
+      padding:38px 30px;
+      box-shadow:0 2px 14px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);
+      transition:transform .4s var(--ease-spring),box-shadow .4s,background .3s;
+    }
+    .svc-card:hover {
+      transform:translateY(-8px);background:rgba(255,255,255,.88);
+      box-shadow:0 14px 44px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+    }
+    .svc-icon {
+      font-size:24px;width:48px;height:48px;border-radius:13px;
+      background:var(--charcoal-dark);
+      display:flex;align-items:center;justify-content:center;margin-bottom:22px;
+    }
+    .svc-card h3 {
+      font-family:var(--font-display);font-size:25px;font-weight:500;
+      color:var(--charcoal-dark);margin-bottom:11px;letter-spacing:-.015em;
+    }
+    .svc-card p { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300; }
+    .svc-price {
+      margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--text-tertiary);font-weight:400;
     }
 
-    @media (max-width: 768px) {
-      .nav-links, .nav-cta, .lang-switcher { display: none; }
-      .hamburger { display: flex; }
-      .services-grid { grid-template-columns: 1fr; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .stat-1, .stat-2 { display: none; }
-      .hero { padding: 100px 24px 60px; }
-      .services, .projects, .process, .testimonial, .cta-section { padding: 100px 24px; }
-      .cta-form { flex-direction: column; }
-      .footer-links { gap: 20px; flex-wrap: wrap; }
-      .cta-inner { padding: 52px 28px; }
+    /* === SHOWCASE === */
+    .showcase { padding:130px 52px;background:var(--charcoal-deep); }
+    .showcase-inner { max-width:1180px;margin:0 auto; }
+    .showcase-head { text-align:center;margin-bottom:72px; }
+    .showcase-head .section-sub { margin:0 auto;text-align:center; }
+
+    .bento { display:grid;grid-template-columns:repeat(12,1fr);gap:13px; }
+    .bc { border-radius:var(--radius-xl);padding:42px 38px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.05); }
+    .bc-8  { grid-column:span 8;min-height:400px; }
+    .bc-4  { grid-column:span 4;min-height:400px; }
+    .bc-6  { grid-column:span 6;min-height:270px; }
+    .bc-12 { grid-column:span 12;min-height:210px; }
+
+    .bc-silver {
+      background:linear-gradient(135deg,#d6d6d6 0%,#b8b8b8 100%);
+      border-color:rgba(255,255,255,.22);
+    }
+    .bc-charcoal { background:#222224; }
+    .bc-warm     { background:linear-gradient(135deg,#2c2c2e 0%,#1c1c1e 100%); }
+    .bc-mid      { background:rgba(255,255,255,.04); }
+
+    .bc-label { font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:13px;font-weight:400; }
+    .bc-title {
+      font-family:var(--font-display);
+      font-size:clamp(26px,3vw,46px);font-weight:500;line-height:1.06;
+      color:var(--white);letter-spacing:-.02em;margin-bottom:13px;
+    }
+    .bc-text { font-size:14px;color:rgba(255,255,255,.42);line-height:1.7;font-weight:300;max-width:340px; }
+
+    .bc-silver .bc-label { color:rgba(0,0,0,.35); }
+    .bc-silver .bc-title { color:var(--charcoal-dark); }
+    .bc-silver .bc-text  { color:rgba(0,0,0,.45); }
+
+    .bc-tag {
+      display:inline-block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+      border-radius:980px;padding:5px 13px;font-size:11px;color:rgba(255,255,255,.45);
+      letter-spacing:.04em;margin:4px 3px 0 0;
+    }
+    .bc-silver .bc-tag { background:rgba(0,0,0,.07);border-color:rgba(0,0,0,.1);color:var(--charcoal-soft); }
+
+    .bc-kpi { display:flex;gap:36px;align-items:flex-end;margin-top:28px; }
+    .bc-kpi-val {
+      font-family:var(--font-display);font-size:50px;font-weight:500;line-height:1;
+      color:var(--white);letter-spacing:-.03em;
+    }
+    .bc-kpi-label { font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.07em;text-transform:uppercase;margin-top:4px; }
+    .bc-silver .bc-kpi-val   { color:var(--charcoal-dark); }
+    .bc-silver .bc-kpi-label { color:rgba(0,0,0,.32); }
+
+    /* === PROCESS === */
+    .process { padding:130px 52px;position:relative; }
+    .process-inner { max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start; }
+    .process-sticky { position:sticky;top:100px; }
+
+    .info-box {
+      margin-top:40px;
+      background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.92);
+      border-radius:var(--radius-lg);padding:30px;
+      box-shadow:0 2px 14px rgba(0,0,0,.05);
+    }
+    .info-box .num { font-family:var(--font-display);font-size:60px;font-weight:500;line-height:1;color:var(--charcoal-dark);letter-spacing:-.03em; }
+    .info-box .lbl { font-size:14px;color:var(--text-secondary);font-weight:300;margin-top:4px; }
+
+    .process-steps { display:flex;flex-direction:column; }
+    .ps {
+      padding:30px 0;border-bottom:1px solid rgba(0,0,0,.07);
+      display:grid;grid-template-columns:42px 1fr;gap:18px;align-items:start;
+      opacity:0;transform:translateX(22px);
+      transition:opacity .7s var(--ease),transform .7s var(--ease);
+    }
+    .ps.vis { opacity:1;transform:translateX(0); }
+    .ps-num { font-family:var(--font-display);font-size:34px;font-weight:400;color:rgba(0,0,0,.1);line-height:1.15; }
+    .ps-body h4 { font-size:17px;font-weight:500;color:var(--charcoal-dark);margin-bottom:7px;margin-top:5px; }
+    .ps-body p  { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300; }
+
+    /* === PRICING === */
+    .pricing { padding:130px 52px;background:var(--charcoal-deep); }
+    .pricing-inner { max-width:1100px;margin:0 auto; }
+    .pricing-head { text-align:center;margin-bottom:72px; }
+    .pricing-head .section-sub { margin:0 auto;text-align:center; }
+    .pricing-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+
+    .pc {
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+      border-radius:var(--radius-xl);padding:42px 34px;
+      display:flex;flex-direction:column;position:relative;overflow:hidden;
+      transition:transform .4s var(--ease-spring),border-color .3s;
+    }
+    .pc:hover { transform:translateY(-10px); }
+    .pc.featured { background:linear-gradient(160deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.03) 100%);border-color:rgba(255,255,255,.17); }
+    .pc.featured::before {
+      content:'EMPFOHLEN';position:absolute;top:0;left:50%;transform:translateX(-50%);
+      background:var(--white);color:var(--charcoal-deep);
+      font-size:9px;letter-spacing:.18em;font-weight:500;padding:5px 16px;border-radius:0 0 11px 11px;
+    }
+    .pc-tier { font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px;margin-top:4px; }
+    .pc-amount { font-family:var(--font-display);font-size:66px;font-weight:500;line-height:1;color:var(--white);letter-spacing:-.03em;margin-bottom:4px; }
+    .pc-from { font-size:13px;color:rgba(255,255,255,.28);margin-bottom:28px;font-weight:300; }
+    .pc-features { list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;flex:1; }
+    .pc-features li {
+      font-size:14px;color:rgba(255,255,255,.58);font-weight:300;
+      display:flex;align-items:center;gap:10px;
+    }
+    .pc-features li::before {
+      content:'';width:16px;height:16px;flex-shrink:0;border-radius:50%;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+      background-image:url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3L3 5L7 1' stroke='rgba(255,255,255,0.55)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:center;
+    }
+    .pc-btn {
+      display:block;text-align:center;padding:14px;border-radius:980px;
+      font-size:15px;font-weight:400;text-decoration:none;
+      border:1px solid rgba(255,255,255,.14);color:var(--white);
+      transition:background .2s,transform .3s var(--ease-spring);
+    }
+    .pc-btn:hover { background:rgba(255,255,255,.07);transform:scale(1.02); }
+    .pc.featured .pc-btn { background:var(--white);color:var(--charcoal-deep);border-color:transparent;font-weight:500; }
+    .pc.featured .pc-btn:hover { background:rgba(255,255,255,.9); }
+
+    /* === TESTIMONIALS === */
+    .testimonials { padding:130px 0;background:var(--silver-light);overflow:hidden; }
+    .testi-head { text-align:center;padding:0 52px;margin-bottom:68px; }
+    .marquee-wrap { overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
+    .marquee-track { display:flex;gap:18px;width:max-content;animation:mq 36s linear infinite; }
+    .marquee-track:hover { animation-play-state:paused; }
+    @keyframes mq { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .tc {
+      width:330px;flex-shrink:0;
+      background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.95);
+      border-radius:var(--radius-lg);padding:30px 26px;
+      box-shadow:0 2px 14px rgba(0,0,0,.05);
+    }
+    .tc-stars { color:#b8956a;font-size:13px;letter-spacing:2px;margin-bottom:12px; }
+    .tc-text { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300;margin-bottom:20px; }
+    .tc-author { display:flex;align-items:center;gap:11px; }
+    .tc-av {
+      width:36px;height:36px;border-radius:50%;
+      background:linear-gradient(135deg,var(--charcoal-mid),var(--charcoal-deep));
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--font-display);font-size:14px;color:var(--white);font-weight:500;
+    }
+    .tc-name { font-size:14px;font-weight:500;color:var(--charcoal-dark); }
+    .tc-role { font-size:12px;color:var(--text-tertiary);font-weight:300; }
+
+    /* === CTA === */
+    .cta-section {
+      padding:160px 52px;text-align:center;
+      background:linear-gradient(162deg,#3a3a3c 0%,#1c1c1e 40%,#111112 100%);
+      position:relative;overflow:hidden;
+    }
+    .cta-section::before {
+      content:'';position:absolute;inset:0;
+      background:repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(255,255,255,.006) 4px,rgba(255,255,255,.006) 8px);
+      pointer-events:none;
+    }
+    .cta-section .section-title { font-size:clamp(50px,8vw,106px);color:var(--white); }
+    .cta-section .section-sub   { color:rgba(255,255,255,.42);margin:0 auto 44px;text-align:center; }
+
+    .btn-white {
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--white);color:var(--charcoal-deep);
+      padding:16px 34px;border-radius:980px;font-size:17px;font-weight:500;
+      text-decoration:none;
+      box-shadow:0 4px 28px rgba(255,255,255,.12);
+      transition:background .2s,transform .3s var(--ease-spring),box-shadow .3s;
+    }
+    .btn-white:hover { background:rgba(255,255,255,.9);transform:scale(1.04) translateY(-2px);box-shadow:0 8px 40px rgba(255,255,255,.18); }
+
+    .cta-meta { display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:52px; }
+    .cmi { text-align:center; }
+    .cmi .l { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:6px; }
+    .cmi .v { font-size:15px;font-weight:300;color:rgba(255,255,255,.75); }
+    .cdiv { width:1px;background:rgba(255,255,255,.07); }
+
+    /* === FOOTER === */
+    footer { background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06);padding:76px 52px 44px; }
+    .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;max-width:1180px;margin:0 auto 52px; }
+    .footer-brand p { font-size:13px;color:rgba(255,255,255,.28);line-height:1.7;font-weight:300;margin-top:13px;max-width:255px; }
+    .footer-logo-img { height:22px;filter:brightness(0) invert(1) opacity(.6); }
+    .footer-col h5 { font-size:13px;font-weight:500;color:rgba(255,255,255,.65);margin-bottom:16px;letter-spacing:.02em; }
+    .footer-col ul { list-style:none;display:flex;flex-direction:column;gap:10px; }
+    .footer-col a { font-size:13px;color:rgba(255,255,255,.28);text-decoration:none;font-weight:300;transition:color .2s; }
+    .footer-col a:hover { color:rgba(255,255,255,.68); }
+    .footer-bottom {
+      max-width:1180px;margin:0 auto;
+      display:flex;align-items:center;justify-content:space-between;
+      padding-top:26px;border-top:1px solid rgba(255,255,255,.06);
+      font-size:12px;color:rgba(255,255,255,.18);
     }
 
-    @media (max-width: 480px) {
-      .process-steps { grid-template-columns: 1fr; }
-      .step:first-child { border-radius: var(--r-xl) var(--r-xl) 0 0; }
-      .step:nth-child(2), .step:nth-child(3) { border-radius: 0; }
-      .step:last-child { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+    /* === KEYFRAMES === */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUpScale { from{opacity:0;transform:translateY(22px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    /* === RESPONSIVE === */
+    @media(max-width:1024px){
+      nav{padding:0 28px;} .nav-links{display:none;}
+      .services-head{grid-template-columns:1fr;gap:26px;}
+      .services-grid{grid-template-columns:1fr 1fr;}
+      .bc-8,.bc-4,.bc-6,.bc-12{grid-column:span 12;}
+      .process-inner{grid-template-columns:1fr;gap:52px;}
+      .process-sticky{position:static;}
+      .pricing-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
+      .stats-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:640px){
+      .hero,.services,.process,.showcase,.pricing,.cta-section{padding-left:24px;padding-right:24px;}
+      .testimonials .testi-head{padding:0 24px;}
+      .services-grid,.pricing-grid{grid-template-columns:1fr;}
+      .footer-grid{grid-template-columns:1fr;}
+      footer{padding:52px 24px 36px;}
+      .footer-bottom{flex-direction:column;gap:9px;text-align:center;}
+      .stats{padding:0 24px 72px;}
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── NAVIGATION ─────────────────────────────────────────── -->
-  <nav id="navbar">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">EK Design</a>
-      <div class="nav-links">
-        <a href="#projects"      data-key="nav_projects">Work</a>
-        <a href="#capabilities"  data-key="nav_capabilities">Services</a>
-        <a href="#process"       data-key="nav_systems">Process</a>
-        <a href="#contact"       data-key="nav_log">Contact</a>
-      </div>
-      <div class="nav-right">
-        <div class="lang-switcher">
-          <button class="lang-btn active" data-lang="EN">EN</button>
-          <button class="lang-btn"        data-lang="DE">DE</button>
-          <button class="lang-btn"        data-lang="BS">BS</button>
-        </div>
-        <a href="#contact" class="nav-cta" data-key="nav_log">Contact</a>
-      </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
 
-  <!-- ─── MOBILE MENU ────────────────────────────────────────── -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#projects"     data-key="nav_projects"     onclick="closeMobile()">Work</a>
-    <a href="#capabilities" data-key="nav_capabilities" onclick="closeMobile()">Services</a>
-    <a href="#process"      data-key="nav_systems"      onclick="closeMobile()">Process</a>
-    <a href="#contact"      data-key="nav_log"          onclick="closeMobile()">Contact</a>
-    <div class="mobile-lang">
-      <button class="lang-btn active" data-lang="EN">EN</button>
-      <button class="lang-btn"        data-lang="DE">DE</button>
-      <button class="lang-btn"        data-lang="BS">BS</button>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="IMG_4226.jpeg" alt="EK Design" class="nav-logo-img"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Projekte</a></li>
+    <li><a href="#process">Prozess</a></li>
+    <li><a href="#pricing">Preise</a></li>
+    <li><a href="#contact" class="nav-cta">Projekt anfragen</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero metal-bg" id="home">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="IMG_4226.jpeg" alt="EK Design"/>
+    </div>
+    <p class="hero-eyebrow">Premium Web &amp; App Design Studio</p>
+    <h1 class="hero-headline">Digitale Produkte,<br/><em>die überzeugen.</em></h1>
+    <p class="hero-sub">Wir gestalten Websites und Apps, die Ihr Unternehmen vom Wettbewerb abheben — mit jedem Detail, das zählt.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-dark">
+        Projekt starten
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#work" class="btn-ghost">Unsere Projekte ansehen →</a>
     </div>
   </div>
+  <div class="scroll-cue">
+    <div class="scroll-pill"></div>
+    <span>Scrollen</span>
+  </div>
+</section>
 
-  <!-- ─── HERO ──────────────────────────────────────────────── -->
-  <section class="hero">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+<!-- BRIDGE light → dark -->
+<div class="bridge"></div>
 
-    <div class="hero-content">
-      <span class="hero-badge" data-key="hero_status">Agency Status: Active</span>
-      <h1 class="hero-title">
-        <span class="line-1" data-key="hero_title_1">Crafting</span>
-        <span class="line-2" data-key="hero_title_2">Digital Products</span>
-        <span class="line-3" data-key="hero_title_3">For the Elite.</span>
-      </h1>
-      <p class="hero-desc" data-key="hero_desc">Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.</p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn-primary" data-key="hero_cta">
-          View Work
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-        <a href="#capabilities" class="btn-ghost">
-          Our Services
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
+<!-- STATS -->
+<section class="stats dark">
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-num">50<sup>+</sup></div><div class="stat-label">Projekte geliefert</div></div>
+    <div class="stat-item"><div class="stat-num">2M<sup>€+</sup></div><div class="stat-label">Umsatz für Kunden</div></div>
+    <div class="stat-item"><div class="stat-num">100<sup>%</sup></div><div class="stat-label">Zufriedenheit</div></div>
+    <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Jahre Erfahrung</div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services metal-bg" id="services">
+  <div class="services-inner">
+    <div class="services-head">
+      <div>
+        <p class="section-eyebrow reveal">Was wir tun</p>
+        <h2 class="section-title reveal d1">Unsere<br/><em>Services</em></h2>
+      </div>
+      <p class="section-sub reveal d2">Wir erschaffen digitale Erlebnisse, die Besucher in Kunden verwandeln. Von der ersten Idee bis zum Launch — aus einer Hand.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal d1"><div class="svc-icon">🌐</div><h3>Web Design</h3><p>Maßgeschneiderte Websites mit außergewöhnlichem Design. Jede Site ein Unikat — kein Template, kein Kompromiss.</p><div class="svc-price">Ab 20.000 €</div></div>
+      <div class="svc-card reveal d2"><div class="svc-icon">📱</div><h3>App Design</h3><p>iOS &amp; Android Apps mit intuitivem UX. Wir bauen Erlebnisse, die Nutzer täglich öffnen und gerne empfehlen.</p><div class="svc-price">Ab 35.000 €</div></div>
+      <div class="svc-card reveal d3"><div class="svc-icon">✦</div><h3>Brand Identity</h3><p>Logo, Farbsystem, Typografie — Ihre Marke als kohärentes System, das auf jedem Medium überzeugt.</p><div class="svc-price">Ab 8.000 €</div></div>
+      <div class="svc-card reveal d1"><div class="svc-icon">🛒</div><h3>E-Commerce</h3><p>Online-Shops, die wirklich verkaufen. Shopify, WooCommerce oder Custom — mit Checkout, der konvertiert.</p><div class="svc-price">Ab 25.000 €</div></div>
+      <div class="svc-card reveal d2"><div class="svc-icon">⚙️</div><h3>Development</h3><p>React, Next.js, Vue.js — moderne Tech-Stacks für blitzschnelle, skalierbare Webanwendungen.</p><div class="svc-price">Ab 15.000 €</div></div>
+      <div class="svc-card reveal d3"><div class="svc-icon">📊</div><h3>Optimierung</h3><p>Performance-Audits, UX-Analyse und Conversion-Optimierung für bestehende digitale Produkte.</p><div class="svc-price">Ab 5.000 €</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase dark" id="work">
+  <div class="showcase-inner">
+    <div class="showcase-head">
+      <p class="section-eyebrow reveal">Portfolio</p>
+      <h2 class="section-title reveal d1">Projekte, die<br/><em style="color:rgba(255,255,255,.38);">beweisen was wir können</em></h2>
+      <p class="section-sub reveal d2" style="margin:0 auto;text-align:center;">Jedes Projekt ist ein Beweis für unser Handwerk.</p>
+    </div>
+    <div class="bento">
+      <div class="bc bc-8 bc-silver rs">
+        <div class="bc-label">E-Commerce · 2024</div>
+        <div class="bc-title">Luxus-Brand<br/>Online Store</div>
+        <div class="bc-text">Custom Shopify-Shop für Premium-Modemarke — mit 3D-Produktansichten und personalisiertem Checkout.</div>
+        <div class="bc-kpi">
+          <div><div class="bc-kpi-val">+340%</div><div class="bc-kpi-label">Umsatz Q1</div></div>
+          <div><div class="bc-kpi-val">€80K</div><div class="bc-kpi-label">Budget</div></div>
+        </div>
+        <div style="margin-top:18px;"><span class="bc-tag">Shopify</span><span class="bc-tag">Next.js</span><span class="bc-tag">3D Visuals</span></div>
+      </div>
+      <div class="bc bc-4 bc-charcoal rs d1">
+        <div class="bc-label">App Design · 2024</div>
+        <div class="bc-title">FinTech<br/>App iOS</div>
+        <div class="bc-text">Banking-App mit 50.000+ Downloads in 3 Monaten nach Launch.</div>
+        <div style="margin-top:auto;padding-top:28px;">
+          <div style="font-family:var(--font-display);font-size:62px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">50K</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Downloads</div>
+        </div>
+      </div>
+      <div class="bc bc-6 bc-warm rs d1">
+        <div class="bc-label">Corporate · 2023</div>
+        <div class="bc-title">Kanzlei<br/>Rebranding</div>
+        <div class="bc-text">Komplette digitale Transformation — neue Marke, neue Website, neues Vertrauen beim Mandanten.</div>
+      </div>
+      <div class="bc bc-6 bc-mid rs d2">
+        <div class="bc-label">Restaurant · 2024</div>
+        <div class="bc-title">Michelin-<br/>Restaurant</div>
+        <div class="bc-text">Reservierungssystem &amp; Website. Buchungen +200% in den ersten 8 Wochen nach Relaunch.</div>
+      </div>
+      <div class="bc bc-12 bc-charcoal rs" style="min-height:195px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;height:100%;">
+          <div><div class="bc-label">SaaS Platform · 2024</div><div class="bc-title" style="font-size:clamp(26px,3vw,42px);">B2B Dashboard &amp; Web-App</div></div>
+          <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:center;">
+            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">18</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Wochen</div></div>
+            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">€80K</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Budget</div></div>
+            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--silver-warm);font-weight:500;line-height:1;letter-spacing:-.03em;">5×</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">ROI</div></div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="hero-mockup">
-      <div class="mockup-frame">
-        <img
-          src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=2000"
-          alt="EK Design — Premium Projects"
-          loading="eager"
-        />
-        <div class="stat-card stat-1">
-          <div class="stat-num">98+</div>
-          <div class="stat-label">Projects Delivered</div>
-        </div>
-        <div class="stat-card stat-2">
-          <div class="stat-num">4.9★</div>
-          <div class="stat-label">Client Rating</div>
-        </div>
+<!-- PROCESS -->
+<section class="process metal-bg" id="process">
+  <div class="process-inner">
+    <div class="process-sticky">
+      <p class="section-eyebrow reveal">Wie wir arbeiten</p>
+      <h2 class="section-title reveal d1">Unser<br/><em>Prozess</em></h2>
+      <p class="section-sub reveal d2">Von der ersten Idee bis zum erfolgreichen Launch — transparent, termingerecht, leidenschaftlich.</p>
+      <div class="info-box reveal d3">
+        <div class="section-eyebrow" style="margin-bottom:6px;">Durchschnittlich</div>
+        <div class="num">6–12</div>
+        <div class="lbl">Wochen vom Briefing bis Launch</div>
       </div>
     </div>
-  </section>
+    <div class="process-steps">
+      <div class="ps"><div class="ps-num">01</div><div class="ps-body"><h4>Discovery &amp; Strategy</h4><p>Wir analysieren Ihr Unternehmen, Ihre Zielgruppe und den Markt. Gemeinsam definieren wir Ziele, Scope und KPIs — bevor wir ein Pixel zeichnen.</p></div></div>
+      <div class="ps"><div class="ps-num">02</div><div class="ps-body"><h4>Konzept &amp; Wireframes</h4><p>Architektur vor Ästhetik. User Journey, Informationsstruktur und User Flows werden akribisch geplant und mit Ihnen abgestimmt.</p></div></div>
+      <div class="ps"><div class="ps-num">03</div><div class="ps-body"><h4>Visual Design</h4><p>High-Fidelity Designs in Figma, animierte Prototypen, Hover-States — jedes Detail perfektioniert, bis es sich wie Ihr bestes Markenbotschafter anfühlt.</p></div></div>
+      <div class="ps"><div class="ps-num">04</div><div class="ps-body"><h4>Development</h4><p>Sauberer, performanter Code. 99+ Lighthouse-Score, SEO-optimiert, barrierefrei und auf die Zukunft ausgerichtet.</p></div></div>
+      <div class="ps"><div class="ps-num">05</div><div class="ps-body"><h4>Launch &amp; Support</h4><p>Staging, Testing, QA — dann Launch. Danach stehen wir für Optimierungen bereit. Langfristige Partnerschaften statt einmaliger Transaktionen.</p></div></div>
+    </div>
+  </div>
+</section>
 
-  <!-- ─── MARQUEE ───────────────────────────────────────────── -->
-  <div class="marquee-section" aria-hidden="true">
+<!-- PRICING -->
+<section class="pricing dark" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-head">
+      <p class="section-eyebrow reveal">Investition</p>
+      <h2 class="section-title reveal d1">Transparente<br/><em style="color:rgba(255,255,255,.35);">Preise</em></h2>
+      <p class="section-sub reveal d2" style="margin:0 auto;text-align:center;">Feste Projektpreise — kein Stundensatz-Roulette, keine versteckten Kosten.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pc reveal d1">
+        <div class="pc-tier">Starter</div><div class="pc-amount">20K</div><div class="pc-from">ab 20.000 € netto</div>
+        <ul class="pc-features"><li>5–8 Seiten, Custom Design</li><li>Mobile-first Responsive</li><li>CMS-Integration</li><li>SEO-Grundlagen</li><li>4 Wochen Support</li><li>Übergabe aller Assets</li></ul>
+        <a href="#contact" class="pc-btn">Anfrage stellen</a>
+      </div>
+      <div class="pc featured reveal">
+        <div class="pc-tier" style="margin-top:20px;">Premium</div><div class="pc-amount">50K</div><div class="pc-from">ab 50.000 € netto</div>
+        <ul class="pc-features"><li>Unbegrenzte Seiten</li><li>Premium Scroll-Animationen</li><li>Custom Development</li><li>E-Commerce / Booking</li><li>Brand Identity inklusive</li><li>3 Monate Support</li><li>Monatliche Reports</li></ul>
+        <a href="#contact" class="pc-btn">Jetzt anfragen</a>
+      </div>
+      <div class="pc reveal d1">
+        <div class="pc-tier">Enterprise</div><div class="pc-amount">80K</div><div class="pc-from">ab 80.000 € netto</div>
+        <ul class="pc-features"><li>Web + App (iOS &amp; Android)</li><li>Komplexe Web-Anwendungen</li><li>API &amp; System-Integrationen</li><li>Dedicated Team &amp; PM</li><li>6 Monate Support &amp; Wartung</li><li>Performance-Garantie</li><li>Strategische Beratung</li></ul>
+        <a href="#contact" class="pc-btn">Jetzt anfragen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testi-head">
+    <p class="section-eyebrow reveal">Kundenstimmen</p>
+    <h2 class="section-title reveal d1">Was unsere<br/><em>Kunden sagen</em></h2>
+  </div>
+  <div class="marquee-wrap">
     <div class="marquee-track">
-      <span class="marquee-item">UI / UX Design</span>
-      <span class="marquee-item">Web Engineering</span>
-      <span class="marquee-item">Mobile Applications</span>
-      <span class="marquee-item">Brand Identity</span>
-      <span class="marquee-item">E-Commerce</span>
-      <span class="marquee-item">Motion Design</span>
-      <span class="marquee-item">UI / UX Design</span>
-      <span class="marquee-item">Web Engineering</span>
-      <span class="marquee-item">Mobile Applications</span>
-      <span class="marquee-item">Brand Identity</span>
-      <span class="marquee-item">E-Commerce</span>
-      <span class="marquee-item">Motion Design</span>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„EK Design hat unsere Erwartungen weit übertroffen. Die neue Website verdreifachte unsere Conversion-Rate. Absolute Empfehlung."</p><div class="tc-author"><div class="tc-av">TM</div><div><div class="tc-name">Thomas Müller</div><div class="tc-role">CEO, Müller &amp; Partner GmbH</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Unser Online-Shop brachte 180% mehr Umsatz. Das Investment amortisierte sich in 6 Wochen. Design, das wirklich wirkt."</p><div class="tc-author"><div class="tc-av">SK</div><div><div class="tc-name">Sarah Klein</div><div class="tc-role">Gründerin, Klein Fashion</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die App ist weltklasse. 50.000 Downloads nach 3 Monaten. Bestes Investment, das wir je getätigt haben."</p><div class="tc-author"><div class="tc-av">JB</div><div><div class="tc-name">Jonas Braun</div><div class="tc-role">CTO, FinFlow</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die Website sieht aus wie ein Apple-Produkt — höchstes Lob das ich vergeben kann. Professionell, pünktlich, jedes Detail stimmt."</p><div class="tc-author"><div class="tc-av">AW</div><div><div class="tc-name">Anna Weber</div><div class="tc-role">Marketing Director, Weber Group</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Transparente Kommunikation, keine Überraschungen, außergewöhnliches Ergebnis. So muss professionelle Zusammenarbeit aussehen."</p><div class="tc-author"><div class="tc-av">MH</div><div><div class="tc-name">Markus Hoffmann</div><div class="tc-role">Inhaber, Hoffmann Immobilien</div></div></div></div>
+      <!-- Duplicate -->
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„EK Design hat unsere Erwartungen weit übertroffen. Die neue Website verdreifachte unsere Conversion-Rate. Absolute Empfehlung."</p><div class="tc-author"><div class="tc-av">TM</div><div><div class="tc-name">Thomas Müller</div><div class="tc-role">CEO, Müller &amp; Partner GmbH</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Unser Online-Shop brachte 180% mehr Umsatz. Das Investment amortisierte sich in 6 Wochen. Design, das wirklich wirkt."</p><div class="tc-author"><div class="tc-av">SK</div><div><div class="tc-name">Sarah Klein</div><div class="tc-role">Gründerin, Klein Fashion</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die App ist weltklasse. 50.000 Downloads nach 3 Monaten. Bestes Investment, das wir je getätigt haben."</p><div class="tc-author"><div class="tc-av">JB</div><div><div class="tc-name">Jonas Braun</div><div class="tc-role">CTO, FinFlow</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die Website sieht aus wie ein Apple-Produkt — höchstes Lob das ich vergeben kann. Professionell, pünktlich, jedes Detail stimmt."</p><div class="tc-author"><div class="tc-av">AW</div><div><div class="tc-name">Anna Weber</div><div class="tc-role">Marketing Director, Weber Group</div></div></div></div>
+      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Transparente Kommunikation, keine Überraschungen, außergewöhnliches Ergebnis. So muss professionelle Zusammenarbeit aussehen."</p><div class="tc-author"><div class="tc-av">MH</div><div><div class="tc-name">Markus Hoffmann</div><div class="tc-role">Inhaber, Hoffmann Immobilien</div></div></div></div>
     </div>
   </div>
+</section>
 
-  <!-- ─── SERVICES ──────────────────────────────────────────── -->
-  <section id="capabilities" class="services">
-    <div class="services-inner">
-      <div class="services-header">
-        <div>
-          <span class="section-tag" data-key="cap_tag">Our Capabilities</span>
-          <h2 class="section-title" data-key="cap_title">Our expert<br/><em style="font-style:italic; color:var(--mid)">services</em></h2>
-        </div>
-        <p class="section-sub" data-key="cap_quote">"Good design is invisible. Great design is felt."</p>
-      </div>
+<!-- CTA -->
+<section class="cta-section dark" id="contact">
+  <p class="section-eyebrow reveal">Bereit für den nächsten Schritt?</p>
+  <h2 class="section-title reveal d1">Lassen Sie uns<br/><em style="color:rgba(255,255,255,.32);">gemeinsam bauen.</em></h2>
+  <p class="section-sub reveal d2">Ihr nächstes Projekt beginnt mit einem Gespräch. Kostenlos, unverbindlich, ehrlich.</p>
+  <div class="reveal d3" style="display:flex;justify-content:center;">
+    <a href="mailto:hallo@ekdesign.de" class="btn-white">
+      Kostenlose Beratung anfragen
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="cta-meta reveal d4">
+    <div class="cmi"><div class="l">E-Mail</div><div class="v">hallo@ekdesign.de</div></div>
+    <div class="cdiv"></div>
+    <div class="cmi"><div class="l">Reaktionszeit</div><div class="v">Innerhalb 24h</div></div>
+    <div class="cdiv"></div>
+    <div class="cmi"><div class="l">Projekte ab</div><div class="v">20.000 €</div></div>
+    <div class="cdiv"></div>
+    <div class="cmi"><div class="l">Standort</div><div class="v">Deutschland</div></div>
+  </div>
+</section>
 
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <span class="service-num">01</span>
-          <div class="service-icon">🎨</div>
-          <h3 data-key="cap_1_title">UI / UX Design</h3>
-          <p data-key="cap_1_desc">Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence and invisible interactions.</p>
-        </div>
-        <div class="service-card reveal reveal-delay-1">
-          <span class="service-num">02</span>
-          <div class="service-icon">⚡</div>
-          <h3 data-key="cap_2_title">Web Engineering</h3>
-          <p data-key="cap_2_desc">Fast, responsive, and secure web solutions built with modern tech stacks for performance that matters.</p>
-        </div>
-        <div class="service-card reveal reveal-delay-2">
-          <span class="service-num">03</span>
-          <div class="service-icon">📱</div>
-          <h3 data-key="cap_3_title">Mobile Apps</h3>
-          <p data-key="cap_3_desc">Custom iOS and Android solutions designed for global scalability and delightful native experiences.</p>
-        </div>
-      </div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="IMG_4226.jpeg" alt="EK Design" class="footer-logo-img"/>
+      <p>Premium Web &amp; App Design Studio aus Deutschland. Wir bauen digitale Produkte, die Unternehmen transformieren.</p>
     </div>
-  </section>
+    <div class="footer-col"><h5>Services</h5><ul><li><a href="#">Web Design</a></li><li><a href="#">App Design</a></li><li><a href="#">E-Commerce</a></li><li><a href="#">Brand Identity</a></li><li><a href="#">Development</a></li></ul></div>
+    <div class="footer-col"><h5>Unternehmen</h5><ul><li><a href="#">Über uns</a></li><li><a href="#">Portfolio</a></li><li><a href="#">Prozess</a></li><li><a href="#">Karriere</a></li></ul></div>
+    <div class="footer-col"><h5>Rechtliches</h5><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li><li><a href="#">AGB</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 EK Design. Alle Rechte vorbehalten.</span>
+    <span style="letter-spacing:.08em;">MADE IN GERMANY</span>
+  </div>
+</footer>
 
-  <!-- ─── PROJECTS ──────────────────────────────────────────── -->
-  <section id="projects" class="projects">
-    <div class="projects-inner">
-      <div class="projects-header">
-        <span class="section-tag" data-key="proj_tag">Selected Work</span>
-        <h2 class="section-title" data-key="proj_label">Featured Projects</h2>
-      </div>
+<script>
+(function(){
+  /* Cursor */
+  const dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.cssText=`left:${mx}px;top:${my}px;`;});
+  (function t(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.cssText=`left:${rx}px;top:${ry}px;`;requestAnimationFrame(t);})();
+  document.querySelectorAll('a,button,.svc-card,.pc,.tc,.bc').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+  });
 
-      <div class="projects-grid reveal">
-        <div class="project-card">
-          <img class="project-img"
-            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1400"
-            alt="Strategic Design Project"
-          />
-          <div class="project-overlay">
-            <span class="project-tag">Branding · E-Commerce</span>
-            <h3 class="project-title" data-key="proj_1_title">Strategic Design</h3>
-            <p class="project-desc" data-key="proj_1_desc">A premium fashion marketplace featuring zero-latency navigation.</p>
-          </div>
-          <div class="project-arrow">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </div>
-        </div>
+  /* Navbar dark toggle */
+  const nav=document.getElementById('nav');
+  const darkEls=document.querySelectorAll('.dark,.showcase,.pricing,.cta-section,footer');
+  function checkNav(){
+    let d=false;
+    darkEls.forEach(s=>{const r=s.getBoundingClientRect();if(r.top<=52&&r.bottom>0)d=true;});
+    nav.classList.toggle('dark',d);
+    document.body.classList.toggle('on-dark',d);
+  }
+  window.addEventListener('scroll',checkNav,{passive:true}); checkNav();
 
-        <div class="project-card">
-          <img class="project-img"
-            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1400"
-            alt="Fintech Dashboard"
-          />
-          <div class="project-overlay">
-            <span class="project-tag">Fintech · Dashboard</span>
-            <h3 class="project-title" data-key="proj_2_title">Fintech Dashboard</h3>
-            <p class="project-desc" data-key="proj_2_desc">Comprehensive real-time analytics suite for institutional traders.</p>
-          </div>
-          <div class="project-arrow">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  /* Scroll reveal */
+  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
+  document.querySelectorAll('.reveal,.rs,.stat-item,.ps').forEach(el=>io.observe(el));
 
-  <!-- ─── PROCESS ───────────────────────────────────────────── -->
-  <section id="process" class="process">
-    <div class="process-inner">
-      <div class="process-header reveal">
-        <span class="section-tag" data-key="process_tag">How We Work</span>
-        <h2 class="section-title" data-key="process_title">Our Process</h2>
-        <p class="section-sub" data-key="process_sub">From the first conversation to a live product — structured, transparent, and obsessively crafted.</p>
-      </div>
+  /* Staggered stat delays */
+  document.querySelectorAll('.stat-item').forEach((el,i)=>el.style.transitionDelay=(i*.12)+'s');
 
-      <div class="process-steps">
-        <div class="step reveal">
-          <div class="step-num">01</div>
-          <div class="step-icon">🔍</div>
-          <h3 data-key="step_1_title">Discovery</h3>
-          <p data-key="step_1_desc">We listen deeply to understand your vision, goals, and audience. Strategy before pixels.</p>
-        </div>
-        <div class="step reveal reveal-delay-1">
-          <div class="step-num">02</div>
-          <div class="step-icon">✏️</div>
-          <h3 data-key="step_2_title">Design</h3>
-          <p data-key="step_2_desc">Wireframes, visual concepts, and interactive prototypes with your continuous feedback.</p>
-        </div>
-        <div class="step reveal reveal-delay-2">
-          <div class="step-num">03</div>
-          <div class="step-icon">⚙️</div>
-          <h3 data-key="step_3_title">Development</h3>
-          <p data-key="step_3_desc">Clean, maintainable code built for performance, security and seamless scalability.</p>
-        </div>
-        <div class="step reveal reveal-delay-3">
-          <div class="step-num">04</div>
-          <div class="step-icon">🚀</div>
-          <h3 data-key="step_4_title">Launch</h3>
-          <p data-key="step_4_desc">We deploy, test, and monitor — then stay on call for your first weeks live.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  /* Smooth anchors */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  }));
 
-  <!-- ─── TESTIMONIAL ────────────────────────────────────────── -->
-  <section class="testimonial">
-    <div class="testimonial-inner reveal">
-      <span class="quote-mark">"</span>
-      <p class="quote-text">EK Design didn't just build our product — they elevated our entire brand. The attention to detail is something you rarely find.</p>
-      <span class="quote-author">— Luca Meier, CEO of Aurum Digital</span>
-    </div>
-  </section>
-
-  <!-- ─── CTA ───────────────────────────────────────────────── -->
-  <section id="contact" class="cta-section">
-    <div class="cta-inner reveal">
-      <h2 class="section-title" data-key="cta_title">Ready to upgrade your<br/><em>digital presence?</em></h2>
-      <p class="section-sub" data-key="cta_desc">Tell us about your project. Our team will respond within 24 hours.</p>
-      <div class="cta-form">
-        <input type="email" placeholder="Email Address" data-placeholder-key="cta_input" />
-        <button type="button" data-key="cta_submit">Get Started</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── FOOTER ────────────────────────────────────────────── -->
-  <footer>
-    <div class="footer-inner">
-      <span class="footer-logo">EK Design</span>
-      <div class="footer-links">
-        <a href="#" data-key="footer_nav_1">Studio</a>
-        <a href="#" data-key="footer_nav_2">Portfolio</a>
-        <a href="#" data-key="footer_nav_3">Instagram</a>
-        <a href="#" data-key="footer_nav_4">LinkedIn</a>
-      </div>
-      <span class="footer-copy">© <span id="year"></span> EK DESIGN. ALL RIGHTS RESERVED.</span>
-    </div>
-  </footer>
-
-  <!-- ─── SCRIPTS ───────────────────────────────────────────── -->
-  <script>
-    // ── Year ──────────────────────────────────────────────────
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ── Translations ──────────────────────────────────────────
-    const translations = {
-      EN: {
-        nav_projects:'Work', nav_capabilities:'Services', nav_systems:'Process', nav_log:'Contact',
-        hero_status:'Agency Status: Active',
-        hero_title_1:'Crafting', hero_title_2:'Digital Products', hero_title_3:'For the Elite.',
-        hero_desc:'Specialized in premium Web Design and Mobile App development. We transform complex visions into seamless, high-performance digital experiences.',
-        hero_cta:'View Work',
-        cap_tag:'Our Capabilities', cap_title:'Our expert services',
-        cap_quote:'"Good design is invisible. Great design is felt."',
-        cap_1_title:'UI / UX Design', cap_1_desc:'Creating intuitive, user-centric interfaces that drive engagement. We focus on aesthetic excellence and invisible interactions.',
-        cap_2_title:'Web Engineering', cap_2_desc:'Fast, responsive, and secure web solutions built with modern tech stacks for performance that matters.',
-        cap_3_title:'Mobile Apps', cap_3_desc:'Custom iOS and Android solutions designed for global scalability and delightful native experiences.',
-        proj_tag:'Selected Work', proj_label:'Featured Projects',
-        proj_1_title:'Strategic Design', proj_1_desc:'A premium fashion marketplace featuring zero-latency navigation.',
-        proj_2_title:'Fintech Dashboard', proj_2_desc:'Comprehensive real-time analytics suite for institutional traders.',
-        process_tag:'How We Work', process_title:'Our Process', process_sub:'From the first conversation to a live product — structured, transparent, and obsessively crafted.',
-        step_1_title:'Discovery', step_1_desc:'We listen deeply to understand your vision, goals, and audience. Strategy before pixels.',
-        step_2_title:'Design', step_2_desc:'Wireframes, visual concepts, and interactive prototypes with your continuous feedback.',
-        step_3_title:'Development', step_3_desc:'Clean, maintainable code built for performance, security and seamless scalability.',
-        step_4_title:'Launch', step_4_desc:'We deploy, test, and monitor — then stay on call for your first weeks live.',
-        cta_title:'Ready to upgrade your digital presence?',
-        cta_desc:'Tell us about your project. Our team will respond within 24 hours.',
-        cta_input:'Email Address', cta_submit:'Get Started',
-        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
-      },
-      DE: {
-        nav_projects:'Projekte', nav_capabilities:'Leistungen', nav_systems:'Prozess', nav_log:'Kontakt',
-        hero_status:'Agentur Status: Aktiv',
-        hero_title_1:'Gestaltung', hero_title_2:'Digitaler Produkte', hero_title_3:'Für Elite-Brands.',
-        hero_desc:'Spezialisiert auf High-End Webdesign und Mobile App Entwicklung. Wir verwandeln komplexe Visionen in nahtlose, hochperformante Erlebnisse.',
-        hero_cta:'Arbeit sehen',
-        cap_tag:'Kompetenzen', cap_title:'Unsere Kompetenzen',
-        cap_quote:'"Gutes Design ist unsichtbar. Großartiges Design ist spürbar."',
-        cap_1_title:'UI / UX Design', cap_1_desc:'Intuitive, nutzerzentrierte Interfaces, die Bindung schaffen und ästhetische Exzellenz verkörpern.',
-        cap_2_title:'Web Entwicklung', cap_2_desc:'Schnelle, responsive und sichere Web-Lösungen mit modernster Technologie.',
-        cap_3_title:'Mobile Apps', cap_3_desc:'Maßgeschneiderte iOS- und Android-Lösungen, optimiert für weltweite Skalierbarkeit.',
-        proj_tag:'Ausgewählte Projekte', proj_label:'Featured Projekte',
-        proj_1_title:'Strategisches Design', proj_1_desc:'Premium Fashion-Marktplatz mit ultraschneller Navigation.',
-        proj_2_title:'Fintech Dashboard', proj_2_desc:'Echtzeit-Analytics Suite für institutionelle Trader.',
-        process_tag:'Wie wir arbeiten', process_title:'Unser Prozess', process_sub:'Vom ersten Gespräch bis zum Launch — strukturiert, transparent und obsessiv verfeinert.',
-        step_1_title:'Discovery', step_1_desc:'Wir hören zu, um Ihre Vision, Ziele und Zielgruppe zu verstehen.',
-        step_2_title:'Design', step_2_desc:'Wireframes, visuelle Konzepte und interaktive Prototypen.',
-        step_3_title:'Entwicklung', step_3_desc:'Sauberer, wartbarer Code für Performance, Sicherheit und Skalierung.',
-        step_4_title:'Launch', step_4_desc:'Wir deployen, testen und bleiben in den ersten Wochen an Ihrer Seite.',
-        cta_title:'Bereit für ein Upgrade Ihrer Präsenz?',
-        cta_desc:'Beschreiben Sie uns Ihre Anforderungen. Wir antworten innerhalb von 24 Stunden.',
-        cta_input:'Email Adresse', cta_submit:'Anfragen',
-        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
-      },
-      BS: {
-        nav_projects:'Radovi', nav_capabilities:'Usluge', nav_systems:'Proces', nav_log:'Kontakt',
-        hero_status:'Status: Aktivni',
-        hero_title_1:'Kreiranje', hero_title_2:'Digitalnih Proizvoda', hero_title_3:'Za Elitne Brendove.',
-        hero_desc:'Specijalizovani za vrhunski Web Dizajn i razvoj mobilnih aplikacija. Pretvaramo vizije u besprijekorna digitalna iskustva.',
-        hero_cta:'Pogledaj radove',
-        cap_tag:'Naše kompetencije', cap_title:'Naše kompetencije',
-        cap_quote:'"Dobar dizajn je nevidljiv. Odličan dizajn se osjeća."',
-        cap_1_title:'UI / UX Dizajn', cap_1_desc:'Kreiranje intuitivnih interfejsa fokusiranih na korisnika i estetsku izvrsnost.',
-        cap_2_title:'Web Razvoj', cap_2_desc:'Brza, responzivna i sigurna web rješenja bazirana na modernom stacku.',
-        cap_3_title:'Mobilne Aplikacije', cap_3_desc:'Prilagođena iOS i Android rješenja za globalno skaliranje i vrhunska iskustva.',
-        proj_tag:'Odabrani Radovi', proj_label:'Digitalni Radovi',
-        proj_1_title:'Strateški Dizajn', proj_1_desc:'Premium fashion marketplace sa fokusom na brzinu i stil.',
-        proj_2_title:'Fintech Dashboard', proj_2_desc:'Sistem za analitiku sa naprednom vizuelizacijom podataka.',
-        process_tag:'Kako radimo', process_title:'Naš Proces', process_sub:'Od prvog razgovora do živog proizvoda — strukturirano, transparentno i pedantno.',
-        step_1_title:'Istraživanje', step_1_desc:'Slušamo i razumijemo vašu viziju, ciljeve i publiku.',
-        step_2_title:'Dizajn', step_2_desc:'Žičani okviri, vizualni koncepti i interaktivni prototipi.',
-        step_3_title:'Razvoj', step_3_desc:'Čist kod za performanse, sigurnost i skalabilnost.',
-        step_4_title:'Lansiranje', step_4_desc:'Deployjamo, testiramo i ostajemo na raspolaganju tokom prvih sedmica.',
-        cta_title:'Spremni za nadogradnju prisutnosti?',
-        cta_desc:'Pošaljite nam zahtjeve. Odgovorićemo u roku od 24 sata.',
-        cta_input:'Vaš Email', cta_submit:'Počni odmah',
-        footer_nav_1:'Studio', footer_nav_2:'Portfolio', footer_nav_3:'Instagram', footer_nav_4:'LinkedIn',
-      }
-    };
-
-    let currentLang = localStorage.getItem('ek-lang') || 'EN';
-
-    function applyTranslations(lang) {
-      const t = translations[lang];
-      document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.getAttribute('data-key');
-        if (t[key]) el.textContent = t[key];
-      });
-      document.querySelectorAll('[data-placeholder-key]').forEach(el => {
-        const key = el.getAttribute('data-placeholder-key');
-        if (t[key]) el.placeholder = t[key];
-      });
-      // Update all lang buttons
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-      });
-      localStorage.setItem('ek-lang', lang);
-      currentLang = lang;
-    }
-
-    // Lang button clicks (nav + mobile)
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => applyTranslations(btn.getAttribute('data-lang')));
-    });
-
-    applyTranslations(currentLang);
-
-    // ── Navbar scroll ─────────────────────────────────────────
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 30);
-    }, { passive: true });
-
-    // ── Hamburger / Mobile Menu ───────────────────────────────
-    const hamburger   = document.getElementById('hamburger');
-    const mobileMenu  = document.getElementById('mobileMenu');
-
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    function closeMobile() {
-      mobileMenu.classList.remove('open');
-      hamburger.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // ── Scroll Reveal ─────────────────────────────────────────
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    // ── Smooth CTA form ───────────────────────────────────────
-    document.querySelector('.cta-form button').addEventListener('click', function() {
-      const input = document.querySelector('.cta-form input');
-      const email = input.value.trim();
-      if (!email || !email.includes('@')) {
-        input.style.borderColor = 'rgba(255,80,80,0.6)';
-        input.focus();
-        setTimeout(() => input.style.borderColor = '', 2000);
-        return;
-      }
-      this.textContent = '✓ Sent!';
-      this.style.background = '#30d158';
-      this.style.color = '#fff';
-      input.value = '';
-      setTimeout(() => {
-        this.textContent = translations[currentLang]['cta_submit'] || 'Get Started';
-        this.style.background = '';
-        this.style.color = '';
-      }, 3000);
-    });
-  </script>
+  /* Parallax logo */
+  window.addEventListener('scroll',()=>{
+    const img=document.querySelector('.hero-logo img');
+    if(img)img.style.transform=`translateY(${window.scrollY*.1}px)`;
+  },{passive:true});
+})();
+</script>
 </body>
 </html>
