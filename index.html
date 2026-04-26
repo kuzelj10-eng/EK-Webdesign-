@@ -1,806 +1,1013 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EK Design — Premium Web & App Design</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EK Design | Premium Web Design & Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(20, 20, 30, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent: #00d4ff;
+        }
 
-    :root {
-      --silver-light:  #f4f4f4;
-      --silver-mid:    #e0e0e0;
-      --silver-warm:   #c8c8c8;
-      --charcoal-soft: #3a3a3c;
-      --charcoal-mid:  #2a2a2c;
-      --charcoal-dark: #1c1c1e;
-      --charcoal-deep: #111112;
-      --white:         #ffffff;
-      --text-primary:  #1d1d1f;
-      --text-secondary:#6e6e73;
-      --text-tertiary: #aeaeb2;
-      --radius:        20px;
-      --radius-lg:     28px;
-      --radius-xl:     36px;
-      --font-display:  'Playfair Display', Georgia, serif;
-      --font-ui:       'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease:          cubic-bezier(0.25, 0.1, 0.25, 1);
-      --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-ui);
-      background: var(--silver-light);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      cursor: none;
-      -webkit-font-smoothing: antialiased;
-    }
-    ::selection { background: var(--charcoal-dark); color: var(--white); }
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
 
-    /* === CURSOR === */
-    #cur-dot {
-      position:fixed;z-index:9999;top:0;left:0;width:7px;height:7px;
-      border-radius:50%;background:var(--charcoal-dark);
-      pointer-events:none;transform:translate(-50%,-50%);
-      transition:width .25s var(--ease-spring),height .25s var(--ease-spring),background .2s;
-    }
-    #cur-ring {
-      position:fixed;z-index:9998;top:0;left:0;width:34px;height:34px;
-      border-radius:50%;border:1px solid rgba(0,0,0,0.22);
-      pointer-events:none;transform:translate(-50%,-50%);
-      transition:width .35s var(--ease-spring),height .35s var(--ease-spring),border-color .2s,opacity .2s;
-    }
-    body.on-dark #cur-dot  { background:rgba(255,255,255,.9); }
-    body.on-dark #cur-ring { border-color:rgba(255,255,255,.28); }
-    body.hovering #cur-dot  { width:12px;height:12px; }
-    body.hovering #cur-ring { width:50px;height:50px; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
 
-    /* === BRUSHED METAL BG === */
-    .metal-bg {
-      background:
-        repeating-linear-gradient(
-          90deg,
-          transparent, transparent 2px,
-          rgba(255,255,255,0.022) 2px, rgba(255,255,255,0.022) 4px
-        ),
-        linear-gradient(158deg,
-          #f7f7f7 0%, #efefef 15%, #e6e6e6 30%,
-          #d8d8d8 48%, #cccccc 62%,
-          #bebebe 76%, #b2b2b2 90%, #a8a8a8 100%
-        );
-    }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+        }
 
-    /* === NAVBAR === */
-    nav {
-      position:fixed;top:0;left:0;right:0;z-index:1000;
-      height:52px;display:flex;align-items:center;justify-content:space-between;
-      padding:0 52px;
-      background:rgba(244,244,244,.82);
-      backdrop-filter:saturate(200%) blur(20px);
-      -webkit-backdrop-filter:saturate(200%) blur(20px);
-      border-bottom:1px solid rgba(0,0,0,.06);
-      transition:background .4s,border-color .4s;
-    }
-    nav.dark {
-      background:rgba(28,28,30,.88);
-      border-bottom-color:rgba(255,255,255,.06);
-    }
-    .nav-logo { display:flex;align-items:center;text-decoration:none; }
-    .nav-logo-img {
-      height:26px;width:auto;object-fit:contain;
-      filter:brightness(0);
-      transition:filter .3s;
-    }
-    nav.dark .nav-logo-img { filter:brightness(0) invert(1); }
+        nav.scrolled {
+            padding: 1rem 5%;
+            background: rgba(10, 10, 15, 0.9);
+        }
 
-    .nav-links { display:flex;gap:32px;list-style:none; }
-    .nav-links a {
-      font-size:13px;font-weight:400;color:var(--text-secondary);
-      text-decoration:none;letter-spacing:.01em;transition:color .2s;
-    }
-    .nav-links a:hover { color:var(--text-primary); }
-    nav.dark .nav-links a { color:rgba(255,255,255,.5); }
-    nav.dark .nav-links a:hover { color:rgba(255,255,255,.9); }
-    .nav-cta {
-      background:var(--charcoal-dark)!important;color:var(--white)!important;
-      padding:7px 17px;border-radius:980px;font-size:13px!important;font-weight:500!important;
-      transition:transform .3s var(--ease-spring)!important;
-    }
-    .nav-cta:hover { transform:scale(1.05)!important; }
-    nav.dark .nav-cta { background:rgba(255,255,255,.1)!important; }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    /* === HERO === */
-    .hero {
-      min-height:100vh;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;text-align:center;
-      padding:130px 32px 100px;position:relative;overflow:hidden;
-    }
-    .hero::after {
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(ellipse 75% 55% at 50% 38%, rgba(255,255,255,.6) 0%, transparent 72%);
-      pointer-events:none;
-    }
-    .hero-content { position:relative;z-index:2; }
+        .nav-logo::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00d4ff, #7b2dff, #ff006e);
+            border-radius: 8px;
+            display: inline-block;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
 
-    .hero-logo {
-      margin-bottom:40px;
-      opacity:0;transform:translateY(22px) scale(.97);
-      animation:fadeUpScale .95s .2s var(--ease-spring) forwards;
-    }
-    .hero-logo img {
-      width:min(360px,55vw);
-      filter:drop-shadow(0 6px 28px rgba(0,0,0,.16)) drop-shadow(0 1px 4px rgba(0,0,0,.10));
-      transition:transform .6s var(--ease);
-    }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
 
-    .hero-eyebrow {
-      font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
-      color:var(--text-secondary);margin-bottom:20px;
-      opacity:0;transform:translateY(14px);
-      animation:fadeUp .8s .55s var(--ease) forwards;
-    }
-    .hero-headline {
-      font-family:var(--font-display);
-      font-size:clamp(50px,8.5vw,116px);font-weight:500;
-      line-height:1.02;letter-spacing:-.025em;
-      color:var(--charcoal-dark);margin-bottom:26px;
-      opacity:0;transform:translateY(30px);
-      animation:fadeUp 1s .7s var(--ease) forwards;
-    }
-    .hero-headline em { font-style:italic;color:var(--text-secondary);font-weight:400; }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
 
-    .hero-sub {
-      font-size:clamp(15px,2vw,20px);font-weight:300;color:var(--text-secondary);
-      max-width:500px;margin:0 auto 44px;line-height:1.65;
-      opacity:0;transform:translateY(20px);
-      animation:fadeUp .9s .9s var(--ease) forwards;
-    }
-    .hero-actions {
-      display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
-      opacity:0;transform:translateY(16px);
-      animation:fadeUp .8s 1.1s var(--ease) forwards;
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
 
-    .btn-dark {
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--charcoal-dark);color:var(--white);
-      padding:14px 28px;border-radius:980px;
-      font-size:16px;font-weight:500;text-decoration:none;
-      box-shadow:0 4px 20px rgba(0,0,0,.14);
-      transition:background .2s,transform .3s var(--ease-spring),box-shadow .3s;
-    }
-    .btn-dark:hover { background:#000;transform:scale(1.04) translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2); }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
 
-    .btn-ghost {
-      display:inline-flex;align-items:center;gap:8px;
-      background:rgba(0,0,0,.05);color:var(--charcoal-dark);
-      padding:14px 28px;border-radius:980px;font-size:16px;font-weight:400;
-      text-decoration:none;border:1px solid rgba(0,0,0,.1);
-      transition:background .2s,transform .3s var(--ease-spring);
-    }
-    .btn-ghost:hover { background:rgba(0,0,0,.08);transform:scale(1.03) translateY(-2px); }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .scroll-cue {
-      position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;
-      display:flex;flex-direction:column;align-items:center;gap:10px;
-      opacity:0;animation:fadeUp .7s 1.8s var(--ease) forwards;
-    }
-    .scroll-cue span { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-tertiary); }
-    .scroll-pill {
-      width:22px;height:36px;border-radius:11px;
-      border:1.5px solid rgba(0,0,0,.16);position:relative;
-    }
-    .scroll-pill::after {
-      content:'';position:absolute;width:4px;height:8px;
-      border-radius:2px;background:var(--text-tertiary);
-      left:50%;top:7px;transform:translateX(-50%);
-      animation:pillDot 2s ease-in-out infinite;
-    }
-    @keyframes pillDot { 0%,100%{top:7px;opacity:1} 60%{top:18px;opacity:.15} }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
 
-    /* === GRADIENT BRIDGE === */
-    .bridge {
-      height:160px;
-      background:linear-gradient(to bottom, #b4b4b4, var(--charcoal-deep));
-    }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(123, 45, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 0, 110, 0.05) 0%, transparent 50%);
+        }
 
-    /* === DARK SECTIONS === */
-    .dark { background:var(--charcoal-deep);color:var(--white); }
-    .dark .section-eyebrow { color:rgba(255,255,255,.35); }
-    .dark .section-title   { color:var(--white); }
-    .dark .section-sub     { color:rgba(255,255,255,.45); }
+        /* Animated Logo Container */
+        .logo-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 3rem;
+        }
 
-    /* === STATS === */
-    .stats { padding:0 52px 110px;background:var(--charcoal-deep); }
-    .stats-grid {
-      max-width:1100px;margin:0 auto;
-      display:grid;grid-template-columns:repeat(4,1fr);
-      border:1px solid rgba(255,255,255,.06);border-radius:var(--radius-xl);overflow:hidden;
-    }
-    .stat-item {
-      padding:44px 28px;border-right:1px solid rgba(255,255,255,.06);
-      text-align:center;opacity:0;transform:translateY(26px);
-      transition:opacity .8s var(--ease),transform .8s var(--ease);
-    }
-    .stat-item:last-child { border-right:none; }
-    .stat-item.vis { opacity:1;transform:translateY(0); }
-    .stat-num {
-      font-family:var(--font-display);
-      font-size:clamp(44px,5vw,70px);font-weight:500;line-height:1;
-      color:var(--white);letter-spacing:-.03em;
-    }
-    .stat-num sup { font-size:.42em;vertical-align:super;color:rgba(255,255,255,.4); }
-    .stat-label { font-size:12px;color:rgba(255,255,255,.3);margin-top:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:300; }
+        .logo-silhouette {
+            position: absolute;
+            inset: 0;
+            animation: rotateSilhouette 20s linear infinite;
+            opacity: 0.3;
+        }
 
-    /* === SECTION COMMONS === */
-    .section-eyebrow {
-      font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
-      color:var(--text-secondary);margin-bottom:16px;
-    }
-    .section-title {
-      font-family:var(--font-display);
-      font-size:clamp(38px,5.5vw,78px);font-weight:500;line-height:1.03;
-      letter-spacing:-.025em;color:var(--charcoal-dark);margin-bottom:20px;
-    }
-    .section-sub {
-      font-size:clamp(15px,1.8vw,19px);font-weight:300;
-      color:var(--text-secondary);line-height:1.7;max-width:520px;
-    }
+        @keyframes rotateSilhouette {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-    .reveal {
-      opacity:0;transform:translateY(42px);
-      transition:opacity .85s var(--ease),transform .85s var(--ease);
-    }
-    .reveal.vis { opacity:1;transform:translateY(0); }
-    .reveal.d1{transition-delay:.1s} .reveal.d2{transition-delay:.2s}
-    .reveal.d3{transition-delay:.3s} .reveal.d4{transition-delay:.4s}
-    .rs {
-      opacity:0;transform:scale(.93) translateY(26px);
-      transition:opacity .9s var(--ease-spring),transform .9s var(--ease-spring);
-    }
-    .rs.vis { opacity:1;transform:scale(1) translateY(0); }
+        .logo-silhouette svg {
+            width: 100%;
+            height: 100%;
+            filter: blur(1px);
+        }
 
-    /* === SERVICES === */
-    .services { padding:130px 52px;position:relative; }
-    .services-inner { max-width:1180px;margin:0 auto; }
-    .services-head {
-      display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:72px;
-    }
-    .services-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+        .logo-main {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: materialize 3s ease-out forwards;
+            opacity: 0;
+        }
 
-    .svc-card {
-      background:rgba(255,255,255,.68);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,.92);border-radius:var(--radius-lg);
-      padding:38px 30px;
-      box-shadow:0 2px 14px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.04);
-      transition:transform .4s var(--ease-spring),box-shadow .4s,background .3s;
-    }
-    .svc-card:hover {
-      transform:translateY(-8px);background:rgba(255,255,255,.88);
-      box-shadow:0 14px 44px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
-    }
-    .svc-icon {
-      font-size:24px;width:48px;height:48px;border-radius:13px;
-      background:var(--charcoal-dark);
-      display:flex;align-items:center;justify-content:center;margin-bottom:22px;
-    }
-    .svc-card h3 {
-      font-family:var(--font-display);font-size:25px;font-weight:500;
-      color:var(--charcoal-dark);margin-bottom:11px;letter-spacing:-.015em;
-    }
-    .svc-card p { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300; }
-    .svc-price {
-      margin-top:22px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-      color:var(--text-tertiary);font-weight:400;
-    }
+        @keyframes materialize {
+            0% {
+                opacity: 0;
+                filter: blur(20px) brightness(3);
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.5;
+                filter: blur(5px) brightness(1.5);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0) brightness(1);
+                transform: scale(1);
+            }
+        }
 
-    /* === SHOWCASE === */
-    .showcase { padding:130px 52px;background:var(--charcoal-deep); }
-    .showcase-inner { max-width:1180px;margin:0 auto; }
-    .showcase-head { text-align:center;margin-bottom:72px; }
-    .showcase-head .section-sub { margin:0 auto;text-align:center; }
+        .logo-main svg {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.5));
+        }
 
-    .bento { display:grid;grid-template-columns:repeat(12,1fr);gap:13px; }
-    .bc { border-radius:var(--radius-xl);padding:42px 38px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.05); }
-    .bc-8  { grid-column:span 8;min-height:400px; }
-    .bc-4  { grid-column:span 4;min-height:400px; }
-    .bc-6  { grid-column:span 6;min-height:270px; }
-    .bc-12 { grid-column:span 12;min-height:210px; }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .bc-silver {
-      background:linear-gradient(135deg,#d6d6d6 0%,#b8b8b8 100%);
-      border-color:rgba(255,255,255,.22);
-    }
-    .bc-charcoal { background:#222224; }
-    .bc-warm     { background:linear-gradient(135deg,#2c2c2e 0%,#1c1c1e 100%); }
-    .bc-mid      { background:rgba(255,255,255,.04); }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
 
-    .bc-label { font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:13px;font-weight:400; }
-    .bc-title {
-      font-family:var(--font-display);
-      font-size:clamp(26px,3vw,46px);font-weight:500;line-height:1.06;
-      color:var(--white);letter-spacing:-.02em;margin-bottom:13px;
-    }
-    .bc-text { font-size:14px;color:rgba(255,255,255,.42);line-height:1.7;font-weight:300;max-width:340px; }
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .bc-silver .bc-label { color:rgba(0,0,0,.35); }
-    .bc-silver .bc-title { color:var(--charcoal-dark); }
-    .bc-silver .bc-text  { color:rgba(0,0,0,.45); }
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
 
-    .bc-tag {
-      display:inline-block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
-      border-radius:980px;padding:5px 13px;font-size:11px;color:rgba(255,255,255,.45);
-      letter-spacing:.04em;margin:4px 3px 0 0;
-    }
-    .bc-silver .bc-tag { background:rgba(0,0,0,.07);border-color:rgba(0,0,0,.1);color:var(--charcoal-soft); }
+        .cta-button:hover::before {
+            transform: translateX(100%);
+        }
 
-    .bc-kpi { display:flex;gap:36px;align-items:flex-end;margin-top:28px; }
-    .bc-kpi-val {
-      font-family:var(--font-display);font-size:50px;font-weight:500;line-height:1;
-      color:var(--white);letter-spacing:-.03em;
-    }
-    .bc-kpi-label { font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.07em;text-transform:uppercase;margin-top:4px; }
-    .bc-silver .bc-kpi-val   { color:var(--charcoal-dark); }
-    .bc-silver .bc-kpi-label { color:rgba(0,0,0,.32); }
+        .cta-button:hover {
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
 
-    /* === PROCESS === */
-    .process { padding:130px 52px;position:relative; }
-    .process-inner { max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start; }
-    .process-sticky { position:sticky;top:100px; }
+        /* Neon Thread Canvas */
+        #neon-thread {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
 
-    .info-box {
-      margin-top:40px;
-      background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.92);
-      border-radius:var(--radius-lg);padding:30px;
-      box-shadow:0 2px 14px rgba(0,0,0,.05);
-    }
-    .info-box .num { font-family:var(--font-display);font-size:60px;font-weight:500;line-height:1;color:var(--charcoal-dark);letter-spacing:-.03em; }
-    .info-box .lbl { font-size:14px;color:var(--text-secondary);font-weight:300;margin-top:4px; }
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 10;
+            padding: 8rem 5%;
+        }
 
-    .process-steps { display:flex;flex-direction:column; }
-    .ps {
-      padding:30px 0;border-bottom:1px solid rgba(0,0,0,.07);
-      display:grid;grid-template-columns:42px 1fr;gap:18px;align-items:start;
-      opacity:0;transform:translateX(22px);
-      transition:opacity .7s var(--ease),transform .7s var(--ease);
-    }
-    .ps.vis { opacity:1;transform:translateX(0); }
-    .ps-num { font-family:var(--font-display);font-size:34px;font-weight:400;color:rgba(0,0,0,.1);line-height:1.15; }
-    .ps-body h4 { font-size:17px;font-weight:500;color:var(--charcoal-dark);margin-bottom:7px;margin-top:5px; }
-    .ps-body p  { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300; }
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
 
-    /* === PRICING === */
-    .pricing { padding:130px 52px;background:var(--charcoal-deep); }
-    .pricing-inner { max-width:1100px;margin:0 auto; }
-    .pricing-head { text-align:center;margin-bottom:72px; }
-    .pricing-head .section-sub { margin:0 auto;text-align:center; }
-    .pricing-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
 
-    .pc {
-      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-      border-radius:var(--radius-xl);padding:42px 34px;
-      display:flex;flex-direction:column;position:relative;overflow:hidden;
-      transition:transform .4s var(--ease-spring),border-color .3s;
-    }
-    .pc:hover { transform:translateY(-10px); }
-    .pc.featured { background:linear-gradient(160deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.03) 100%);border-color:rgba(255,255,255,.17); }
-    .pc.featured::before {
-      content:'EMPFOHLEN';position:absolute;top:0;left:50%;transform:translateX(-50%);
-      background:var(--white);color:var(--charcoal-deep);
-      font-size:9px;letter-spacing:.18em;font-weight:500;padding:5px 16px;border-radius:0 0 11px 11px;
-    }
-    .pc-tier { font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px;margin-top:4px; }
-    .pc-amount { font-family:var(--font-display);font-size:66px;font-weight:500;line-height:1;color:var(--white);letter-spacing:-.03em;margin-bottom:4px; }
-    .pc-from { font-size:13px;color:rgba(255,255,255,.28);margin-bottom:28px;font-weight:300; }
-    .pc-features { list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;flex:1; }
-    .pc-features li {
-      font-size:14px;color:rgba(255,255,255,.58);font-weight:300;
-      display:flex;align-items:center;gap:10px;
-    }
-    .pc-features li::before {
-      content:'';width:16px;height:16px;flex-shrink:0;border-radius:50%;
-      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
-      background-image:url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3L3 5L7 1' stroke='rgba(255,255,255,0.55)' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;background-position:center;
-    }
-    .pc-btn {
-      display:block;text-align:center;padding:14px;border-radius:980px;
-      font-size:15px;font-weight:400;text-decoration:none;
-      border:1px solid rgba(255,255,255,.14);color:var(--white);
-      transition:background .2s,transform .3s var(--ease-spring);
-    }
-    .pc-btn:hover { background:rgba(255,255,255,.07);transform:scale(1.02); }
-    .pc.featured .pc-btn { background:var(--white);color:var(--charcoal-deep);border-color:transparent;font-weight:500; }
-    .pc.featured .pc-btn:hover { background:rgba(255,255,255,.9); }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-    /* === TESTIMONIALS === */
-    .testimonials { padding:130px 0;background:var(--silver-light);overflow:hidden; }
-    .testi-head { text-align:center;padding:0 52px;margin-bottom:68px; }
-    .marquee-wrap { overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent); }
-    .marquee-track { display:flex;gap:18px;width:max-content;animation:mq 36s linear infinite; }
-    .marquee-track:hover { animation-play-state:paused; }
-    @keyframes mq { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .tc {
-      width:330px;flex-shrink:0;
-      background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.95);
-      border-radius:var(--radius-lg);padding:30px 26px;
-      box-shadow:0 2px 14px rgba(0,0,0,.05);
-    }
-    .tc-stars { color:#b8956a;font-size:13px;letter-spacing:2px;margin-bottom:12px; }
-    .tc-text { font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300;margin-bottom:20px; }
-    .tc-author { display:flex;align-items:center;gap:11px; }
-    .tc-av {
-      width:36px;height:36px;border-radius:50%;
-      background:linear-gradient(135deg,var(--charcoal-mid),var(--charcoal-deep));
-      display:flex;align-items:center;justify-content:center;
-      font-family:var(--font-display);font-size:14px;color:var(--white);font-weight:500;
-    }
-    .tc-name { font-size:14px;font-weight:500;color:var(--charcoal-dark); }
-    .tc-role { font-size:12px;color:var(--text-tertiary);font-weight:300; }
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    /* === CTA === */
-    .cta-section {
-      padding:160px 52px;text-align:center;
-      background:linear-gradient(162deg,#3a3a3c 0%,#1c1c1e 40%,#111112 100%);
-      position:relative;overflow:hidden;
-    }
-    .cta-section::before {
-      content:'';position:absolute;inset:0;
-      background:repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(255,255,255,.006) 4px,rgba(255,255,255,.006) 8px);
-      pointer-events:none;
-    }
-    .cta-section .section-title { font-size:clamp(50px,8vw,106px);color:var(--white); }
-    .cta-section .section-sub   { color:rgba(255,255,255,.42);margin:0 auto 44px;text-align:center; }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .btn-white {
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--white);color:var(--charcoal-deep);
-      padding:16px 34px;border-radius:980px;font-size:17px;font-weight:500;
-      text-decoration:none;
-      box-shadow:0 4px 28px rgba(255,255,255,.12);
-      transition:background .2s,transform .3s var(--ease-spring),box-shadow .3s;
-    }
-    .btn-white:hover { background:rgba(255,255,255,.9);transform:scale(1.04) translateY(-2px);box-shadow:0 8px 40px rgba(255,255,255,.18); }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
 
-    .cta-meta { display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:52px; }
-    .cmi { text-align:center; }
-    .cmi .l { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:6px; }
-    .cmi .v { font-size:15px;font-weight:300;color:rgba(255,255,255,.75); }
-    .cdiv { width:1px;background:rgba(255,255,255,.07); }
+        .service-card:hover::before {
+            opacity: 1;
+        }
 
-    /* === FOOTER === */
-    footer { background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06);padding:76px 52px 44px; }
-    .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;max-width:1180px;margin:0 auto 52px; }
-    .footer-brand p { font-size:13px;color:rgba(255,255,255,.28);line-height:1.7;font-weight:300;margin-top:13px;max-width:255px; }
-    .footer-logo-img { height:22px;filter:brightness(0) invert(1) opacity(.6); }
-    .footer-col h5 { font-size:13px;font-weight:500;color:rgba(255,255,255,.65);margin-bottom:16px;letter-spacing:.02em; }
-    .footer-col ul { list-style:none;display:flex;flex-direction:column;gap:10px; }
-    .footer-col a { font-size:13px;color:rgba(255,255,255,.28);text-decoration:none;font-weight:300;transition:color .2s; }
-    .footer-col a:hover { color:rgba(255,255,255,.68); }
-    .footer-bottom {
-      max-width:1180px;margin:0 auto;
-      display:flex;align-items:center;justify-content:space-between;
-      padding-top:26px;border-top:1px solid rgba(255,255,255,.06);
-      font-size:12px;color:rgba(255,255,255,.18);
-    }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
 
-    /* === KEYFRAMES === */
-    @keyframes fadeUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes fadeUpScale { from{opacity:0;transform:translateY(22px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,45,255,0.2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
 
-    /* === RESPONSIVE === */
-    @media(max-width:1024px){
-      nav{padding:0 28px;} .nav-links{display:none;}
-      .services-head{grid-template-columns:1fr;gap:26px;}
-      .services-grid{grid-template-columns:1fr 1fr;}
-      .bc-8,.bc-4,.bc-6,.bc-12{grid-column:span 12;}
-      .process-inner{grid-template-columns:1fr;gap:52px;}
-      .process-sticky{position:static;}
-      .pricing-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
-      .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
-      .stats-grid{grid-template-columns:1fr 1fr;}
-    }
-    @media(max-width:640px){
-      .hero,.services,.process,.showcase,.pricing,.cta-section{padding-left:24px;padding-right:24px;}
-      .testimonials .testi-head{padding:0 24px;}
-      .services-grid,.pricing-grid{grid-template-columns:1fr;}
-      .footer-grid{grid-template-columns:1fr;}
-      footer{padding:52px 24px 36px;}
-      .footer-bottom{flex-direction:column;gap:9px;text-align:center;}
-      .stats{padding:0 24px 72px;}
-    }
-  </style>
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        .project-overlay p {
+            color: var(--text-secondary);
+            transform: translateY(20px);
+            transition: transform 0.5s ease 0.1s;
+        }
+
+        .project-card:hover .project-overlay h3,
+        .project-card:hover .project-overlay p {
+            transform: translateY(0);
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Process */
+        .process-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            align-items: flex-start;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+
+        .process-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .process-number {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(123,45,255,0.3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            flex-shrink: 0;
+            width: 80px;
+        }
+
+        .process-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-content p {
+            color: var(--text-secondary);
+        }
+
+        /* Contact */
+        .contact-section {
+            text-align: center;
+            background: 
+                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .contact-email {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7b2dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-email:hover {
+            filter: brightness(1.3);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5%;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-logo::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00d4ff, #7b2dff, #ff006e);
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .process-step {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            section {
+                padding: 4rem 5%;
+            }
+        }
+
+        /* Glow effects */
+        .glow-text {
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+    </style>
 </head>
 <body>
 
-<div id="cur-dot"></div>
-<div id="cur-ring"></div>
+    <!-- Neon Thread Canvas -->
+    <canvas id="neon-thread"></canvas>
 
-<!-- NAV -->
-<nav id="nav">
-  <a href="#" class="nav-logo">
-    <img src="ekdesign.jpg" alt="EK Design" class="nav-logo-img"/>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Projekte</a></li>
-    <li><a href="#process">Prozess</a></li>
-    <li><a href="#pricing">Preise</a></li>
-    <li><a href="#contact" class="nav-cta">Projekt anfragen</a></li>
-  </ul>
-</nav>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-logo">EK Design</div>
+        <ul class="nav-links">
+            <li><a href="#services">Leistungen</a></li>
+            <li><a href="#projects">Projekte</a></li>
+            <li><a href="#process">Prozess</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </nav>
 
-<!-- HERO -->
-<section class="hero metal-bg" id="home">
-  <div class="hero-content">
-    <div class="hero-logo">
-      <img src="ekdesign.jpg" alt="EK Design"/>
-    </div>
-    <p class="hero-eyebrow">Premium Web &amp; App Design Studio</p>
-    <h1 class="hero-headline">Digitale Produkte,<br/><em>die überzeugen.</em></h1>
-    <p class="hero-sub">Wir gestalten Websites und Apps, die Ihr Unternehmen vom Wettbewerb abheben — mit jedem Detail, das zählt.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-dark">
-        Projekt starten
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#work" class="btn-ghost">Unsere Projekte ansehen →</a>
-    </div>
-  </div>
-  <div class="scroll-cue">
-    <div class="scroll-pill"></div>
-    <span>Scrollen</span>
-  </div>
-</section>
-
-<!-- BRIDGE light → dark -->
-<div class="bridge"></div>
-
-<!-- STATS -->
-<section class="stats dark">
-  <div class="stats-grid">
-    <div class="stat-item"><div class="stat-num">50<sup>+</sup></div><div class="stat-label">Projekte geliefert</div></div>
-    <div class="stat-item"><div class="stat-num">2M<sup>€+</sup></div><div class="stat-label">Umsatz für Kunden</div></div>
-    <div class="stat-item"><div class="stat-num">100<sup>%</sup></div><div class="stat-label">Zufriedenheit</div></div>
-    <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Jahre Erfahrung</div></div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="services metal-bg" id="services">
-  <div class="services-inner">
-    <div class="services-head">
-      <div>
-        <p class="section-eyebrow reveal">Was wir tun</p>
-        <h2 class="section-title reveal d1">Unsere<br/><em>Services</em></h2>
-      </div>
-      <p class="section-sub reveal d2">Wir erschaffen digitale Erlebnisse, die Besucher in Kunden verwandeln. Von der ersten Idee bis zum Launch — aus einer Hand.</p>
-    </div>
-    <div class="services-grid">
-      <div class="svc-card reveal d1"><div class="svc-icon">🌐</div><h3>Web Design</h3><p>Maßgeschneiderte Websites mit außergewöhnlichem Design. Jede Site ein Unikat — kein Template, kein Kompromiss.</p><div class="svc-price">Ab 20.000 €</div></div>
-      <div class="svc-card reveal d2"><div class="svc-icon">📱</div><h3>App Design</h3><p>iOS &amp; Android Apps mit intuitivem UX. Wir bauen Erlebnisse, die Nutzer täglich öffnen und gerne empfehlen.</p><div class="svc-price">Ab 35.000 €</div></div>
-      <div class="svc-card reveal d3"><div class="svc-icon">✦</div><h3>Brand Identity</h3><p>Logo, Farbsystem, Typografie — Ihre Marke als kohärentes System, das auf jedem Medium überzeugt.</p><div class="svc-price">Ab 8.000 €</div></div>
-      <div class="svc-card reveal d1"><div class="svc-icon">🛒</div><h3>E-Commerce</h3><p>Online-Shops, die wirklich verkaufen. Shopify, WooCommerce oder Custom — mit Checkout, der konvertiert.</p><div class="svc-price">Ab 25.000 €</div></div>
-      <div class="svc-card reveal d2"><div class="svc-icon">⚙️</div><h3>Development</h3><p>React, Next.js, Vue.js — moderne Tech-Stacks für blitzschnelle, skalierbare Webanwendungen.</p><div class="svc-price">Ab 15.000 €</div></div>
-      <div class="svc-card reveal d3"><div class="svc-icon">📊</div><h3>Optimierung</h3><p>Performance-Audits, UX-Analyse und Conversion-Optimierung für bestehende digitale Produkte.</p><div class="svc-price">Ab 5.000 €</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- SHOWCASE -->
-<section class="showcase dark" id="work">
-  <div class="showcase-inner">
-    <div class="showcase-head">
-      <p class="section-eyebrow reveal">Portfolio</p>
-      <h2 class="section-title reveal d1">Projekte, die<br/><em style="color:rgba(255,255,255,.38);">beweisen was wir können</em></h2>
-      <p class="section-sub reveal d2" style="margin:0 auto;text-align:center;">Jedes Projekt ist ein Beweis für unser Handwerk.</p>
-    </div>
-    <div class="bento">
-      <div class="bc bc-8 bc-silver rs">
-        <div class="bc-label">E-Commerce · 2024</div>
-        <div class="bc-title">Luxus-Brand<br/>Online Store</div>
-        <div class="bc-text">Custom Shopify-Shop für Premium-Modemarke — mit 3D-Produktansichten und personalisiertem Checkout.</div>
-        <div class="bc-kpi">
-          <div><div class="bc-kpi-val">+340%</div><div class="bc-kpi-label">Umsatz Q1</div></div>
-          <div><div class="bc-kpi-val">€80K</div><div class="bc-kpi-label">Budget</div></div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        
+        <div class="logo-container">
+            <!-- Rotating Silhouette -->
+            <div class="logo-silhouette">
+                <svg viewBox="0 0 200 200" fill="none">
+                    <circle cx="100" cy="100" r="80" stroke="url(#grad1)" stroke-width="0.5" stroke-dasharray="10 5" opacity="0.5"/>
+                    <circle cx="100" cy="100" r="60" stroke="url(#grad2)" stroke-width="0.5" stroke-dasharray="5 10" opacity="0.3"/>
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00d4ff" />
+                            <stop offset="100%" stop-color="#7b2dff" />
+                        </linearGradient>
+                        <linearGradient id="grad2" x2="0%" y2="0%" x1="100%" y1="100%">
+                            <stop offset="0%" stop-color="#ff006e" />
+                            <stop offset="100%" stop-color="#00d4ff" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            
+            <!-- Materializing Logo -->
+            <div class="logo-main">
+                <svg viewBox="0 0 120 120" fill="none">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00d4ff">
+                                <animate attributeName="stop-color" values="#00d4ff;#7b2dff;#ff006e;#00d4ff" dur="8s" repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="100%" stop-color="#7b2dff">
+                                <animate attributeName="stop-color" values="#7b2dff;#ff006e;#00d4ff;#7b2dff" dur="8s" repeatCount="indefinite"/>
+                            </stop>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- EK Logo Shape -->
+                    <path d="M30 30 L30 90 L60 90 L60 80 L42 80 L42 62 L58 62 L58 52 L42 52 L42 40 L60 40 L60 30 Z" fill="url(#logoGrad)" filter="url(#glow)"/>
+                    <path d="M68 30 L68 90 L80 90 L80 58 L95 90 L110 90 L110 30 L98 30 L98 62 L83 30 Z" fill="url(#logoGrad)" filter="url(#glow)"/>
+                    <!-- Decorative elements -->
+                    <circle cx="100" cy="25" r="3" fill="#00d4ff" opacity="0.8">
+                        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="20" cy="95" r="2" fill="#ff006e" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;0.1;0.6" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
         </div>
-        <div style="margin-top:18px;"><span class="bc-tag">Shopify</span><span class="bc-tag">Next.js</span><span class="bc-tag">3D Visuals</span></div>
-      </div>
-      <div class="bc bc-4 bc-charcoal rs d1">
-        <div class="bc-label">App Design · 2024</div>
-        <div class="bc-title">FinTech<br/>App iOS</div>
-        <div class="bc-text">Banking-App mit 50.000+ Downloads in 3 Monaten nach Launch.</div>
-        <div style="margin-top:auto;padding-top:28px;">
-          <div style="font-family:var(--font-display);font-size:62px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">50K</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Downloads</div>
+
+        <h1>Premium Web Design<br>& App Entwicklung</h1>
+        <p>Wir gestalten digitale Erlebnisse, die begeistern. Von eleganten Webseiten bis zu intuitiven Apps – maßgeschneidert für Ihren Erfolg.</p>
+        <a href="#contact" class="cta-button">Projekt starten</a>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+        <div class="section-header">
+            <h2>Leistungen</h2>
+            <p>Alles aus einer Hand – von der Konzeption bis zum Launch</p>
         </div>
-      </div>
-      <div class="bc bc-6 bc-warm rs d1">
-        <div class="bc-label">Corporate · 2023</div>
-        <div class="bc-title">Kanzlei<br/>Rebranding</div>
-        <div class="bc-text">Komplette digitale Transformation — neue Marke, neue Website, neues Vertrauen beim Mandanten.</div>
-      </div>
-      <div class="bc bc-6 bc-mid rs d2">
-        <div class="bc-label">Restaurant · 2024</div>
-        <div class="bc-title">Michelin-<br/>Restaurant</div>
-        <div class="bc-text">Reservierungssystem &amp; Website. Buchungen +200% in den ersten 8 Wochen nach Relaunch.</div>
-      </div>
-      <div class="bc bc-12 bc-charcoal rs" style="min-height:195px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;height:100%;">
-          <div><div class="bc-label">SaaS Platform · 2024</div><div class="bc-title" style="font-size:clamp(26px,3vw,42px);">B2B Dashboard &amp; Web-App</div></div>
-          <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:center;">
-            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">18</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Wochen</div></div>
-            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--white);font-weight:500;line-height:1;letter-spacing:-.03em;">€80K</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Budget</div></div>
-            <div style="text-align:center;"><div style="font-family:var(--font-display);font-size:46px;color:var(--silver-warm);font-weight:500;line-height:1;letter-spacing:-.03em;">5×</div><div style="font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">ROI</div></div>
-          </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Web Design</h3>
+                <p>Maßgeschneiderte Designs, die Ihre Marke perfekt repräsentieren. Fokus auf Ästhetik, Benutzerfreundlichkeit und Conversion.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>App Entwicklung</h3>
+                <p>Native und Cross-Platform Apps für iOS und Android. Intuitiv, schnell und mit erstklassiger User Experience.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Performance</h3>
+                <p>Blitzschnelle Ladezeiten, optimierte Core Web Vitals und SEO-freundliche Architektur für maximale Sichtbarkeit.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🛡️</div>
+                <h3>Wartung & Support</h3>
+                <p>Regelmäßige Updates, Sicherheitspatches und technischer Support – damit Ihre Website immer auf dem neuesten Stand bleibt.</p>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- PROCESS -->
-<section class="process metal-bg" id="process">
-  <div class="process-inner">
-    <div class="process-sticky">
-      <p class="section-eyebrow reveal">Wie wir arbeiten</p>
-      <h2 class="section-title reveal d1">Unser<br/><em>Prozess</em></h2>
-      <p class="section-sub reveal d2">Von der ersten Idee bis zum erfolgreichen Launch — transparent, termingerecht, leidenschaftlich.</p>
-      <div class="info-box reveal d3">
-        <div class="section-eyebrow" style="margin-bottom:6px;">Durchschnittlich</div>
-        <div class="num">6–12</div>
-        <div class="lbl">Wochen vom Briefing bis Launch</div>
-      </div>
-    </div>
-    <div class="process-steps">
-      <div class="ps"><div class="ps-num">01</div><div class="ps-body"><h4>Discovery &amp; Strategy</h4><p>Wir analysieren Ihr Unternehmen, Ihre Zielgruppe und den Markt. Gemeinsam definieren wir Ziele, Scope und KPIs — bevor wir ein Pixel zeichnen.</p></div></div>
-      <div class="ps"><div class="ps-num">02</div><div class="ps-body"><h4>Konzept &amp; Wireframes</h4><p>Architektur vor Ästhetik. User Journey, Informationsstruktur und User Flows werden akribisch geplant und mit Ihnen abgestimmt.</p></div></div>
-      <div class="ps"><div class="ps-num">03</div><div class="ps-body"><h4>Visual Design</h4><p>High-Fidelity Designs in Figma, animierte Prototypen, Hover-States — jedes Detail perfektioniert, bis es sich wie Ihr bestes Markenbotschafter anfühlt.</p></div></div>
-      <div class="ps"><div class="ps-num">04</div><div class="ps-body"><h4>Development</h4><p>Sauberer, performanter Code. 99+ Lighthouse-Score, SEO-optimiert, barrierefrei und auf die Zukunft ausgerichtet.</p></div></div>
-      <div class="ps"><div class="ps-num">05</div><div class="ps-body"><h4>Launch &amp; Support</h4><p>Staging, Testing, QA — dann Launch. Danach stehen wir für Optimierungen bereit. Langfristige Partnerschaften statt einmaliger Transaktionen.</p></div></div>
-    </div>
-  </div>
-</section>
+    <!-- Projects -->
+    <section id="projects">
+        <div class="section-header">
+            <h2>Ausgewählte Projekte</h2>
+            <p>Echte Websites für echte Unternehmen</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&h=500&fit=crop" alt="Café Website" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Café & Gastronomie</span>
+                    <h3>Rösterei Müller</h3>
+                    <p>Elegante Online-Präsenz für eine Premium-Kaffeerösterei mit Onlineshop</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=500&fit=crop" alt="Fashion Store" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Fashion & Lifestyle</span>
+                    <h3>Maison Noir</h3>
+                    <p>High-End Fashion E-Commerce mit immersivem Shopping-Erlebnis</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=500&fit=crop" alt="Handwerker Website" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Handwerk & Bau</span>
+                    <h3>BauSchmidt GmbH</h3>
+                    <p>Professioneller Auftritt für einen Premium-Baukonzern mit Projektgalerie</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop" alt="Hotel Website" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Hotel & Tourismus</span>
+                    <h3>Villa Serena</h3>
+                    <p>Luxuriöses Booking-Erlebnis für eine Boutique-Hotelkette</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=500&fit=crop" alt="Corporate Website" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Corporate</span>
+                    <h3>TechVision AG</h3>
+                    <p>Moderne Unternehmenswebsite mit dynamischen Datenvisualisierungen</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=800&h=500&fit=crop" alt="Restaurant Website" class="project-image">
+                <div class="project-overlay">
+                    <span class="project-tag">Restaurant</span>
+                    <h3>Atelier Gourmet</h3>
+                    <p>Michelin-Stern Restaurant mit digitalem Erlebnis und Reservierungssystem</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- PRICING -->
-<section class="pricing dark" id="pricing">
-  <div class="pricing-inner">
-    <div class="pricing-head">
-      <p class="section-eyebrow reveal">Investition</p>
-      <h2 class="section-title reveal d1">Transparente<br/><em style="color:rgba(255,255,255,.35);">Preise</em></h2>
-      <p class="section-sub reveal d2" style="margin:0 auto;text-align:center;">Feste Projektpreise — kein Stundensatz-Roulette, keine versteckten Kosten.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="pc reveal d1">
-        <div class="pc-tier">Starter</div><div class="pc-amount">20K</div><div class="pc-from">ab 20.000 € netto</div>
-        <ul class="pc-features"><li>5–8 Seiten, Custom Design</li><li>Mobile-first Responsive</li><li>CMS-Integration</li><li>SEO-Grundlagen</li><li>4 Wochen Support</li><li>Übergabe aller Assets</li></ul>
-        <a href="#contact" class="pc-btn">Anfrage stellen</a>
-      </div>
-      <div class="pc featured reveal">
-        <div class="pc-tier" style="margin-top:20px;">Premium</div><div class="pc-amount">50K</div><div class="pc-from">ab 50.000 € netto</div>
-        <ul class="pc-features"><li>Unbegrenzte Seiten</li><li>Premium Scroll-Animationen</li><li>Custom Development</li><li>E-Commerce / Booking</li><li>Brand Identity inklusive</li><li>3 Monate Support</li><li>Monatliche Reports</li></ul>
-        <a href="#contact" class="pc-btn">Jetzt anfragen</a>
-      </div>
-      <div class="pc reveal d1">
-        <div class="pc-tier">Enterprise</div><div class="pc-amount">80K</div><div class="pc-from">ab 80.000 € netto</div>
-        <ul class="pc-features"><li>Web + App (iOS &amp; Android)</li><li>Komplexe Web-Anwendungen</li><li>API &amp; System-Integrationen</li><li>Dedicated Team &amp; PM</li><li>6 Monate Support &amp; Wartung</li><li>Performance-Garantie</li><li>Strategische Beratung</li></ul>
-        <a href="#contact" class="pc-btn">Jetzt anfragen</a>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- Process -->
+    <section id="process">
+        <div class="section-header">
+            <h2>Unser Prozess</h2>
+            <p>Transparenz und Qualität in jedem Schritt</p>
+        </div>
+        <div class="process-container">
+            <div class="process-step">
+                <div class="process-number">01</div>
+                <div class="process-content">
+                    <h3>Discovery & Strategie</h3>
+                    <p>Wir analysieren Ihre Ziele, Zielgruppe und Konkurrenz. Gemeinsam entwickeln wir eine digitale Strategie, die Ergebnisse liefert.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">02</div>
+                <div class="process-content">
+                    <h3>Design & Konzept</h3>
+                    <p>Von Wireframes bis zum finalen UI-Design – wir schaffen visuelle Erlebnisse, die Ihre Marke einzigartig machen.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">03</div>
+                <div class="process-content">
+                    <h3>Entwicklung</h3>
+                    <p>Clean Code, moderne Technologien und pixelgenaue Umsetzung. Performance und Skalierbarkeit inklusive.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">04</div>
+                <div class="process-content">
+                    <h3>Launch & Wachstum</h3>
+                    <p>Go-Live mit Monitoring, SEO-Optimierung und kontinuierlicher Verbesserung für nachhaltigen Erfolg.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="testi-head">
-    <p class="section-eyebrow reveal">Kundenstimmen</p>
-    <h2 class="section-title reveal d1">Was unsere<br/><em>Kunden sagen</em></h2>
-  </div>
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„EK Design hat unsere Erwartungen weit übertroffen. Die neue Website verdreifachte unsere Conversion-Rate. Absolute Empfehlung."</p><div class="tc-author"><div class="tc-av">TM</div><div><div class="tc-name">Thomas Müller</div><div class="tc-role">CEO, Müller &amp; Partner GmbH</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Unser Online-Shop brachte 180% mehr Umsatz. Das Investment amortisierte sich in 6 Wochen. Design, das wirklich wirkt."</p><div class="tc-author"><div class="tc-av">SK</div><div><div class="tc-name">Sarah Klein</div><div class="tc-role">Gründerin, Klein Fashion</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die App ist weltklasse. 50.000 Downloads nach 3 Monaten. Bestes Investment, das wir je getätigt haben."</p><div class="tc-author"><div class="tc-av">JB</div><div><div class="tc-name">Jonas Braun</div><div class="tc-role">CTO, FinFlow</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die Website sieht aus wie ein Apple-Produkt — höchstes Lob das ich vergeben kann. Professionell, pünktlich, jedes Detail stimmt."</p><div class="tc-author"><div class="tc-av">AW</div><div><div class="tc-name">Anna Weber</div><div class="tc-role">Marketing Director, Weber Group</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Transparente Kommunikation, keine Überraschungen, außergewöhnliches Ergebnis. So muss professionelle Zusammenarbeit aussehen."</p><div class="tc-author"><div class="tc-av">MH</div><div><div class="tc-name">Markus Hoffmann</div><div class="tc-role">Inhaber, Hoffmann Immobilien</div></div></div></div>
-      <!-- Duplicate -->
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„EK Design hat unsere Erwartungen weit übertroffen. Die neue Website verdreifachte unsere Conversion-Rate. Absolute Empfehlung."</p><div class="tc-author"><div class="tc-av">TM</div><div><div class="tc-name">Thomas Müller</div><div class="tc-role">CEO, Müller &amp; Partner GmbH</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Unser Online-Shop brachte 180% mehr Umsatz. Das Investment amortisierte sich in 6 Wochen. Design, das wirklich wirkt."</p><div class="tc-author"><div class="tc-av">SK</div><div><div class="tc-name">Sarah Klein</div><div class="tc-role">Gründerin, Klein Fashion</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die App ist weltklasse. 50.000 Downloads nach 3 Monaten. Bestes Investment, das wir je getätigt haben."</p><div class="tc-author"><div class="tc-av">JB</div><div><div class="tc-name">Jonas Braun</div><div class="tc-role">CTO, FinFlow</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Die Website sieht aus wie ein Apple-Produkt — höchstes Lob das ich vergeben kann. Professionell, pünktlich, jedes Detail stimmt."</p><div class="tc-author"><div class="tc-av">AW</div><div><div class="tc-name">Anna Weber</div><div class="tc-role">Marketing Director, Weber Group</div></div></div></div>
-      <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-text">„Transparente Kommunikation, keine Überraschungen, außergewöhnliches Ergebnis. So muss professionelle Zusammenarbeit aussehen."</p><div class="tc-author"><div class="tc-av">MH</div><div><div class="tc-name">Markus Hoffmann</div><div class="tc-role">Inhaber, Hoffmann Immobilien</div></div></div></div>
-    </div>
-  </div>
-</section>
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <div class="section-header">
+            <h2>Lassen Sie uns zusammenarbeiten</h2>
+            <p>Bereit für Ihr nächstes Projekt?</p>
+        </div>
+        <a href="mailto:hello@ekdesign.de" class="contact-email">hello@ekdesign.de</a>
+        <br><br>
+        <a href="mailto:hello@ekdesign.de" class="cta-button">Nachricht senden</a>
+    </section>
 
-<!-- CTA -->
-<section class="cta-section dark" id="contact">
-  <p class="section-eyebrow reveal">Bereit für den nächsten Schritt?</p>
-  <h2 class="section-title reveal d1">Lassen Sie uns<br/><em style="color:rgba(255,255,255,.32);">gemeinsam bauen.</em></h2>
-  <p class="section-sub reveal d2">Ihr nächstes Projekt beginnt mit einem Gespräch. Kostenlos, unverbindlich, ehrlich.</p>
-  <div class="reveal d3" style="display:flex;justify-content:center;">
-    <a href="mailto:hallo@ekdesign.de" class="btn-white">
-      Kostenlose Beratung anfragen
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-  </div>
-  <div class="cta-meta reveal d4">
-    <div class="cmi"><div class="l">E-Mail</div><div class="v">hallo@ekdesign.de</div></div>
-    <div class="cdiv"></div>
-    <div class="cmi"><div class="l">Reaktionszeit</div><div class="v">Innerhalb 24h</div></div>
-    <div class="cdiv"></div>
-    <div class="cmi"><div class="l">Projekte ab</div><div class="v">20.000 €</div></div>
-    <div class="cdiv"></div>
-    <div class="cmi"><div class="l">Standort</div><div class="v">Deutschland</div></div>
-  </div>
-</section>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">EK Design</div>
+        <p>© 2024 EK Design. Alle Rechte vorbehalten.<br>Premium Web Design & App Entwicklung</p>
+    </footer>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <img src="ekdesign.jpg" alt="EK Design" class="footer-logo-img"/>
-      <p>Premium Web &amp; App Design Studio aus Deutschland. Wir bauen digitale Produkte, die Unternehmen transformieren.</p>
-    </div>
-    <div class="footer-col"><h5>Services</h5><ul><li><a href="#">Web Design</a></li><li><a href="#">App Design</a></li><li><a href="#">E-Commerce</a></li><li><a href="#">Brand Identity</a></li><li><a href="#">Development</a></li></ul></div>
-    <div class="footer-col"><h5>Unternehmen</h5><ul><li><a href="#">Über uns</a></li><li><a href="#">Portfolio</a></li><li><a href="#">Prozess</a></li><li><a href="#">Karriere</a></li></ul></div>
-    <div class="footer-col"><h5>Rechtliches</h5><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li><li><a href="#">AGB</a></li></ul></div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 EK Design. Alle Rechte vorbehalten.</span>
-    <span style="letter-spacing:.08em;">MADE IN GERMANY</span>
-  </div>
-</footer>
-
-<script>
-(function(){
-  /* Cursor */
-  const dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.cssText=`left:${mx}px;top:${my}px;`;});
-  (function t(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.cssText=`left:${rx}px;top:${ry}px;`;requestAnimationFrame(t);})();
-  document.querySelectorAll('a,button,.svc-card,.pc,.tc,.bc').forEach(el=>{
-    el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
-    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
-  });
-
-  /* Navbar dark toggle */
-  const nav=document.getElementById('nav');
-  const darkEls=document.querySelectorAll('.dark,.showcase,.pricing,.cta-section,footer');
-  function checkNav(){
-    let d=false;
-    darkEls.forEach(s=>{const r=s.getBoundingClientRect();if(r.top<=52&&r.bottom>0)d=true;});
-    nav.classList.toggle('dark',d);
-    document.body.classList.toggle('on-dark',d);
-  }
-  window.addEventListener('scroll',checkNav,{passive:true}); checkNav();
-
-  /* Scroll reveal */
-  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
-  document.querySelectorAll('.reveal,.rs,.stat-item,.ps').forEach(el=>io.observe(el));
-
-  /* Staggered stat delays */
-  document.querySelectorAll('.stat-item').forEach((el,i)=>el.style.transitionDelay=(i*.12)+'s');
-
-  /* Smooth anchors */
-  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-  }));
-
-  /* Parallax logo */
-  window.addEventListener('scroll',()=>{
-    const img=document.querySelector('.hero-logo img');
-    if(img)img.style.transform=`translateY(${window.scrollY*.1}px)`;
-  },{passive:true});
-})();
-</script>
+    <script>
+        // Neon Thread Animation
+        const canvas = document.getElementById('neon-thread');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let scrollY = 0;
+        let targetScrollY = 0;
+        const nodes = [];
+        const connections = [];
+        
+        // Color palette for neon effect
+        const neonColors = [
+            '#00d4ff', // Cyan
+            '#7b2dff', // Purple
+            '#ff006e', // Pink
+            '#00ff88', // Green
+            '#ffaa00', // Orange
+            '#ff00ff'  // Magenta
+        ];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initNodes();
+        }
+        
+        function initNodes() {
+            nodes.length = 0;
+            const sections = document.querySelectorAll('section, .service-card, .project-card, .process-step');
+            
+            sections.forEach((section, i) => {
+                const rect = section.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2 + window.scrollY;
+                
+                // Create multiple nodes per section for circuit effect
+                for (let j = 0; j < 3; j++) {
+                    nodes.push({
+                        x: centerX + (Math.random() - 0.5) * rect.width * 0.8,
+                        y: centerY + (Math.random() - 0.5) * rect.height * 0.5,
+                        baseY: centerY,
+                        color: neonColors[Math.floor(Math.random() * neonColors.length)],
+                        pulse: Math.random() * Math.PI * 2,
+                        speed: 0.02 + Math.random() * 0.03,
+                        intensity: 0,
+                        targetIntensity: 0,
+                        size: 2 + Math.random() * 3
+                    });
+                }
+            });
+            
+            // Create connections between nearby nodes
+            connections.length = 0;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                    if (dist < 400 && Math.abs(nodes[i].y - nodes[j].y) < 300) {
+                        connections.push({
+                            from: i,
+                            to: j,
+                            color: neonColors[Math.floor(Math.random() * neonColors.length)],
+                            progress: 0,
+                            speed: 0.005 + Math.random() * 0.01,
+                            active: false,
+                            pulseOffset: Math.random() * Math.PI * 2
+                        });
+                    }
+                }
+            }
+        }
+        
+        let colorShift = 0;
+        
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Smooth scroll
+            scrollY += (targetScrollY - scrollY) * 0.1;
+            colorShift += 0.002;
+            
+            // Update node intensities based on scroll position
+            const viewportCenter = scrollY + height / 2;
+            
+            nodes.forEach((node, i) => {
+                const dist = Math.abs(node.baseY - viewportCenter);
+                const maxDist = height * 0.8;
+                node.targetIntensity = Math.max(0, 1 - dist / maxDist);
+                node.intensity += (node.targetIntensity - node.intensity) * 0.05;
+                node.pulse += node.speed;
+                
+                // Slight floating movement
+                node.y = node.baseY + Math.sin(node.pulse) * 10;
+            });
+            
+            // Draw connections with circuit pulse effect
+            connections.forEach(conn => {
+                const from = nodes[conn.from];
+                const to = nodes[conn.to];
+                
+                if (from.intensity < 0.1 || to.intensity < 0.1) return;
+                
+                const avgIntensity = (from.intensity + to.intensity) / 2;
+                
+                // Color cycling
+                const colorIndex = (Math.floor(colorShift * 100) + Math.floor(conn.pulseOffset * 10)) % neonColors.length;
+                const baseColor = neonColors[colorIndex];
+                
+                // Draw main line
+                ctx.beginPath();
+                ctx.moveTo(from.x, from.y - scrollY);
+                ctx.lineTo(to.x, to.y - scrollY);
+                ctx.strokeStyle = baseColor + Math.floor(avgIntensity * 30).toString(16).padStart(2, '0');
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Animated pulse traveling along the line
+                conn.progress += conn.speed;
+                if (conn.progress > 1) conn.progress = 0;
+                
+                const pulseX = from.x + (to.x - from.x) * conn.progress;
+                const pulseY = (from.y - scrollY) + ((to.y - scrollY) - (from.y - scrollY)) * conn.progress;
+                
+                // Glow effect
+                const gradient = ctx.createRadialGradient(pulseX, pulseY, 0, pulseX, pulseY, 15);
+                gradient.addColorStop(0, baseColor + 'ff');
+                gradient.addColorStop(0.5, baseColor + '80');
+                gradient.addColorStop(1, baseColor + '00');
+                
+                ctx.beginPath();
+                ctx.arc(pulseX, pulseY, 15, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Bright core
+                ctx.beginPath();
+                ctx.arc(pulseX, pulseY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            });
+            
+            // Draw nodes
+            nodes.forEach(node => {
+                if (node.intensity < 0.05) return;
+                
+                const screenY = node.y - scrollY;
+                
+                // Outer glow
+                const gradient = ctx.createRadialGradient(node.x, screenY, 0, node.x, screenY, 30);
+                const colorIndex = Math.floor(colorShift * 50) % neonColors.length;
+                const color = neonColors[colorIndex];
+                
+                gradient.addColorStop(0, color + Math.floor(node.intensity * 200).toString(16).padStart(2, '0'));
+                gradient.addColorStop(1, color + '00');
+                
+                ctx.beginPath();
+                ctx.arc(node.x, screenY, 30, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Core
+                ctx.beginPath();
+                ctx.arc(node.x, screenY, node.size, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.globalAlpha = node.intensity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                
+                // Pulse ring
+                const pulseSize = node.size + Math.sin(node.pulse) * 5 + 5;
+                ctx.beginPath();
+                ctx.arc(node.x, screenY, pulseSize, 0, Math.PI * 2);
+                ctx.strokeStyle = color + Math.floor(node.intensity * 100).toString(16).padStart(2, '0');
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Scroll handler
+        window.addEventListener('scroll', () => {
+            targetScrollY = window.scrollY;
+            
+            // Navbar effect
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Intersection Observer for process steps
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.process-step').forEach(step => {
+            observer.observe(step);
+        });
+        
+        // Initialize
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
+        
+        // Re-init nodes on resize with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(initNodes, 250);
+        });
+    </script>
 </body>
 </html>
